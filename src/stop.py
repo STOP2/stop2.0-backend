@@ -14,7 +14,7 @@ def hello_world():
 
 @app.route('/test')
 def digitransitTest():
-    return digitransitAPIService.get_busses_by_stop_id("HSL:1362141")
+    return digitransitAPIService.get_stops(0, 0)
 
 
 if __name__ == '__main__':
