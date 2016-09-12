@@ -7,4 +7,4 @@ To run this project locally using docker you can execute this command in termina
 ```
 docker run -p 5000:5000 stoptwo/backend
 ```
-This will open the application on port 5000 of your localhost
+This will open the application on port 5000 of your localhost. Use a flag `-d` to run the container in detached mode.
