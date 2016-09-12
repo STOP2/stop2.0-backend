@@ -15,11 +15,11 @@ install:
 script:
   - python src/tests/test_stop.py
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+  - if [ "$TRAVIS_BRANCH" == "automatic_heroku_deployment" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker build -t stoptwo/backend .;
     docker push stoptwo/backend;
-    docker login --email=_ --username=_ --password=$(heroku auth:token) registry.heroku.com
+    docker login --email=_ --username=_ --password=$(heroku auth:token) registry.heroku.com;
     docker tag stoptwo/backend registry.heroku.com/stop20/web;
     docker push registry.heroku.com/stop20/web;
     fi
