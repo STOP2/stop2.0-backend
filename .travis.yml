@@ -1,0 +1,24 @@
+sudo: required
+language: python
+python:
+  - 3.5.2
+env:
+  global:
+    - DOCKER_EMAIL=stop2@protonmail.com
+    - DOCKER_USERNAME=stop2
+    - secure: "giQ+UxU/+MeZ2caDmMA73ylUjsPIaJIiWR3ltX6T3AfZAVCzXJXoAOvcuk8SwfR8dmTVzTQsPexrUR9kGj49ZXn4t+BuvQ0VgPnNissLwjR3AqhEn3urq294apyW351AYWJxlTdW9UHc9q+y0E9NBrJ/Mmfh/Wo8TneYbMlb7xqVTLRdtjgzaCwmFPmLhcfLE9woRWvboIj8CAxA12GPoKGb5Fh3uHW7f1amZTMJTEUEAI0DLUXbLamiXEs7YFkxk87qAWJYka75YB9S9IFzwmDiol67UQOG/6mfFqdpWJA7IgNyy6KIdwJsmtAySKm1SoORrAFrWs6b12PxnHmWCKoK3meGQj1nxr9SQRDnduvt5j8Fs69Qb0wiwrPEyp1EygKOQQZJwM2MXtkrk4YGh+f4Z703Nc+T7vdSqMGLnRmkXTTUI/LDYY+SeXIua0q64AR+1WP5qjD4Pduv5zLoy7edmuDnKPtQ7ZjWGnP2SUo20xPZ7huuZdVdlylE3Q2QShnlXMoZg0t69wgEkXoDTTSJnnySp1xefotFiiCHAtxJmaCxx0uPVbwYyeLDpEbPnK7F3ZVExzHxPy2XR/IOaj/JfYkwAGOBxdTexe10/Q40qOFT5suMLESaUXeYuFXV6MVJZnCYBEAtcZ6TB6SKqu0TYRmdWP+FYFMRtdpuV30="
+    - secure: "HdEmTsn5vsmHATt5nYm/qWyNjNbT1k8VwNUYYRovWVVZT0dYTLfwn6oLVfbGDxJHJitqUhc8+hyJN6abQYqUVJU/A4ATNEkfTs3ymfvR+2wKJ9L4e3vtjbyxHnE7RnhDD6uvFQHzhfPo1FX5LmZJn3IsRRveG4fehRWrPIYvX28GIXKF/7XDETY4pNX4NOH29+WqSFgA/tRGxMQVOU3d68+VFfmEsvWTes6efo2UXxhX+i2hVBx6GGkbvd5qm/HEKdy/DSSyChqqc1wIEeKHuTzaiEX9LzBNT4s17jo2fJ/9UjPNnCcEfFykk1OYFaak05wwp/7LhbKYkOuAgA7MXmrb+FEw3np7Nx3mCZ5YFJjt3CkmYneqAQx4cNw2R9qGCXUjRWMn2LQr8zSDmdBU/IB6zPW9HOVOltkU2HaTTqn3XR12OIBnm4Co9ywujBpUc6hYjATg3W9bYxB7Mcb6menhxG/Uko18mD10H7Cs7P2aDR3GN3VcKdc4seGQ6PGQWRUvaopj9MxC2DR1RDTQaR9wNqBBTHBsCpduqqPBpP+miGth3jyDNYJNMcmQBw0+b+fFvPiGeKHannndF3pVqtmqZ3Oxj2qKxd/7QdDHtSawyN1Em+CKQnKrAzMZF40SFQO8VeHVOm4ww+jBlEqjoQZhp19GuEdR1n+pZTxRSBI="
+services:
+  - docker
+install:
+  - pip install -r requirements.txt
+script:
+  - python src/tests/test_stop.py
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker build -t stoptwo/backend:latest .;
+    docker push stoptwo/backend;
+    fi
+notifications:
+  slack: stop2:L8tGNnWgadReoqGDrfv93XBj
