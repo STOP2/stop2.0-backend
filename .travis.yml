@@ -21,6 +21,6 @@ after_success:
     #docker push stoptwo/backend;
     docker tag stoptwo/backend registry.heroku.com/stop20/web;
     docker push registry.heroku.com/stop20/web;
-  fi
+    fi
 notifications:
   slack: stop2:L8tGNnWgadReoqGDrfv93XBj
