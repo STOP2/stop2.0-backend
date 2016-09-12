@@ -17,7 +17,6 @@ script:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "automatic_heroku_deployment" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker build -t stoptwo/backend:latest .;
     docker tag stoptwo/backend registry.heroku.com/stop20/web;
     docker push registry.heroku.com/stop20/web;
     fi
