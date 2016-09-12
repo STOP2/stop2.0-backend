@@ -19,6 +19,8 @@ after_success:
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker build -t stoptwo/backend:latest .;
     docker push stoptwo/backend;
+    docker tag stoptwo/backend registry.heroku.com/stop20/web
+    docker push registry.heroku.com/stop20/web
     fi
 notifications:
   slack: stop2:L8tGNnWgadReoqGDrfv93XBj
