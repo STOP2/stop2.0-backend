@@ -8,6 +8,8 @@ env:
     - DOCKER_USERNAME=stop2
     - secure: "giQ+UxU/+MeZ2caDmMA73ylUjsPIaJIiWR3ltX6T3AfZAVCzXJXoAOvcuk8SwfR8dmTVzTQsPexrUR9kGj49ZXn4t+BuvQ0VgPnNissLwjR3AqhEn3urq294apyW351AYWJxlTdW9UHc9q+y0E9NBrJ/Mmfh/Wo8TneYbMlb7xqVTLRdtjgzaCwmFPmLhcfLE9woRWvboIj8CAxA12GPoKGb5Fh3uHW7f1amZTMJTEUEAI0DLUXbLamiXEs7YFkxk87qAWJYka75YB9S9IFzwmDiol67UQOG/6mfFqdpWJA7IgNyy6KIdwJsmtAySKm1SoORrAFrWs6b12PxnHmWCKoK3meGQj1nxr9SQRDnduvt5j8Fs69Qb0wiwrPEyp1EygKOQQZJwM2MXtkrk4YGh+f4Z703Nc+T7vdSqMGLnRmkXTTUI/LDYY+SeXIua0q64AR+1WP5qjD4Pduv5zLoy7edmuDnKPtQ7ZjWGnP2SUo20xPZ7huuZdVdlylE3Q2QShnlXMoZg0t69wgEkXoDTTSJnnySp1xefotFiiCHAtxJmaCxx0uPVbwYyeLDpEbPnK7F3ZVExzHxPy2XR/IOaj/JfYkwAGOBxdTexe10/Q40qOFT5suMLESaUXeYuFXV6MVJZnCYBEAtcZ6TB6SKqu0TYRmdWP+FYFMRtdpuV30="
     - secure: "HdEmTsn5vsmHATt5nYm/qWyNjNbT1k8VwNUYYRovWVVZT0dYTLfwn6oLVfbGDxJHJitqUhc8+hyJN6abQYqUVJU/A4ATNEkfTs3ymfvR+2wKJ9L4e3vtjbyxHnE7RnhDD6uvFQHzhfPo1FX5LmZJn3IsRRveG4fehRWrPIYvX28GIXKF/7XDETY4pNX4NOH29+WqSFgA/tRGxMQVOU3d68+VFfmEsvWTes6efo2UXxhX+i2hVBx6GGkbvd5qm/HEKdy/DSSyChqqc1wIEeKHuTzaiEX9LzBNT4s17jo2fJ/9UjPNnCcEfFykk1OYFaak05wwp/7LhbKYkOuAgA7MXmrb+FEw3np7Nx3mCZ5YFJjt3CkmYneqAQx4cNw2R9qGCXUjRWMn2LQr8zSDmdBU/IB6zPW9HOVOltkU2HaTTqn3XR12OIBnm4Co9ywujBpUc6hYjATg3W9bYxB7Mcb6menhxG/Uko18mD10H7Cs7P2aDR3GN3VcKdc4seGQ6PGQWRUvaopj9MxC2DR1RDTQaR9wNqBBTHBsCpduqqPBpP+miGth3jyDNYJNMcmQBw0+b+fFvPiGeKHannndF3pVqtmqZ3Oxj2qKxd/7QdDHtSawyN1Em+CKQnKrAzMZF40SFQO8VeHVOm4ww+jBlEqjoQZhp19GuEdR1n+pZTxRSBI="
+    - secure: "XcAFDe2WDvuf1CeSvi9hNbfba9T69RRgS6cttfo1Hy7WGmeQkXPo8SpKi1oPHGyDzIJ9CIPkq10tYPzQwnwYXu62fq55eM18uWitKtxyw2fKnXhEj8R1w9LZEOnbWDe9ADm/0uoSJ7Oyo6Jg0DDCmzSuR9NPTULByb7VPT365D3triB2OSsgBP/VYwseqLd++KruOPZvzziQi2T3ob3wMClZaEqImWLwcIu+QaG3ZFwnZdUlEHGuGw3zqR3ESsAfo2gYLTy3d0Kns4sNb/uIb9P78egN1Um45bmAIw9iGTcqR+WA8WCjF46StYPMv1Kut/c+rS7sExLXJai5Z6IUX4LUAvIpv5mD7OdBF+LHX4ExAL1F5GGL8qQ4awlfiMzrYI0KCJhCCdfG/pc5khhtg79kG5ZwN07qqyKyGu4ey1P1bQv6vRikaZZpaRW08CazuZo3PaSZ+etDLN4IYkIWkMp/PX6Ig1GC+vA1nTGJKuyKvHpMgm56YZTWiT7mg8GqkH37Mzz+YND8mVHg0cTY2P+CXpAe6K8E1U3dzhacXWoVAG1r/R2ZdE9xSMLwQSN8RsRuUlUkLCn/dMVSvBWcY7ZiNsTO8WIG50XlIuHplPJ5aPfcs3RM1oOXKbg7iio2rVgHkkAW0LPM3s8Ley/MT74X6/3lkFhuDsW9Ah+/ogo="
+    - secure: "n5u264Bh+Yn70PcqFHRK3PKviJyCFy+VcGrDoSBO3XN1bJ2EZV9GTH1Tclz694jxwo4+ER7Jqa582Zdds4ak7Rq2HTBjlLe0DHzATo8jTIZyRHP81UMxugAOjAYjSQAp/BJXuNYCdn0+GDqmh67rpKhg3XKqy/KgTJ9Shbj3zPaHvC0XAtWsf/hokk1mDIOQae4bJa/RvCWhdPNqmOJNdFG/ozP2j2oy6lg1pN1C246Ol0gVV+o9sMrRc+xirhTXBrVuuMJr6T/DhlOed3KNyFtonuMGHmKBaVv0xnsP9ewmICJhH4LsgqFWvKmm/3IhInqFNN9Ka2FAyv8JBbF6CvBbfV09HFF708ZlzroTiHH1KxEKHHY5cwjUC9+0TM5KCpM7sxuF6AnBDy5rnclN1E76rcJADLZQR8Uz31nDfB1hVWlYu1DYN3WbDN2a9D7EO7g0UQ+54y6j+NcQhd4zNx2zFTf4yYr3+ifS69bHoE6ln46w95Swkrvol6fNglIO/kpi1Oc0sTbPV8oQojcakLRSs1I4apCZtUSJJgw+rNdnWmYW8Dk1OG/RAMwUwjBqJhVit49iXn9A9+H3iPiykPc/fCWmeO0NDwzjXRw286IMQVou+wb6RyppZp0OWycWcA8m7kb8MEiHP3uNLfWyavdmjBn5HUFwGDem+JJF9Xg="
 services:
   - docker
 install:
@@ -17,8 +19,11 @@ script:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker build -t stoptwo/backend:latest .;
+    docker build -t stoptwo/backend .;
     docker push stoptwo/backend;
+    docker login -e="$HEROKU_EMAIL" -u="$HEROKU_EMAIL" -p="$HEROKU_PASSWORD" registry.heroku.com;
+    docker tag stoptwo/backend registry.heroku.com/stop20/web;
+    docker push registry.heroku.com/stop20/web;
     fi
 notifications:
   slack: stop2:L8tGNnWgadReoqGDrfv93XBj
