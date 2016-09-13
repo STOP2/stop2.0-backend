@@ -3,7 +3,7 @@ language: python
 python:
   - 3.5.2
 env:
-  global:
+  global: #Needs HEROKU_EMAIL and encypted HEROKU_PASSWORD
     - DOCKER_EMAIL=stop2@protonmail.com
     - DOCKER_USERNAME=stop2
     - secure: "giQ+UxU/+MeZ2caDmMA73ylUjsPIaJIiWR3ltX6T3AfZAVCzXJXoAOvcuk8SwfR8dmTVzTQsPexrUR9kGj49ZXn4t+BuvQ0VgPnNissLwjR3AqhEn3urq294apyW351AYWJxlTdW9UHc9q+y0E9NBrJ/Mmfh/Wo8TneYbMlb7xqVTLRdtjgzaCwmFPmLhcfLE9woRWvboIj8CAxA12GPoKGb5Fh3uHW7f1amZTMJTEUEAI0DLUXbLamiXEs7YFkxk87qAWJYka75YB9S9IFzwmDiol67UQOG/6mfFqdpWJA7IgNyy6KIdwJsmtAySKm1SoORrAFrWs6b12PxnHmWCKoK3meGQj1nxr9SQRDnduvt5j8Fs69Qb0wiwrPEyp1EygKOQQZJwM2MXtkrk4YGh+f4Z703Nc+T7vdSqMGLnRmkXTTUI/LDYY+SeXIua0q64AR+1WP5qjD4Pduv5zLoy7edmuDnKPtQ7ZjWGnP2SUo20xPZ7huuZdVdlylE3Q2QShnlXMoZg0t69wgEkXoDTTSJnnySp1xefotFiiCHAtxJmaCxx0uPVbwYyeLDpEbPnK7F3ZVExzHxPy2XR/IOaj/JfYkwAGOBxdTexe10/Q40qOFT5suMLESaUXeYuFXV6MVJZnCYBEAtcZ6TB6SKqu0TYRmdWP+FYFMRtdpuV30="
@@ -19,6 +19,7 @@ after_success:
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker build -t stoptwo/backend .;
     docker push stoptwo/backend;
+    docker login -e="$HEROKU_EMAIL" -u="$HEROKU_EMAIL" -p="$HEROKU_PASSWORD" registry.heroku.com;
     docker tag stoptwo/backend registry.heroku.com/stop20/web;
     docker push registry.heroku.com/stop20/web;
     fi
