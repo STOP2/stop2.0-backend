@@ -41,4 +41,5 @@ class DigitransitAPIService:
     def getQuery(self, query):
         headers = {'Content-Type': 'application/graphql'}
         response = requests.post(self.url, data=query, headers=headers)
-        return json.dumps(response.text)
+
+        return response.text
