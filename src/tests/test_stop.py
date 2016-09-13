@@ -1,5 +1,5 @@
 import unittest
-from .. import stop
+from src import stop
 from flask import json, jsonify
 
 
