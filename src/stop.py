@@ -2,7 +2,6 @@ import os
 from flask import Flask
 from flask import request
 from flask import json
-import sys
 
 app = Flask(__name__)
 
@@ -25,9 +24,3 @@ def get_stops():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
-
-
-class Foo:
-
-    def hello(self):
-        return 'foo'
