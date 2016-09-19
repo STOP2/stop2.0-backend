@@ -84,7 +84,8 @@ class DigitransitAPIService:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
                 arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  #Arrival in minutes
                 if current_time < arrival_time:
-                    schedule.append({'line': line["pattern"]["route"]["shortName"],
+                    schedule.append({'bus_id': line["pattern"]["id"],
+                                     'line': line["pattern"]["route"]["shortName"],
                                      'destination': line["pattern"]["route"]["longName"],
                                      'arrival': arrival,
                                      'routeId': line["pattern"]["route"]["gtfsId"],
