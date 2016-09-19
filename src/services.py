@@ -14,6 +14,8 @@ class DigitransitAPIService:
         return ''
 
     def get_busses_by_stop_id(self, stop_id):
+        url = 'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
+        headers = {'Content-Type': 'application/graphql'}
         query =  ("{stop(id: \"%s\") {"
                       "  name"
                       "  code"
@@ -38,8 +40,7 @@ class DigitransitAPIService:
 
         return self.getQuery(query)
 
-    def getQuery(self, query):
-        headers = {'Content-Type': 'application/graphql'}
-        response = requests.post(self.url, data=query, headers=headers)
+    def getQuery(self, url, query, headers):
+        response = requests.post(url, data=query, headers=headers)
 
         return response.text
