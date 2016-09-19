@@ -14,6 +14,7 @@ services:
   - docker
 install:
   - pip install -r requirements.txt
+  - export PYTHONPATH=$(pwd)/src/
 script:
   - python src/tests/test_stop.py
 after_success:
