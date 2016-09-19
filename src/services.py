@@ -9,10 +9,10 @@ class DigitransitAPIService:
         self.url = 'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
         self.headers = {'Content-Type': 'application/graphql'}
 
-    def get_stops(self, lat, lon):
+    def get_stops(self, lat, lon, radius=160):
         data = {}
         stops = []
-        stop_ids = self.get_stops_near_coordinates(lat, lon)
+        stop_ids = self.get_stops_near_coordinates(lat, lon, radius)
 
         for stop_id in stop_ids:
             stops.append({"stop": self.get_busses_by_stop_id(stop_id)})
