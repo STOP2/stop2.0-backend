@@ -7,8 +7,25 @@ class DigitransitAPIService:
         self.url = 'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
         #datetime.datetime.now().strftime("%Y%m%d")
 
-    def get_stops(self):
-        return ''
+    def get_stops(self, lat, lon, radius=20):
+        query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
+                 "  edges {"
+                 "      node {"
+                 "          distance"
+                 "          stop {"
+                 "    	        gtfsId"
+                 "              name"
+                 "          }"
+                 "      }"
+                 "    }"
+                 "  }"
+                 "}") % (lat, lon, radius)
+        data = json.loads(self.getQuery(query))
+        data = data['data']['stopsByRadius']['edges']
+        stoplist = []
+        for n in data:
+            stoplist.append(n['node']['stop']['gtfsId'])
+        return stoplist
 
     def get_stops_near_coordinates(self):
         return ''
