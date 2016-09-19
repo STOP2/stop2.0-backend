@@ -60,15 +60,13 @@ class DigitransitAPIService:
         stop = {'stop_name': data["name"], 'stop_code': data["code"], 'schedule': []}
         schedule = []
         for line in lines:
-            destination = line["pattern"]["route"]["longName"]
-
             stoptimes = line["stoptimes"]
             for time in stoptimes:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
-                arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)
+                arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  #Arrival in minutes
                 if current_time < arrival_time:
                     schedule.append({'line': line["pattern"]["route"]["shortName"],
-                                     'destination': destination,
+                                     'destination': line["pattern"]["route"]["longName"],
                                      'arrival': arrival,
                                      'routeId': line["pattern"]["route"]["gtfsId"],
                                      'direction': line["pattern"]["directionId"]})
