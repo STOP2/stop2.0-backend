@@ -1,5 +1,6 @@
 import unittest
 import services
+import json
 
 class TestDigitransitAPIService(unittest.TestCase):
 
@@ -38,7 +39,12 @@ class TestDigitransitAPIService(unittest.TestCase):
 
 
     def test_get_busses_by_stop_id(self):
-        return
+        stop = self.digitransitAPIService.get_busses_by_stop_id("HSL:1362141")
+        self.assertTrue("stop_name" in stop)
+        self.assertEqual(stop["stop_name"], 'Viikki')
+
+        first = stop["schedule"][0]
+        self.assertTrue("line" in first)
 
 
 if __name__ == '__main__':
