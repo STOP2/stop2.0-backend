@@ -1,8 +1,9 @@
 import unittest
 import services
-import json
+
 
 class TestDigitransitAPIService(unittest.TestCase):
+
 
     def setUp(self):
         self.digitransitAPIService = services.DigitransitAPIService()
@@ -25,7 +26,6 @@ class TestDigitransitAPIService(unittest.TestCase):
         schedule = stop_data["schedule"]
         self.assertNotEqual(len(schedule), 0)
 
-
     def test_get_stops_near_coordinates(self):
         stoplist_return_two = self.digitransitAPIService.get_stops_near_coordinates(60.203978, 24.9633573, 200)
         test_list_two = ['HSL:1240133', 'HSL:1240118']
@@ -36,7 +36,6 @@ class TestDigitransitAPIService(unittest.TestCase):
 
         stoplist_return_none = self.digitransitAPIService.get_stops_near_coordinates(60.203978, 24.9633573, 10)
         self.assertEqual(stoplist_return_none, [])
-
 
     def test_get_busses_by_stop_id(self):
         stop = self.digitransitAPIService.get_busses_by_stop_id("HSL:1362141")
