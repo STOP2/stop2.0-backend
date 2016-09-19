@@ -11,12 +11,14 @@ app = Flask(__name__)
 
 digitransitAPIService = services.DigitransitAPIService()
 
+
 @app.route('/')
 def hello_world():
     return 'Hello World!'
 
+
 @app.route('/test')
-def digitransitTest():
+def digitransit_test():
     return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
 
 

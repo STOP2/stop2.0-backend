@@ -33,7 +33,7 @@ class DigitransitAPIService:
                  "    }"
                  "  }"
                  "}") % (lat, lon, radius)
-        data = json.loads(self.getQuery(query))
+        data = json.loads(self.get_query(query))
         data = data['data']['stopsByRadius']['edges']
         stoplist = []
         for n in data:
@@ -63,7 +63,7 @@ class DigitransitAPIService:
                       "  }"
                       "}") % (stop_id, datetime.datetime.now().strftime("%Y%m%d"))
 
-        data = json.loads(self.getQuery(query))["data"]["stop"]
+        data = json.loads(self.get_query(query))["data"]["stop"]
 
         lines = data["stoptimesForServiceDate"]
 
@@ -75,7 +75,7 @@ class DigitransitAPIService:
             stoptimes = line["stoptimes"]
             for time in stoptimes:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
-                arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  #Arrival in minutes
+                arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
                 if current_time < arrival_time:
                     schedule.append({'bus_id': line["pattern"]["id"],
                                      'line': line["pattern"]["route"]["shortName"],
@@ -89,7 +89,7 @@ class DigitransitAPIService:
 
         return stop
 
-    def getQuery(self, query):
+    def get_query(self, query):
         response = requests.post(self.url, data=query, headers=self.headers)
 
         return response.text
