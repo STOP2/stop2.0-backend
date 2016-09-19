@@ -38,7 +38,7 @@ class DigitransitAPIService:
                       "  }"
                       "}") % (stop_id, datetime.datetime.now().strftime("%Y%m%d"))
 
-        return self.getQuery(query)
+        return self.getQuery(url, query, headers)
 
     def getQuery(self, url, query, headers):
         response = requests.post(url, data=query, headers=headers)
