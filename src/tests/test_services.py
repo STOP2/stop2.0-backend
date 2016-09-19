@@ -4,7 +4,6 @@ import services
 
 class TestDigitransitAPIService(unittest.TestCase):
 
-
     def setUp(self):
         self.digitransitAPIService = services.DigitransitAPIService()
 
