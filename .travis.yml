@@ -15,12 +15,14 @@ services:
 install:
   - pip install -r requirements.txt
   - export PYTHONPATH=$(pwd)/src/
+  - docker build -t stoptwo/backend .
+  - docker run -p 5000:5000 -d stoptwo/backend
 script:
   - python src/tests/test_stop.py
+  - bash src/tests/integration_test.sh
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker build -t stoptwo/backend .;
     docker push stoptwo/backend;
     docker login -e="$HEROKU_EMAIL" -u="$HEROKU_EMAIL" -p="$HEROKU_PASSWORD" registry.heroku.com;
     docker tag stoptwo/backend registry.heroku.com/stop20/web;
