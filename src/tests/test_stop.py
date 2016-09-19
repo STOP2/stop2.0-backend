@@ -3,7 +3,6 @@ import sys
 # sys.path.append('../src')
 import stop
 
-
 class TestStopRoutes(unittest.TestCase):
 
     def setUp(self):
