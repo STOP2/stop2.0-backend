@@ -41,9 +41,7 @@ class DigitransitAPIService:
         return stoplist
 
     def get_busses_by_stop_id(self, stop_id):
-        #url = 'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
-        #headers = {'Content-Type': 'application/graphql'}
-        query =  ("{stop(id: \"%s\") {"
+        query = ("{stop(id: \"%s\") {"
                       "  name"
                       "  code"
                       "  stoptimesForServiceDate(date: \"%s\"){"

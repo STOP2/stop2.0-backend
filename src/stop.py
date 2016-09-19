@@ -1,9 +1,12 @@
 import os
+import json
+
 from flask import Flask
 from flask import request
 from flask import json
 
 import services
+
 
 app = Flask(__name__)
 
@@ -15,7 +18,7 @@ def hello_world():
 
 @app.route('/test')
 def digitransitTest():
-    return digitransitAPIService.get_stops(0, 0)
+    return json.dumps(digitransitAPIService.get_stops(60.203978,24.9633573))
 
 
 @app.route('/stops', methods=['GET'])
