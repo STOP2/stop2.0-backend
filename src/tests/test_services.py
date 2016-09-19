@@ -18,6 +18,8 @@ class TestDigitransitAPIService(unittest.TestCase):
         self.assertTrue("stop" in stop)
 
         stop_data = stop["stop"]
+        self.assertTrue("stop_code" in stop_data)
+        self.assertTrue("stop_name" in stop_data)
         self.assertTrue("schedule" in stop_data)
 
         schedule = stop_data["schedule"]
