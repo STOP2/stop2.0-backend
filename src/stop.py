@@ -1,6 +1,5 @@
 import os
 import json
-
 from flask import Flask
 from flask import request
 from flask import json
@@ -18,18 +17,15 @@ def hello_world():
 
 @app.route('/test')
 def digitransitTest():
-    return json.dumps(digitransitAPIService.get_stops(60.203978,24.9633573))
+    return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
 
 
 @app.route('/stops', methods=['GET'])
-def get_stops():
-    lat = request.args.get('lat')
-    lon = request.args.get('lon')
-
-    # TODO use service to get json and return it
-    result = {}
-    result['lat'] = lat
-    result['lon'] = lon
+def stops():
+    lat = float(request.args.get('lat'))
+    lon = float(request.args.get('lon'))
+    result = digitransitAPIService.get_stops(lat, lon)
+    print(result)
     return json.dumps(result)
 
 if __name__ == '__main__':
