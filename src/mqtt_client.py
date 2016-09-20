@@ -26,9 +26,10 @@ client.on_publish = on_publish
 
 client.connect("epsilon.fixme.fi", 1883, 60)
 
+client.publish(topic="stoprequests", payload='{"stop_id": "3484", "request_type": "heippa"}')
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
 # Other loop*() functions are available that give a threaded interface and a
 # manual interface.
 client.loop_forever()
-client.publish(topic="stoprequests", payload="heippa")
+
