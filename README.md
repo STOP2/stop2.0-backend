@@ -1,5 +1,5 @@
 # stop2.0
-Digital stop button for your mobile phone
+Digital stop button for your mobile phone.
 
 [![Build Status](https://travis-ci.org/STOP2/stop2.0-backend.svg?branch=master)](https://travis-ci.org/STOP2/stop2.0-backend)
 
