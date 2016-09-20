@@ -1,6 +1,7 @@
 import os
 import json
 from flask import Flask
+from flask import make_response
 from flask import request
 from flask import json
 
@@ -27,8 +28,9 @@ def stops():
     lat = float(request.args.get('lat'))
     lon = float(request.args.get('lon'))
     result = digitransitAPIService.get_stops(lat, lon)
-    print(result)
-    return json.dumps(result)
+    resp = make_response(json.dumps(result))
+    resp.mimetype = 'application/json'
+    return resp
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
