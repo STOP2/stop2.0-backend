@@ -30,7 +30,7 @@ class TestDigitransitAPIService(unittest.TestCase):
         test_list_two = ['HSL:1240133', 'HSL:1240118']
         self.assertEqual(stoplist_return_two, test_list_two)
 
-        stoplist_return_one = self.digitransitAPIService.get_stops_near_coordinates(60.203978, 24.9633573)
+        stoplist_return_one = self.digitransitAPIService.get_stops_near_coordinates(60.203978, 24.9633573, 160)
         self.assertEqual(stoplist_return_one, ['HSL:1240133'])
 
         stoplist_return_none = self.digitransitAPIService.get_stops_near_coordinates(60.203978, 24.9633573, 10)
