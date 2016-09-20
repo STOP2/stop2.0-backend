@@ -6,11 +6,13 @@ from flask import request
 from flask import json
 
 import services
+import db
 
 
 app = Flask(__name__)
 
 digitransitAPIService = services.DigitransitAPIService()
+db = db.Database()
 
 
 @app.route('/')
