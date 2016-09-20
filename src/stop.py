@@ -27,7 +27,6 @@ def stops():
     lat = float(request.args.get('lat'))
     lon = float(request.args.get('lon'))
     result = digitransitAPIService.get_stops(lat, lon)
-    print(result)
     return json.dumps(result)
 
 if __name__ == '__main__':
