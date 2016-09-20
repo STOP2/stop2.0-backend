@@ -20,6 +20,7 @@ install:
 script:
   - python src/tests/test_stop.py
   - python src/tests/test_services.py
+  - python src/mqtt_client.py
   - bash src/tests/integration_test.sh
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
