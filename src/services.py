@@ -85,7 +85,9 @@ class DigitransitAPIService:
                                      'direction': line["pattern"]["directionId"]})
 
         sorted_list = sorted(schedule, key=lambda k: k['arrival'])
-        stop["schedule"] = sorted_list
+        stop["schedule"] = sorted_list[:10]
+
+        print(sorted_list)
 
         return stop
 
