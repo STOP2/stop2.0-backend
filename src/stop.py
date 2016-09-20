@@ -7,11 +7,13 @@ from flask import json
 import paho.mqtt.publish as publish
 
 import services
+import db
 
 
 app = Flask(__name__)
 
 digitransitAPIService = services.DigitransitAPIService()
+db = db.Database()
 
 
 @app.route('/')
