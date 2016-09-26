@@ -44,6 +44,7 @@ class DigitransitAPIService:
         query = ("{stop(id: \"%s\") {"
                       "  name"
                       "  code"
+                      "  vehicleType"
                       "  stoptimesForServiceDate(date: \"%s\"){"
                       "     pattern {"
                       "         id"
@@ -88,7 +89,7 @@ class DigitransitAPIService:
                                      'destination': destination,
                                      'arrival': arrival,
                                      'routeId': line["pattern"]["route"]["gtfsId"],
-                                     # 'vehicle_type': ???
+                                     'vehicle_type': data["vehicleType"]
                                      })
 
         sorted_list = sorted(schedule, key=lambda k: k['arrival'])
