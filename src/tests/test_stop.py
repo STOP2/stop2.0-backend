@@ -11,7 +11,7 @@ class TestStopRoutes(unittest.TestCase):
 
     def test_stops_get(self):
         response = self.app.get('/stops?lat=1.0&lon=2.0')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()

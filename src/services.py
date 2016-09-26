@@ -44,6 +44,7 @@ class DigitransitAPIService:
         query = ("{stop(id: \"%s\") {"
                       "  name"
                       "  code"
+                      "  vehicleType"
                       "  stoptimesForServiceDate(date: \"%s\"){"
                       "     pattern {"
                       "         id"
@@ -73,16 +74,23 @@ class DigitransitAPIService:
         schedule = []
         for line in lines:
             stoptimes = line["stoptimes"]
+
+            if line["pattern"]["directionId"]==1:
+                destination = line["pattern"]["route"]["longName"].split("-")[0].strip()
+            else:
+                destination = line["pattern"]["route"]["longName"].split("-")[-1].strip()
+
             for time in stoptimes:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
                 arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
                 if current_time < arrival_time:
-                    schedule.append({'bus_id': line["pattern"]["id"],
+                    schedule.append({'vehicle_id': line["pattern"]["id"],
                                      'line': line["pattern"]["route"]["shortName"],
-                                     'destination': line["pattern"]["route"]["longName"],
+                                     'destination': destination,
                                      'arrival': arrival,
                                      'routeId': line["pattern"]["route"]["gtfsId"],
-                                     'direction': line["pattern"]["directionId"]})
+                                     'vehicle_type': data["vehicleType"] 
+                                     })
 
         sorted_list = sorted(schedule, key=lambda k: k['arrival'])
         stop["schedule"] = sorted_list[:10]
