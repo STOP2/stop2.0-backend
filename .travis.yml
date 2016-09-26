@@ -18,10 +18,11 @@ install:
   - docker build -t stoptwo/backend .
   - docker run -p 5000:5000 -d stoptwo/backend
 script:
-  - python src/tests/test_stop.py
-  - python src/tests/test_services.py
+  - coverage run -m --branch --source=src --omit=src/tests/* unittest discover -s src/tests
+  - coverage report -m
   - bash src/tests/integration_test.sh
 after_success:
+  - coveralls
   - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker push stoptwo/backend;
