@@ -1,17 +1,21 @@
 SHELL=/bin/bash
 
-requirements: pyvenv
-	pip install -r requirements.txt
+requirements: stamps/requirements-done
 
-run: test
+stamps/requirements-done: venv
+	(. ./venv/bin/activate && pip install -r requirements.txt)
+	mkdir -p stamps
+	touch $@
+
+run:
 	python src/stop.py
 
-pyvenv:
-	source venv/bin/activate
-	export PYTHONPATH=$(pwd)/src/
+venv:
+	virtualenv -p /usr/bin/python3 venv
 
-test:
-	coverage run -m --branch --source=src --omit=src/tests/* unittest discover -s src/tests
-	coverage report -m
-
+test: stamps/requirements-done
+	(. ./venv/bin/activate && \
+	 PYTHONPATH=src/ coverage run -m --branch --source=src \
+	  --omit=src/tests/* unittest discover -s src/tests && \
+	coverage report -m)
 
