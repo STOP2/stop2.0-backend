@@ -24,13 +24,13 @@ def digitransit_test():
 
 @app.route('/stoprequests', methods=['POST'])
 def stoprequest():
-    testData = '{"bus_id": "1234", "stop_id": "56789", "request_type": "stop"}'
-    data = json.loads(testData)
-    bus_id = data["bus_id"]
-    del data["bus_id"]
-    data = json.dumps(data)
-    publish.single(topic="stoprequests/"+bus_id, payload=data, hostname="epsilon.fixme.fi")
-    return ""
+    jsonData = request.json
+    bus_id = jsonData["bus_id"]
+    del jsonData["bus_id"]
+    jsonData = json.dumps(jsonData)
+    publish.single(topic="stoprequests/"+bus_id, payload=jsonData, hostname="epsilon.fixme.fi")
+    return ('', 200)
+
 
 @app.route('/stops', methods=['GET'])
 def stops():
@@ -38,6 +38,7 @@ def stops():
     lon = float(request.args.get('lon'))
     result = digitransitAPIService.get_stops(lat, lon)
     return json.dumps(result)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
