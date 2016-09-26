@@ -1,14 +1,17 @@
-run: pyvenv requirements test
-	python stop.py
+SHELL=/bin/bash
 
-requirements:
-	pip install requirements.txt
+requirements: pyvenv
+	pip install -r requirements.txt
+
+run: test
+	python src/stop.py
 
 pyvenv:
-	cd ..
 	source venv/bin/activate
 	export PYTHONPATH=$(pwd)/src/
 
 test:
 	coverage run -m --branch --source=src --omit=src/tests/* unittest discover -s src/tests
 	coverage report -m
+
+
