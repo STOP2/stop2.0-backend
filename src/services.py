@@ -89,7 +89,7 @@ class DigitransitAPIService:
                                      'destination': destination,
                                      'arrival': arrival,
                                      'routeId': line["pattern"]["route"]["gtfsId"],
-                                     'vehicle_type': data["vehicleType"]
+                                     'vehicle_type': data["vehicleType"] 
                                      })
 
         sorted_list = sorted(schedule, key=lambda k: k['arrival'])
