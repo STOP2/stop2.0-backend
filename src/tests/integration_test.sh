@@ -47,13 +47,6 @@ if ! curl -X GET http://localhost:5000/stops?lat=-1\&lon=12.5 | grep -q '"stops"
 fi
 
 
-#Tests for MQTT
-
-#Config
-#sudo apt-get install mosquito-clients
-
-sleep 1
-
 if [ $FAILED -eq 0 ]; then
   echo "Integration tests passed!"
   exit 0

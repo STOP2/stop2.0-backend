@@ -13,6 +13,11 @@ app = Flask(__name__)
 
 digitransitAPIService = services.DigitransitAPIService()
 
+#Doesn't work
+if app.config['TESTING']:
+    MQTT_host = ""
+else:
+    MQTT_host = "epsilon.fixme.fi"
 
 @app.route('/')
 def hello_world():
@@ -29,7 +34,7 @@ def stoprequest():
     bus_id = jsonData["bus_id"]
     del jsonData["bus_id"]
     jsonData = json.dumps(jsonData)
-    publish.single(topic="stoprequests/"+bus_id, payload=jsonData, hostname="epsilon.fixme.fi")
+    publish.single(topic="stoprequests/"+bus_id, payload=jsonData, hostname=MQTT_host)
     return ('', 200)
 
 @app.route('/stops', methods=['GET'])
