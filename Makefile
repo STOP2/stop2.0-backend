@@ -11,7 +11,7 @@ run:
 	python src/stop.py
 
 venv:
-	virtualenv -p /usr/bin/python3 venv
+	virtualenv -p python3 venv
 
 test: stamps/requirements-done
 	(. ./venv/bin/activate && \
