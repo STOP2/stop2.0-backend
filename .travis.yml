@@ -4,7 +4,8 @@ python:
   - 3.5.2
 env:
   global:
-    - DBHOST=localhost:9999
+    - DBHOST=localhost
+    - DBPORT=9999
     - DBUSER=stop
     - DBPASS=stop
     - DB=stop
