@@ -2,6 +2,7 @@ import datetime
 import requests
 import json
 import math
+import time
 
 
 class DigitransitAPIService:
