@@ -15,7 +15,7 @@ if [ ! `curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | 
 fi
 
 # returns correct number of stops if many stops
-if [ ! `curl -X GET http://localhost:5000/stops?lat=60.1701305\&lon=24.9380825 | grep -o '"stop":' | wc -l` -eq 6 ]; then
+if [ ! `curl -X GET http://localhost:5000/stops?lat=60.1701305\&lon=24.9380825 | grep -o '"stop":' | wc -l` -eq 3 ]; then
   echo 'Integration test "returns correct number of stops if many stops" failed'
   FAILED=1
 fi

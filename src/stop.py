@@ -7,11 +7,13 @@ from flask import json
 import paho.mqtt.publish as publish
 
 import services
+import db
 
 
 app = Flask(__name__)
 
 digitransitAPIService = services.DigitransitAPIService()
+db = db.Database()
 
 
 @app.route('/')
@@ -36,7 +38,8 @@ def stoprequest():
 def stops():
     lat = float(request.args.get('lat'))
     lon = float(request.args.get('lon'))
-    result = digitransitAPIService.get_stops(lat, lon)
+    rad = float(request.args.get('rad', default=160))
+    result = digitransitAPIService.get_stops(lat, lon, rad)
     resp = make_response(json.dumps(result))
     resp.mimetype = 'application/json'
     return resp

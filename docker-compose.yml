@@ -1,0 +1,17 @@
+version: '2'
+services:
+  web:
+    build: .
+    environment:
+      - DBHOST=localhost:5432
+      - DBUSER=stop
+      - DBPASS=stop
+      - DB=stop
+    ports:
+      - "5000:5000"
+    links:
+      - postgres
+  postgres:
+    build:
+      context: .
+      dockerfile: DB-Dockerfile
