@@ -10,4 +10,4 @@ WORKDIR "src"
 
 EXPOSE 5000
 
-CMD python stop.py
+CMD ./stop.sh
