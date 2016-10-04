@@ -17,20 +17,20 @@ if [ ! `curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | 
 fi
 
 # returns correct number of stops if many stops
-if [ ! `curl -X GET http://localhost:5000/stops?lat=60.1701305\&lon=24.9380825 | grep -o '"stop":' | wc -l` -eq 6 ]; then
+if ! [ `curl -X GET http://localhost:5000/stops?lat=60.1701305\&lon=24.9380825 | grep -o '"stop":' | wc -l` -eq 7 ]; then
   echo 'Integration test "returns correct number of stops if many stops" failed'
   FAILED=$((FAILED+1))
 fi
 
 # returns at least one bus_id
-if curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -q '"bus_id":'; then
-  echo 'Integration test "returns at least one bus_id" failed'
+if ! curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -q '"vehicle_id":'; then
+  echo 'Integration test "returns at least one vehicle_id" failed'
   FAILED=$((FAILED+1))
 fi
 
 # returns correct numbers of bus_ids
-if [ ! `curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -o '"bus_id":' | wc -l` -le 10 ]; then
-  echo 'Integration test "returns correct number of bus_ids" failed'
+if ! [ `curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -o '"vehicle_id":' | wc -l` -le 10 ]; then
+  echo 'Integration test "returns correct number of vehicle_ids" failed'
   FAILED=$((FAILED+1))
 fi
 
