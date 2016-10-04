@@ -5,9 +5,9 @@ import stop
 class TestStopRoutes(unittest.TestCase):
 
     def setUp(self):
-        app = stop.app
-        app.config['TESTING'] = True
-        self.app = app.test_client()
+        stop.app.config['TESTING'] = True
+        self.app = stop.app.test_client()
+
 
     def test_stops_get(self):
         response = self.app.get('/stops?lat=1.0&lon=2.0')
