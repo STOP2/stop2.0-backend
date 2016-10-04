@@ -59,6 +59,9 @@ class DigitransitAPIService:
                       "         }"
                       "     }"
                       "     stoptimes {"
+                      "         trip{"
+                      "             gtfsId"
+                      "         }"
                       "         serviceDay"
                       "    	    realtimeArrival"
                       "      }"
@@ -91,7 +94,8 @@ class DigitransitAPIService:
                                      'destination': destination,
                                      'arrival': arrival,
                                      'routeId': line["pattern"]["route"]["gtfsId"],
-                                     'vehicle_type': data["vehicleType"] 
+                                     'vehicle_type': data["vehicleType"],
+                                     'trip_id': line["stoptimes"]["trip"]["gtfsId"][4:]
                                      })
 
         sorted_list = sorted(schedule, key=lambda k: k['arrival'])
