@@ -21,6 +21,8 @@ class DigitransitAPIService:
         return data
 
     def get_stops_near_coordinates(self, lat, lon, radius=160):
+        if radius > 1000:
+            radius = 1000
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
                  "  edges {"
                  "      node {"
