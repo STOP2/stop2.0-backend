@@ -15,9 +15,14 @@ digitransitAPIService = services.DigitransitAPIService()
 
 #Doesn't work
 if app.config['TESTING']:
-    MQTT_host = ""
+    MQTT_host = "localhost"
 else:
     MQTT_host = "epsilon.fixme.fi"
+
+#Temporary solution until test config (above) works
+if __name__ == 'stop':
+    #Redirects test traffic to random test server (since configuring local MQTT-client turned out to be extremely difficult)
+    MQTT_host = "iot.eclipse.org"
 
 @app.route('/')
 def hello_world():
@@ -34,7 +39,7 @@ def stoprequest():
     bus_id = jsonData["bus_id"]
     del jsonData["bus_id"]
     jsonData = json.dumps(jsonData)
-    publish.single(topic="stoprequests/"+bus_id, payload=jsonData, hostname=MQTT_host)
+    publish.single(topic="stoprequests/"+bus_id, payload=jsonData, hostname=MQTT_host, port=1883)
     return ('', 200)
 
 @app.route('/stops', methods=['GET'])
@@ -48,4 +53,3 @@ def stops():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
-
