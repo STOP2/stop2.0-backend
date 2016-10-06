@@ -5,18 +5,80 @@ Digital stop button for your mobile phone.
 
 https://ohtuprojekti.jamo.fi/topic_descriptions/147
 
-### For front-end developers
+## For developers
 
-To run the latest release version of this project locally using docker execute this command in terminal:
+### Setting up a Development Environment for Linux
+
+Python version: 3.5.2
+
+Recommended IDE: [PyCharm Professional](https://www.jetbrains.com/pycharm/). Students can apply for a free student license [here](https://www.jetbrains.com/student/).
+
+To avoid any conflicting dependencies with your other projects, install virtualenv with one of these three installation commands:
 ```
+sudo easy_install virtualenv
+```
+or
+```
+sudo pip install virtualenv
+```
+or
+```
+sudo apt-get install python-virtualenv
+```
+
+in your project folder (../stop2.0-backend)
+```
+virtualenv venv
+. venv/bin/activate
+```
+Now you are in the virtualenv environment. To go back to the normal environment:
+```
+deactivate
+```
+
+In your virtualenv install Flask:
+```
+pip install Flask
+```
+
+For more information about installing Flask: http://flask.pocoo.org/docs/0.11/installation/
+
+To install all requirements needed for this project:
+```
+pip install -r requirements.txt
+```
+
+(if installing psycopg2 fails, you may need to install following dependencies to your system in normal environment:
+    sudo apt-get install libpq-dev python-dev
+)
+
+To prevent import problems for modules, in your project’s root folder:
+```    
+export PYTHONPATH=$(pwd)/src/
+```
+
+### Running project locally on a Docker container
+
+For instructions installing Docker Engine on Linux please see: https://docs.docker.com/engine/installation/linux/
+
+To run the latest release version of this project locally using Docker execute this command in terminal:
+```   
 docker run -p 5000:5000 stoptwo/backend
 ```
-This will open the application on port 5000 of your localhost. Use a flag `-d` to run the container in detached mode.
+This will open the application on port 5000 of your localhost. Use a flag -d to run the container in detached mode.
 
+To kill all docker images running on background:
+```    
+docker stop $(docker ps -q)
+```
 
-### For developers
+Run project’s database locally using Docker:
+```
+docker build -f DB-Dockerfile -t db .
+docker run -p 5432:5432 db
+```
 
-Run project locally using docker compose:
+Docker Compose is a tool for defining and running multi-container Docker apps. To run project locally using Docker Compose:
 ```
 docker-compose build
 docker-compose up
