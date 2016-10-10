@@ -10,7 +10,8 @@ class DigitransitAPIService:
         self.url = 'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
         self.headers = {'Content-Type': 'application/graphql'}
         self.db = db
-        self.MQTT_host = "epsilon.fixme.fi"
+        # Redirects test traffic to random test server (since configuring local MQTT-client turned out to be extremely difficult)
+        self.MQTT_host = "iot.eclipse.org"
 
     def get_stops(self, lat, lon, radius=160):
         data = {}
@@ -47,30 +48,30 @@ class DigitransitAPIService:
 
     def get_busses_by_stop_id(self, stop_id):
         query = ("{stop(id: \"%s\") {"
-                      "  name"
-                      "  code"
-                      "  vehicleType"
-                      "  stoptimesForServiceDate(date: \"%s\"){"
-                      "     pattern {"
-                      "         code"
-                      "         name"
-                      "         directionId"
-                      "         route {"
-                      "             gtfsId"
-                      "             longName"
-                      "             shortName"
-                      "         }"
-                      "     }"
-                      "     stoptimes {"
-                      "         trip{"
-                      "             gtfsId"
-                      "         }"
-                      "         serviceDay"
-                      "    	    realtimeArrival"
-                      "      }"
-                      "    }"
-                      "  }"
-                      "}") % (stop_id, datetime.datetime.now().strftime("%Y%m%d"))
+                 "  name"
+                 "  code"
+                 "  vehicleType"
+                 "  stoptimesForServiceDate(date: \"%s\"){"
+                 "     pattern {"
+                 "         code"
+                 "         name"
+                 "         directionId"
+                 "         route {"
+                 "             gtfsId"
+                 "             longName"
+                 "             shortName"
+                 "         }"
+                 "     }"
+                 "     stoptimes {"
+                 "         trip{"
+                 "             gtfsId"
+                 "         }"
+                 "         serviceDay"
+                 "    	    realtimeArrival"
+                 "      }"
+                 "    }"
+                 "  }"
+                 "}") % (stop_id, datetime.datetime.now().strftime("%Y%m%d"))
 
         data = json.loads(self.get_query(query))["data"]["stop"]
 
@@ -83,7 +84,7 @@ class DigitransitAPIService:
         for line in lines:
             stoptimes = line["stoptimes"]
 
-            if line["pattern"]["directionId"]==1:
+            if line["pattern"]["directionId"] == 1:
                 destination = line["pattern"]["route"]["longName"].split("-")[0].strip()
             else:
                 destination = line["pattern"]["route"]["longName"].split("-")[-1].strip()
@@ -92,7 +93,7 @@ class DigitransitAPIService:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
                 if current_time < arrival_time:
                     arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
-                    schedule.append({'vehicle_id': time["trip"]["gtfsId"][4:], #Technically trip_id
+                    schedule.append({'vehicle_id': time["trip"]["gtfsId"][4:],
                                      'line': line["pattern"]["route"]["shortName"],
                                      'destination': destination,
                                      'arrival': arrival,
@@ -108,11 +109,11 @@ class DigitransitAPIService:
         response = requests.post(self.url, data=query, headers=self.headers)
 
         return response.text
-    
+
     def make_request(self, jsonData):
-        self.db.store_request(jsonData["bus_id"], jsonData["stop_id"])
-        bus_id = jsonData["bus_id"]
-        del jsonData["bus_id"]
+        self.db.store_request(jsonData["trip_id"], jsonData["stop_id"])
+        bus_id = jsonData["trip_id"]
+        del jsonData["trip_id"]
         jsonData = json.dumps(jsonData)
         publish.single(topic="stoprequests/" + bus_id, payload=jsonData, hostname=self.MQTT_host, port=1883)
         return ''
