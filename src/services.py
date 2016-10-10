@@ -10,8 +10,7 @@ class DigitransitAPIService:
         self.url = 'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
         self.headers = {'Content-Type': 'application/graphql'}
         self.db = db
-        # Redirects test traffic to random test server (since configuring local MQTT-client turned out to be extremely difficult)
-        self.MQTT_host = "iot.eclipse.org"
+        self.MQTT_host = "epsilon.fixme.fi"
 
     def get_stops(self, lat, lon, radius=160):
         data = {}
@@ -111,9 +110,9 @@ class DigitransitAPIService:
         return response.text
     
     def make_request(self, jsonData):
-        self.db.store_request(jsonData["vehicle_id"], jsonData["stop_id"])
-        bus_id = jsonData["vehicle_id"]
-        del jsonData["vehicle_id"]
+        self.db.store_request(jsonData["trip_id"], jsonData["stop_id"])
+        bus_id = jsonData["trip_id"]
+        del jsonData["trip_id"]
         jsonData = json.dumps(jsonData)
         publish.single(topic="stoprequests/" + bus_id, payload=jsonData, hostname=self.MQTT_host, port=1883)
         return ''
