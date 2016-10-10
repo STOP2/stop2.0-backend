@@ -93,7 +93,7 @@ class DigitransitAPIService:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
                 if current_time < arrival_time:
                     arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
-                    schedule.append({'vehicle_id': time["trip"]["gtfsId"][4:],
+                    schedule.append({'vehicle_id': time["trip"]["gtfsId"][4:], #Technically trip_id
                                      'line': line["pattern"]["route"]["shortName"],
                                      'destination': destination,
                                      'arrival': arrival,
@@ -111,9 +111,9 @@ class DigitransitAPIService:
         return response.text
     
     def make_request(self, jsonData):
-        self.db.store_request(jsonData["trip_id"], jsonData["stop_id"])
-        bus_id = jsonData["trip_id"]
-        del jsonData["trip_id"]
+        self.db.store_request(jsonData["vehicle_id"], jsonData["stop_id"])
+        bus_id = jsonData["vehicle_id"]
+        del jsonData["vehicle_id"]
         jsonData = json.dumps(jsonData)
         publish.single(topic="stoprequests/" + bus_id, payload=jsonData, hostname=self.MQTT_host, port=1883)
         return ''
