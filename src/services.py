@@ -2,12 +2,15 @@ import datetime
 import requests
 import json
 import math
+import paho.mqtt.publish as publish
 
 
 class DigitransitAPIService:
-    def __init__(self):
+    def __init__(self, db):
         self.url = 'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
         self.headers = {'Content-Type': 'application/graphql'}
+        # Redirects test traffic to random test server (since configuring local MQTT-client turned out to be extremely difficult)
+        self.MQTT_host = "iot.eclipse.org"
 
     def get_stops(self, lat, lon, radius=160):
         data = {}
@@ -105,3 +108,10 @@ class DigitransitAPIService:
         response = requests.post(self.url, data=query, headers=self.headers)
 
         return response.text
+    
+    def make_request(self, jsonData):
+        bus_id = jsonData["bus_id"]
+        del jsonData["bus_id"]
+        jsonData = json.dumps(jsonData)
+        publish.single(topic="stoprequests/" + bus_id, payload=jsonData, hostname=self.MQTT_host, port=1883)
+        return ''

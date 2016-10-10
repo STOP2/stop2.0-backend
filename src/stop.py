@@ -4,7 +4,6 @@ from flask import Flask
 from flask import make_response
 from flask import request
 from flask import json
-import paho.mqtt.publish as publish
 from waitress import serve
 
 import services
@@ -13,19 +12,8 @@ import db
 
 app = Flask(__name__)
 
-digitransitAPIService = services.DigitransitAPIService()
 db = db.Database()
-
-#Doesn't work
-if app.config['TESTING']:
-    MQTT_host = "localhost"
-else:
-    MQTT_host = "epsilon.fixme.fi"
-
-#Temporary solution until test config (above) works
-if __name__ == 'stop':
-    #Redirects test traffic to random test server (since configuring local MQTT-client turned out to be extremely difficult)
-    MQTT_host = "iot.eclipse.org"
+digitransitAPIService = services.DigitransitAPIService(db)
 
 @app.route('/')
 def hello_world():
@@ -39,11 +27,9 @@ def digitransit_test():
 @app.route('/stoprequests', methods=['POST'])
 def stoprequest():
     jsonData = request.json
-    bus_id = jsonData["bus_id"]
-    del jsonData["bus_id"]
-    jsonData = json.dumps(jsonData)
-    publish.single(topic="stoprequests/"+bus_id, payload=jsonData, hostname=MQTT_host, port=1883)
-    return ('', 200)
+    resp = make_response(digitransitAPIService.make_request(jsonData))
+    resp.mimetype = 'application/json'
+    return (resp)
 
 @app.route('/stops', methods=['GET'])
 def stops():
