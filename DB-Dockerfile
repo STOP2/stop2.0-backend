@@ -3,4 +3,8 @@ FROM postgres:9.6
 ENV POSTGRES_USER=stop
 ENV POSTGRES_PASSWORD=stop
 
-EXPOSE 5432
+ADD init.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 5432:5432
+
+CMD ["postgres"]
