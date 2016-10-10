@@ -49,13 +49,6 @@ Now you are in the virtualenv environment. To go back to the normal environment:
 deactivate
 ```
 
-In your virtualenv install Flask:
-```
-pip install Flask
-```
-
-For more information about installing Flask: http://flask.pocoo.org/docs/0.11/installation/
-
 To install all requirements needed for this project:
 ```
 pip install -r requirements.txt
