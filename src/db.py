@@ -13,9 +13,12 @@ class Database:
     def put_connection(self, conn):
         self.pool.putconn(conn)
     
-    def default(self):
+    def store_request(self, trip_id, stop_id):
         conn = self.get_connection()
-        # conn.execute("SQL")
+        cur = conn.cursor()
+        values = (trip_id, stop_id)
+        sql = "INSERT INTO request (trip_id, stop_id, user_id) VALUES (%s, %s, 'user')"
+        cur.execute(sql, values)
         conn.commit()
         self.put_connection(conn)
 
