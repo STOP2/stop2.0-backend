@@ -5,15 +5,16 @@ from flask import make_response
 from flask import request
 from flask import json
 import paho.mqtt.publish as publish
+from waitress import serve
 
 import services
-import db
+#import db
 
 
 app = Flask(__name__)
 
 digitransitAPIService = services.DigitransitAPIService()
-db = db.Database()
+#db = db.Database()
 
 #Doesn't work
 if app.config['TESTING']:
@@ -55,4 +56,5 @@ def stops():
     return resp
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
+    serve(app, host='0.0.0.0', port=os.getenv('PORT', 5000))
+    #app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
