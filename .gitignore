@@ -1,3 +1,6 @@
 .idea/
 *.pyc
 src/__pycache__/
+.coverage
+venv/
+stamps/
