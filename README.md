@@ -58,6 +58,14 @@ pip install -r requirements.txt
     sudo apt-get install libpq-dev python-dev
 )
 
+or you can use Makefile with these commands:
+
+```
+make
+make test
+make run
+```
+
 To prevent import problems for modules, in your project’s root folder:
 ```    
 export PYTHONPATH=$(pwd)/src/
