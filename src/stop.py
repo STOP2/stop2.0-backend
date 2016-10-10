@@ -8,13 +8,13 @@ import paho.mqtt.publish as publish
 from waitress import serve
 
 import services
-#import db
+import db
 
 
 app = Flask(__name__)
 
 digitransitAPIService = services.DigitransitAPIService()
-#db = db.Database()
+db = db.Database()
 
 #Doesn't work
 if app.config['TESTING']:
