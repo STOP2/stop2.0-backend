@@ -5,6 +5,19 @@ Digital stop button for your mobile phone.
 
 https://ohtuprojekti.jamo.fi/topic_descriptions/147
 
+## For front-end developers
+
+To run the latest release version of this project locally using Docker execute this command in terminal:
+```   
+docker run -p 5000:5000 stoptwo/backend
+```
+This will open the application on port 5000 of your localhost. Use a flag -d to run the container in detached mode.
+
+To kill all docker images running on background:
+```    
+docker stop $(docker ps -q)
+```
+
 ## For developers
 
 ### Setting up a Development Environment for Linux
@@ -61,16 +74,14 @@ export PYTHONPATH=$(pwd)/src/
 
 For instructions installing Docker Engine on Linux please see: https://docs.docker.com/engine/installation/linux/
 
-To run the latest release version of this project locally using Docker execute this command in terminal:
-```   
-docker run -p 5000:5000 stoptwo/backend
+Build a dockerfile and run it locally:
 ```
-This will open the application on port 5000 of your localhost. Use a flag -d to run the container in detached mode.
+docker build -t stop .
+docker run -p 5000:5000 stop
+```
+You can add flag `-d`to your `docker run` command to run the container in detached mode.
 
-To kill all docker images running on background:
-```    
-docker stop $(docker ps -q)
-```
+Stop the container by executing `docker ps` to find the container id and then executing `docker stop {container id}`.
 
 Run project’s database locally using Docker:
 ```
