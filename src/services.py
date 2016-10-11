@@ -26,6 +26,7 @@ class DigitransitAPIService:
     def get_stops_near_coordinates(self, lat, lon, radius=160):
         if radius > 1000:
             radius = 1000
+
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
                  "  edges {"
                  "      node {"
@@ -92,11 +93,11 @@ class DigitransitAPIService:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
                 if current_time < arrival_time:
                     arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
-                    schedule.append({'vehicle_id': time["trip"]["gtfsId"][4:],
+                    schedule.append({'trip_id': time["trip"]["gtfsId"][4:],
                                      'line': line["pattern"]["route"]["shortName"],
                                      'destination': destination,
                                      'arrival': arrival,
-                                     'routeId': line["pattern"]["route"]["gtfsId"],
+                                     'route_id': line["pattern"]["route"]["gtfsId"],
                                      'vehicle_type': data["vehicleType"]
                                      })
         sorted_list = sorted(schedule, key=lambda k: k['arrival'])

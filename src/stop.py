@@ -15,6 +15,7 @@ app = Flask(__name__)
 db = db.Database()
 digitransitAPIService = services.DigitransitAPIService(db)
 
+
 @app.route('/')
 def hello_world():
     return 'Hello World!'
@@ -24,12 +25,14 @@ def hello_world():
 def digitransit_test():
     return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
 
+
 @app.route('/stoprequests', methods=['POST'])
 def stoprequest():
-    jsonData = request.json
-    resp = make_response(digitransitAPIService.make_request(jsonData))
+    json_data = request.json
+    resp = make_response(digitransitAPIService.make_request(json_data))
     resp.mimetype = 'application/json'
-    return (resp)
+    return resp
+
 
 @app.route('/stops', methods=['GET'])
 def stops():
@@ -43,4 +46,4 @@ def stops():
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=os.getenv('PORT', 5000))
-    #app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
+    # app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))

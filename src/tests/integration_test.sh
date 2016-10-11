@@ -23,13 +23,13 @@ if ! [ `curl -X GET http://localhost:5000/stops?lat=60.1701305\&lon=24.9380825 |
 fi
 
 # returns at least one bus_id
-if ! curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -q '"vehicle_id":'; then
+if ! curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -q '"trip_id":'; then
   echo 'Integration test "returns at least one vehicle_id" failed'
   FAILED=$((FAILED+1))
 fi
 
 # returns correct numbers of bus_ids
-if ! [ `curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -o '"vehicle_id":' | wc -l` -le 10 ]; then
+if ! [ `curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -o '"trip_id":' | wc -l` -le 10 ]; then
   echo 'Integration test "returns correct number of vehicle_ids" failed'
   FAILED=$((FAILED+1))
 fi
