@@ -17,7 +17,7 @@ class Database:
         conn = self.get_connection()
         cur = conn.cursor()
         values = (trip_id, stop_id)
-        sql = "INSERT INTO request (trip_id, stop_id, user_id) VALUES (%s, %s, 'user')"
+        sql = "INSERT INTO request (trip_id, stop_id, user_id, req_time) VALUES (%s, %s, 'user', now())"
         cur.execute(sql, values)
         conn.commit()
         self.put_connection(conn)

@@ -110,9 +110,9 @@ class DigitransitAPIService:
         return response.text
 
     def make_request(self, jsonData):
-        #self.db.store_request(jsonData["bus_id"], jsonData["stop_id"])
-        bus_id = jsonData["bus_id"]
-        del jsonData["bus_id"]
+        self.db.store_request(jsonData["trip_id"], jsonData["stop_id"])
+        bus_id = jsonData["trip_id"]
+        del jsonData["trip_id"]
         jsonData = json.dumps(jsonData)
         publish.single(topic="stoprequests/" + bus_id, payload=jsonData, hostname=self.MQTT_host, port=1883)
         return ''
