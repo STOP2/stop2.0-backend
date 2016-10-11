@@ -26,6 +26,7 @@ class DigitransitAPIService:
     def get_stops_near_coordinates(self, lat, lon, radius=160):
         if radius > 1000:
             radius = 1000
+
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
                  "  edges {"
                  "      node {"
@@ -96,7 +97,7 @@ class DigitransitAPIService:
                                      'line': line["pattern"]["route"]["shortName"],
                                      'destination': destination,
                                      'arrival': arrival,
-                                     'routeId': line["pattern"]["route"]["gtfsId"],
+                                     'route_id': line["pattern"]["route"]["gtfsId"],
                                      'vehicle_type': data["vehicleType"]
                                      })
         sorted_list = sorted(schedule, key=lambda k: k['arrival'])
