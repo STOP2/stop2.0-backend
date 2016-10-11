@@ -46,3 +46,11 @@ class Database:
         conn.commit()
         self.put_connection(conn)
 
+    def store_report(self, trip_id, stop_id):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        values = (trip_id, stop_id)
+        sql = "INSERT INTO report (trip_id, stop_id, user_id, report_time) VALUES (%s, %s, 'user', now())"
+        cur.execute(sql, values)
+        conn.commit()
+        self.put_connection(conn)
