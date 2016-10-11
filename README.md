@@ -55,7 +55,7 @@ pip install -r requirements.txt
 ```
 
 (if installing psycopg2 fails, you may need to install following dependencies to your system in normal environment:
-    sudo apt-get install libpq-dev python-dev
+    sudo apt-get install libpq-dev python3-dev
 )
 
 or you can use Makefile with these commands:
