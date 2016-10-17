@@ -3,7 +3,9 @@ CREATE TABLE request (
 	trip_id text,
 	stop_id text,
 	user_id text,
-	req_time timestamp with time zone
+	req_time timestamp with time zone,
+	canceled boolean,
+	cancel_time timestamp with time zone
 );
 
 CREATE TABLE report (

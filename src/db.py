@@ -41,10 +41,29 @@ class Database:
         conn = self.get_connection()
         cur = conn.cursor()
         values = (trip_id, stop_id)
-        sql = "INSERT INTO request (trip_id, stop_id, user_id, req_time) VALUES (%s, %s, 'user', now())"
+        sql = "INSERT INTO request (trip_id, stop_id, user_id, req_time, canceled) VALUES (%s, %s, 'user', now(), false)"
         cur.execute(sql, values)
         conn.commit()
         self.put_connection(conn)
+
+    def cancel_request(self, trip_id, stop_id):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        values = (trip_id, stop_id)
+        sql = "UPDATE request canceled = true, cancel_time = now() WHERE trip_id = %s AND stop_id = %s"
+        cur.execute(sql, values)
+        conn.commit()
+        self.put_connection(conn)
+        
+    def get_requests(self, trip_id):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        values = (trip_id,)
+        sql = "SELECT stop_id FROM request WHERE canceled = false AND trip_id = %s"
+        cur.execute(sql, values)
+        result = cur.fetchall()
+        self.put_connection(conn)
+        return result
 
     def store_report(self, trip_id, stop_id):
         conn = self.get_connection()
@@ -54,3 +73,4 @@ class Database:
         cur.execute(sql, values)
         conn.commit()
         self.put_connection(conn)
+        

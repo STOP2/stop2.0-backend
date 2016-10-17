@@ -112,13 +112,32 @@ class DigitransitAPIService:
         return response.text
 
     def make_request(self, jsonData):
-        self.db.store_request(jsonData["trip_id"], jsonData["stop_id"])
-        bus_id = jsonData["trip_id"]
-        del jsonData["trip_id"]
-        jsonData = json.dumps(jsonData)
-        publish.single(topic="stoprequests/" + bus_id, payload=jsonData, hostname=self.MQTT_host, port=1883)
+        req_type = jsonData["request_type"]
+        if req_type == "stop":
+            self.db.store_request(jsonData["trip_id"], jsonData["stop_id"])
+        elif req_type == "cancel":
+            self.db.canel_request(jsonData["trip_id"], jsonData["stop_id"])
+            
+        trip_id = jsonData["trip_id"]
+        data = self.get_requests(trip_id)
+        publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
+        
         return ''
-
+    
+    def get_requests(self, trip_id):
+        requests = self.db.get_requests(trip_id)
+        stop_dict = {}
+        
+        for stop_id in requests:
+            i = stop_dict.get(stop_id[0], {"passengers": 0}).get("passengers", 0)
+            stop_dict[stop_id[0]] = {"passengers": i + 1}
+        stop_list = []
+        
+        for key in stop_dict.keys():
+            stop_list.append({key: stop_dict[key]})
+            
+        return {"stop_ids": stop_list}
+    
     def get_stops_by_trip_id(self, trip_id, stop_id):
         query = ("{trip(id: \"%s\") {"
                      " stoptimesForDate(serviceDay: \"%s\") {"
