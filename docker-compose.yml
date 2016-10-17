@@ -4,6 +4,11 @@ services:
     build: .
     environment:
       - DBHOST=postgres
+      - DBPORT=5432
+      - DBNAME=stop
+      - DBUSER=stop
+      - DBPASS=stop
+      - DB=stop
     ports:
       - "5000:5000"
     links:
