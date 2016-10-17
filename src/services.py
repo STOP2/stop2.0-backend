@@ -73,6 +73,7 @@ class DigitransitAPIService:
                  "  }"
                  "}") % (stop_id, datetime.datetime.now().strftime("%Y%m%d"))
 
+        data = {}
         data = json.loads(self.get_query(query))["data"]["stop"]
 
         lines = data["stoptimesForServiceDate"]
@@ -117,3 +118,23 @@ class DigitransitAPIService:
         jsonData = json.dumps(jsonData)
         publish.single(topic="stoprequests/" + bus_id, payload=jsonData, hostname=self.MQTT_host, port=1883)
         return ''
+
+    def get_stops_by_trip_id(self, trip_id):
+        query = ("{trip(id:\"%s\") {"
+                     "   gtfsId"
+                     "   pattern {"
+                     "       stops {"
+                     "           gtfsId"
+                     "           code"
+                     "           name"
+                     "        }"
+                     "       }"
+                     "      }"
+                     "}") % (trip_id)
+        result = {}
+        stops = []
+        data = json.loads(self.get_query(query))['data']['trip']['pattern']['stops']
+        for stop in data:
+            stops.append({'stop_id': stop['gtfsId'], 'stop_code': stop['code'], 'stop_name': stop['name']})
+        result["stops"] = stops
+        return result

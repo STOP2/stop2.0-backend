@@ -44,6 +44,14 @@ def stops():
     resp.mimetype = 'application/json'
     return resp
 
+@app.route('/liststops', methods=['GET'])
+def list_stops():
+    trip_id = request.args.get('trip_id')
+    result = digitransitAPIService.get_stops_by_trip_id(trip_id)
+    resp = make_response(json.dumps(result))
+    resp.mimetype = 'application/json'
+    return resp
+
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=os.getenv('PORT', 5000))
     # app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
