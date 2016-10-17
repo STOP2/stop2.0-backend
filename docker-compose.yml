@@ -3,10 +3,7 @@ services:
   web:
     build: .
     environment:
-      - DBHOST=localhost:5432
-      - DBUSER=stop
-      - DBPASS=stop
-      - DB=stop
+      - DBHOST=postgres
     ports:
       - "5000:5000"
     links:
