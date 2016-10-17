@@ -132,10 +132,14 @@ class DigitransitAPIService:
                      "       }"
                      "      }"
                      "}") % (trip_id, datetime.datetime.now().strftime("%Y%m%d"))
+
+        current_time = datetime.datetime.now()
         result = {}
         stops = []
         data = json.loads(self.get_query(query))['data']['trip']['stoptimesForDate']
         for stop in data:
-            stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'], 'realtime_departure': stop['realtimeDeparture'], 'service_day': stop['serviceDay']})
+            real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeDeparture"])
+            arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
+            stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'], 'realtime_departure': arrival, 'service_day': stop['serviceDay']})
         result["stoptimesForDate"] = stops
         return result
