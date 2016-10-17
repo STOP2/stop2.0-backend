@@ -119,15 +119,16 @@ class DigitransitAPIService:
         publish.single(topic="stoprequests/" + bus_id, payload=jsonData, hostname=self.MQTT_host, port=1883)
         return ''
 
-    def get_stops_by_trip_id(self, trip_id):
+    def get_stops_by_trip_id(self, trip_id, stop_id):
         query = ("{trip(id: \"%s\") {"
                      " stoptimesForDate(serviceDay: \"%s\") {"
                      "      stop{"
+                     "          gtfsId"
                      "          name"
                      "          code"
                      " }"
                      "      serviceDay"
-                     "      realtimeDeparture"
+                     "      realtimeArrival"
                      "        }"
                      "       }"
                      "      }"
@@ -137,9 +138,14 @@ class DigitransitAPIService:
         result = {}
         stops = []
         data = json.loads(self.get_query(query))['data']['trip']['stoptimesForDate']
+        stop_found = False
         for stop in data:
-            real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeDeparture"])
-            arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
-            stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'], 'realtime_departure': arrival, 'service_day': stop['serviceDay']})
-        result["stoptimesForDate"] = stops
+            if(stop_id==stop['stop']['gtfsId']):
+                stop_found = True
+            if(stop_found):
+                real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
+                arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
+                stops.append({'stop_name': stop['stop']['name'], 'stop_id': stop['stop']['gtfsId'], 'arrives_in': arrival})
+        result["stop"] = stops
+
         return result

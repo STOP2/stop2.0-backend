@@ -45,22 +45,20 @@ class TestDigitransitAPIService(unittest.TestCase):
         self.assertTrue("line" in first)
 
     def test_get_stops_by_trip_id(self):
-        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:1059_20161003_To_1_2100')
-        self.assertTrue("stoptimesForDate" in stoptimes)
+        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:3001K_20161003_Ma_1_1156', 'HSL:4810501')
+        self.assertTrue("stop" in stoptimes)
 
-        all_stoptimes = stoptimes["stoptimesForDate"]
+        all_stoptimes = stoptimes["stop"]
         first_stop = all_stoptimes[0]
         self.assertTrue("stop_name" in first_stop)
-        self.assertTrue("stop_code" in first_stop)
-        self.assertTrue("realtime_departure" in first_stop)
-        self.assertTrue("service_day" in first_stop)
+        self.assertTrue("stop_id" in first_stop)
+        self.assertTrue("arrives_in" in first_stop)
 
-        self.assertEqual(first_stop["stop_name"], 'Herttoniemi(M)')
-        self.assertEqual(first_stop["service_day"], 1476651600)
+        self.assertEqual(first_stop["stop_name"], 'Korso')
+
 
         second_stop = all_stoptimes[1]
-        self.assertEqual(second_stop["stop_code"], '4004')
-        self.assertEqual(second_stop["realtime_departure"], 75660)
+        self.assertEqual(second_stop["stop_name"], 'Savio')
 
 
 if __name__ == '__main__':

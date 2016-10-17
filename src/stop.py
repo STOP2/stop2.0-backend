@@ -44,10 +44,11 @@ def stops():
     resp.mimetype = 'application/json'
     return resp
 
-@app.route('/liststops', methods=['GET'])
-def list_stops():
+@app.route('/routes', methods=['GET'])
+def routes():
     trip_id = request.args.get('trip_id')
-    result = digitransitAPIService.get_stops_by_trip_id(trip_id)
+    stop = request.args.get('stop')
+    result = digitransitAPIService.get_stops_by_trip_id(trip_id, stop)
     resp = make_response(json.dumps(result))
     resp.mimetype = 'application/json'
     return resp
