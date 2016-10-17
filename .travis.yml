@@ -4,11 +4,7 @@ python:
   - 3.5.2
 env:
   global:
-    - DBHOST=localhost
     - DBPORT=9999
-    - DBUSER=stop
-    - DBPASS=stop
-    - DBNAME=stop
     - DOCKER_EMAIL=stop2@protonmail.com
     - DOCKER_USERNAME=stop2
     - secure: "giQ+UxU/+MeZ2caDmMA73ylUjsPIaJIiWR3ltX6T3AfZAVCzXJXoAOvcuk8SwfR8dmTVzTQsPexrUR9kGj49ZXn4t+BuvQ0VgPnNissLwjR3AqhEn3urq294apyW351AYWJxlTdW9UHc9q+y0E9NBrJ/Mmfh/Wo8TneYbMlb7xqVTLRdtjgzaCwmFPmLhcfLE9woRWvboIj8CAxA12GPoKGb5Fh3uHW7f1amZTMJTEUEAI0DLUXbLamiXEs7YFkxk87qAWJYka75YB9S9IFzwmDiol67UQOG/6mfFqdpWJA7IgNyy6KIdwJsmtAySKm1SoORrAFrWs6b12PxnHmWCKoK3meGQj1nxr9SQRDnduvt5j8Fs69Qb0wiwrPEyp1EygKOQQZJwM2MXtkrk4YGh+f4Z703Nc+T7vdSqMGLnRmkXTTUI/LDYY+SeXIua0q64AR+1WP5qjD4Pduv5zLoy7edmuDnKPtQ7ZjWGnP2SUo20xPZ7huuZdVdlylE3Q2QShnlXMoZg0t69wgEkXoDTTSJnnySp1xefotFiiCHAtxJmaCxx0uPVbwYyeLDpEbPnK7F3ZVExzHxPy2XR/IOaj/JfYkwAGOBxdTexe10/Q40qOFT5suMLESaUXeYuFXV6MVJZnCYBEAtcZ6TB6SKqu0TYRmdWP+FYFMRtdpuV30="
@@ -17,13 +13,12 @@ env:
     - secure: "n5u264Bh+Yn70PcqFHRK3PKviJyCFy+VcGrDoSBO3XN1bJ2EZV9GTH1Tclz694jxwo4+ER7Jqa582Zdds4ak7Rq2HTBjlLe0DHzATo8jTIZyRHP81UMxugAOjAYjSQAp/BJXuNYCdn0+GDqmh67rpKhg3XKqy/KgTJ9Shbj3zPaHvC0XAtWsf/hokk1mDIOQae4bJa/RvCWhdPNqmOJNdFG/ozP2j2oy6lg1pN1C246Ol0gVV+o9sMrRc+xirhTXBrVuuMJr6T/DhlOed3KNyFtonuMGHmKBaVv0xnsP9ewmICJhH4LsgqFWvKmm/3IhInqFNN9Ka2FAyv8JBbF6CvBbfV09HFF708ZlzroTiHH1KxEKHHY5cwjUC9+0TM5KCpM7sxuF6AnBDy5rnclN1E76rcJADLZQR8Uz31nDfB1hVWlYu1DYN3WbDN2a9D7EO7g0UQ+54y6j+NcQhd4zNx2zFTf4yYr3+ifS69bHoE6ln46w95Swkrvol6fNglIO/kpi1Oc0sTbPV8oQojcakLRSs1I4apCZtUSJJgw+rNdnWmYW8Dk1OG/RAMwUwjBqJhVit49iXn9A9+H3iPiykPc/fCWmeO0NDwzjXRw286IMQVou+wb6RyppZp0OWycWcA8m7kb8MEiHP3uNLfWyavdmjBn5HUFwGDem+JJF9Xg="
 services:
   - docker
+  - docker-compose
 install:
   - pip install -r requirements.txt
   - export PYTHONPATH=$(pwd)/src/
-  - docker build -t db -f DB-Dockerfile .
-  - docker run -p 9999:5432 -d db
-  - docker build -t stoptwo/backend .
-  - docker run -p 5000:5000 -d stoptwo/backend
+  - docker-compose build && docker-compose up -d
+  - docker build -t stop-db -f DB-Dockerfile . && docker run -p 9999:5432 -d stop-db
 script:
   - coverage run -m --branch --source=src --omit=src/tests/* unittest discover -s src/tests
   - coverage report -m
@@ -32,6 +27,7 @@ after_success:
   - coveralls
   - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker build -t stoptwo/backend .;
     docker push stoptwo/backend;
     docker login -e="$HEROKU_EMAIL" -u="$HEROKU_EMAIL" -p="$HEROKU_PASSWORD" registry.heroku.com;
     docker tag stoptwo/backend registry.heroku.com/stop20/web;
