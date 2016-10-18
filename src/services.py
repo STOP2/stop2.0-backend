@@ -165,6 +165,6 @@ class DigitransitAPIService:
                 real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
                 arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
                 stops.append({'stop_name': stop['stop']['name'], 'stop_id': stop['stop']['gtfsId'], 'arrives_in': arrival})
-        result["stop"] = stops
+        result["stops"] = stops
 
         return result
