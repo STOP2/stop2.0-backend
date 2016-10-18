@@ -53,6 +53,13 @@ def routes():
     resp.mimetype = 'application/json'
     return resp
 
+@app.route('/stoprequests/report', methods=['POST'])
+def report():
+    json_data = request.json
+    db.store_report(str(json_data["trip_id"]), str(json_data["stop_id"]))
+
+    return ''
+
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=os.getenv('PORT', 5000))
     # app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
