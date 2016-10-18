@@ -129,12 +129,12 @@ class DigitransitAPIService:
         stop_dict = {}
         
         for stop_id in requests:
-            i = stop_dict.get(stop_id[0], {"passengers": 0}).get("passengers", 0)
-            stop_dict[stop_id[0]] = {"passengers": i + 1}
+            i = stop_dict.get(stop_id[0], 0)
+            stop_dict[stop_id[0]] = i + 1
         stop_list = []
         
         for key in stop_dict.keys():
-            stop_list.append({key: stop_dict[key]})
+            stop_list.append({"id": key, "passengers": stop_dict[key]})
             
         return {"stop_ids": stop_list}
     
