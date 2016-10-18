@@ -92,8 +92,8 @@ class DigitransitAPIService:
 
             for time in stoptimes:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
-                if current_time < arrival_time:
-                    arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
+                arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
+                if current_time < arrival_time and arrival < 31:
                     schedule.append({'trip_id': time["trip"]["gtfsId"][4:],
                                      'line': line["pattern"]["route"]["shortName"],
                                      'destination': destination,
@@ -138,7 +138,7 @@ class DigitransitAPIService:
             
         return {"stop_ids": stop_list}
     
-    def get_stops_by_trip_id(self, trip_id, stop_id):
+    def get_stops_by_trip_id(self, trip_id, stop_code):
         query = ("{trip(id: \"%s\") {"
                      " stoptimesForDate(serviceDay: \"%s\") {"
                      "      stop{"
@@ -159,12 +159,12 @@ class DigitransitAPIService:
         data = json.loads(self.get_query(query))['data']['trip']['stoptimesForDate']
         stop_found = False
         for stop in data:
-            if(stop_id==stop['stop']['gtfsId']):
+            if(stop_code==stop['stop']['code']):
                 stop_found = True
             if(stop_found):
                 real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
                 arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
-                stops.append({'stop_name': stop['stop']['name'], 'stop_id': stop['stop']['gtfsId'], 'arrives_in': arrival})
+                stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'], 'arrives_in': arrival})
         result["stops"] = stops
 
         return result
