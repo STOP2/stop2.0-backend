@@ -3,6 +3,7 @@ import requests
 import json
 import math
 import paho.mqtt.publish as publish
+from itertools import groupby
 
 
 class DigitransitAPIService:
@@ -101,8 +102,17 @@ class DigitransitAPIService:
                                      'route_id': line["pattern"]["route"]["gtfsId"],
                                      'vehicle_type': data["vehicleType"]
                                      })
-        sorted_list = sorted(schedule, key=lambda k: k['arrival'])
-        stop["schedule"] = sorted_list[:10]
+
+        sorted_by_route = sorted(schedule, key=lambda k: k['route_id'])
+        bus_list = []
+        for key, group in groupby(sorted_by_route, lambda k: k['route_id']):
+            group = list(group)
+            group = sorted(group, key=lambda k: k['arrival'])
+            for g in group[:2]:
+                bus_list.append(g)
+
+        bus_list = sorted(bus_list, key=lambda k: k['arrival'])
+        stop["schedule"] = bus_list[:10]
 
         return stop
 
@@ -164,7 +174,8 @@ class DigitransitAPIService:
             if(stop_found):
                 real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
                 arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
-                stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'], 'arrives_in': arrival})
+                if arrival>=0:
+                    stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'], 'arrives_in': arrival})
         result["stops"] = stops
 
         return result
