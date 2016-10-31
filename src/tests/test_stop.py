@@ -19,7 +19,7 @@ class TestStopRoutes(unittest.TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_routes(self):
-        response = self.app.get('/routes?trip_id=HSL:3001K_20161003_Ma_1_1156&stop=HSL:4810501')
+        response = self.app.get('/routes?trip_id=HSL:3001K_20161030_Ma_1_1046&stop=HSL:4810501')
         self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':
