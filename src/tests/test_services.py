@@ -45,7 +45,7 @@ class TestDigitransitAPIService(unittest.TestCase):
         self.assertTrue("line" in first)
 
     def test_get_stops_by_trip_id(self):
-        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:3001K_20161003_Ma_1_1156', 'V0811')
+        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:3001K_20161030_Ma_1_1046', 'V0811')
         self.assertTrue("stops" in stoptimes)
 
         all_stoptimes = stoptimes["stops"]

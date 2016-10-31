@@ -179,9 +179,3 @@ class DigitransitAPIService:
         result["stops"] = stops
 
         return result
-
-digiapi = DigitransitAPIService("")
-#print(digiapi.get_busses_by_stop_id('HSL:1171404')) #palkkatilanportti
-print(digiapi.get_busses_by_stop_id('HSL:1174147')) #pasilan aseman bussipysäkki
-print(digiapi.get_busses_by_stop_id('HSL:1121436')) #sörnäinen raitiovaunu
-#digiapi.get_busses_by_stop_id('HSL:1121436')
