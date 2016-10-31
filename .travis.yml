@@ -31,7 +31,9 @@ after_success:
     docker push stoptwo/backend;
     docker login -e="$HEROKU_EMAIL" -u="$HEROKU_EMAIL" -p="$HEROKU_PASSWORD" registry.heroku.com;
     docker tag stoptwo/backend registry.heroku.com/stop20/web;
+    docker tag stoptwo/backend registry.heroku.com/stop20-dev/web;
     docker push registry.heroku.com/stop20/web;
+    docker push registry.heroku.com/stop20-dev/web;
     fi
 notifications:
   slack: stop2:L8tGNnWgadReoqGDrfv93XBj
