@@ -3,6 +3,7 @@ CREATE TABLE request (
 	trip_id text,
 	stop_id text,
 	user_id text,
+	device_id text,
 	req_time timestamp with time zone,
 	canceled boolean,
 	cancel_time timestamp with time zone
