@@ -47,6 +47,16 @@ class Database:
         conn.commit()
         self.put_connection(conn)
         return request_id
+    
+    def get_request_info(self, request_id):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        values = (request_id,)
+        sql = "SELECT trip_id, stop_id FROM request WHERE id = %s"
+        cur.execute(sql, values)
+        result = cur.fetchone()
+        self.put_connection(conn)
+        return result
 
     def cancel_request(self, request_id):
         conn = self.get_connection()
