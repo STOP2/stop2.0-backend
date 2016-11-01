@@ -27,7 +27,6 @@ class DigitransitAPIService:
     def get_stops_near_coordinates(self, lat, lon, radius=160):
         if radius > 1000:
             radius = 1000
-
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
                  "  edges {"
                  "      node {"
@@ -35,6 +34,7 @@ class DigitransitAPIService:
                  "          stop {"
                  "    	        gtfsId"
                  "              name"
+                 "              vehicleType"
                  "          }"
                  "      }"
                  "    }"
@@ -44,7 +44,8 @@ class DigitransitAPIService:
         data = data['data']['stopsByRadius']['edges']
         stoplist = []
         for n in data:
-            stoplist.append(n['node']['stop']['gtfsId'])
+            if n['node']['stop']['vehicleType'] == 0 or n['node']['stop']['vehicleType'] == 3:      #vehicle_type: 0 - tram, 1 - metro, 3 - bus, 4 - ferry
+                stoplist.append(n['node']['stop']['gtfsId'])
         return stoplist[:3]
 
     def get_busses_by_stop_id(self, stop_id):

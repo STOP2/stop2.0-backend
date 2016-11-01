@@ -46,7 +46,7 @@ class TestDigitransitAPIService(unittest.TestCase):
 
     def test_get_stops_by_trip_id(self):
         stop_list = self.digitransitAPIService.get_stops_near_coordinates(60.35066, 25.07811)
-        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:3001K_20161030_Ma_1_1046', 'V0811')
+        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:4736_20161017_Ti_1_1241', 'V841')
         self.assertTrue("stops" in stoptimes)
 
         all_stoptimes = stoptimes["stops"]
@@ -60,7 +60,8 @@ class TestDigitransitAPIService(unittest.TestCase):
 
             second_stop = all_stoptimes[1]
             self.assertEqual(second_stop["stop_name"], 'Savio')
-
+        empty_stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:4736_20161017_Ti_1_1241', 'V0811')
+        self.assertEqual(empty_stoptimes, {'stops': []})
 
 if __name__ == '__main__':
     unittest.main()
