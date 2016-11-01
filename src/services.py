@@ -75,14 +75,13 @@ class DigitransitAPIService:
                  "  }"
                  "}") % (stop_id, datetime.datetime.now().strftime("%Y%m%d"))
 
-        data = {}
         data = json.loads(self.get_query(query))["data"]["stop"]
 
         lines = data["stoptimesForServiceDate"]
 
         current_time = datetime.datetime.now()
 
-        stop = {'stop_name': data["name"], 'stop_code': data["code"], 'schedule': []}
+        stop = {'stop_name': data["name"], 'stop_code': data["code"], 'stop_id': stop_id, 'schedule': []}
         schedule = []
         for line in lines:
             stoptimes = line["stoptimes"]
@@ -122,16 +121,25 @@ class DigitransitAPIService:
 
         return response.text
 
-    def make_request(self, jsonData):
-        req_type = jsonData["request_type"]
-        if req_type == "stop":
-            self.db.store_request(jsonData["trip_id"], jsonData["stop_id"])
-        elif req_type == "cancel":
-            self.db.canel_request(jsonData["trip_id"], jsonData["stop_id"])
-            
-        trip_id = jsonData["trip_id"]
+    def make_request(self, json_data):
+        request_id = self.db.store_request(json_data["trip_id"], json_data["stop_id"], json_data["device_id"])
+        
+        trip_id = json_data["trip_id"]
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
+        
+        result = {"request_id": request_id}
+        return result
+    
+    def cancel_request(self, request_id):
+        trip_id = self.db.cancel_request(request_id)
+        data = self.get_requests(trip_id)
+        publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
+        
+        return ''
+        
+    def store_report(self, json_data):
+        self.db.store_report(str(json_data["trip_id"]), str(json_data["stop_id"]))
         
         return ''
     
@@ -149,20 +157,20 @@ class DigitransitAPIService:
             
         return {"stop_ids": stop_list}
     
-    def get_stops_by_trip_id(self, trip_id, stop_code):
+    def get_stops_by_trip_id(self, trip_id, stop_id):
         query = ("{trip(id: \"%s\") {"
-                     " stoptimesForDate(serviceDay: \"%s\") {"
-                     "      stop{"
-                     "          gtfsId"
-                     "          name"
-                     "          code"
-                     " }"
-                     "      serviceDay"
-                     "      realtimeArrival"
-                     "        }"
-                     "       }"
-                     "      }"
-                     "}") % (trip_id, datetime.datetime.now().strftime("%Y%m%d"))
+                 " stoptimesForDate(serviceDay: \"%s\") {"
+                 "      stop{"
+                 "          gtfsId"
+                 "          name"
+                 "          code"
+                 " }"
+                 "      serviceDay"
+                 "      realtimeArrival"
+                 "        }"
+                 "       }"
+                 "      }"
+                 "}") % (trip_id, datetime.datetime.now().strftime("%Y%m%d"))
 
         current_time = datetime.datetime.now()
         result = {}
@@ -170,13 +178,14 @@ class DigitransitAPIService:
         data = json.loads(self.get_query(query))['data']['trip']['stoptimesForDate']
         stop_found = False
         for stop in data:
-            if(stop_code==stop['stop']['code']):
+            if stop_id == stop['stop']['gtfsId']:
                 stop_found = True
-            if(stop_found):
+            if stop_found:
                 real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
                 arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
-                if arrival>=0:
-                    stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'], 'arrives_in': arrival})
+                if arrival >= 0:
+                    stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'],
+                                  'stop_id': stop['stop']['gtfsId'], 'arrives_in': arrival})
         result["stops"] = stops
 
         return result

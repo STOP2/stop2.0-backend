@@ -14,12 +14,12 @@ class TestStopRoutes(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_stopsrequests_post(self):
-        jsonString = '{"trip_id": "1234", "stop_id": "HSL:1282106", "request_type": "stop"}'
+        jsonString = '{"trip_id": "1234", "stop_id": "HSL:1282106", "device_id": "123"}'
         response = self.app.post('/stoprequests', data=jsonString, content_type='application/json')
         self.assertEquals(response.status_code, 200)
 
     def test_routes(self):
-        response = self.app.get('/routes?trip_id=HSL:3001K_20161030_Ma_1_1046&stop=HSL:4810501')
+        response = self.app.get('/routes?trip_id=HSL:3001K_20161030_Ma_1_1046&stop_id=HSL:4810501')
         self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':

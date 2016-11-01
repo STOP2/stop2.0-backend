@@ -29,10 +29,21 @@ def digitransit_test():
 @app.route('/stoprequests', methods=['POST'])
 def stoprequest():
     json_data = request.json
-    resp = make_response(digitransitAPIService.make_request(json_data))
+    resp = make_response(json.dumps(digitransitAPIService.make_request(json_data)))
     resp.mimetype = 'application/json'
     return resp
 
+@app.route('/stoprequests/cancel', methods=['POST'])
+def stoprequests_cancel():
+    request_id = int(request.args.get('request_id'))
+    result = digitransitAPIService.cancel_request(request_id)
+    return result
+
+@app.route('/stoprequests/report', methods=['POST'])
+def report():
+    json_data = request.json
+    result = digitransitAPIService.store_report(json_data)
+    return result
 
 @app.route('/stops', methods=['GET'])
 def stops():
@@ -47,18 +58,11 @@ def stops():
 @app.route('/routes', methods=['GET'])
 def routes():
     trip_id = request.args.get('trip_id')
-    stop_code = request.args.get('stop_code')
-    result = digitransitAPIService.get_stops_by_trip_id(trip_id, stop_code)
+    stop_id = request.args.get('stop_id')
+    result = digitransitAPIService.get_stops_by_trip_id(trip_id, stop_id)
     resp = make_response(json.dumps(result))
     resp.mimetype = 'application/json'
     return resp
-
-@app.route('/stoprequests/report', methods=['POST'])
-def report():
-    json_data = request.json
-    db.store_report(str(json_data["trip_id"]), str(json_data["stop_id"]))
-
-    return ''
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=os.getenv('PORT', 5000))
