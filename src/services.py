@@ -74,7 +74,6 @@ class DigitransitAPIService:
                  "  }"
                  "}") % (stop_id, datetime.datetime.now().strftime("%Y%m%d"))
 
-        data = {}
         data = json.loads(self.get_query(query))["data"]["stop"]
 
         lines = data["stoptimesForServiceDate"]
@@ -169,12 +168,12 @@ class DigitransitAPIService:
         data = json.loads(self.get_query(query))['data']['trip']['stoptimesForDate']
         stop_found = False
         for stop in data:
-            if(stop_code==stop['stop']['code']):
+            if stop_code == stop['stop']['code']:
                 stop_found = True
-            if(stop_found):
+            if stop_found:
                 real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
                 arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
-                if arrival>=0:
+                if arrival >= 0:
                     stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'], 'arrives_in': arrival})
         result["stops"] = stops
 
