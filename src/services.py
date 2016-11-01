@@ -120,16 +120,25 @@ class DigitransitAPIService:
 
         return response.text
 
-    def make_request(self, jsonData):
-        req_type = jsonData["request_type"]
-        if req_type == "stop":
-            self.db.store_request(jsonData["trip_id"], jsonData["stop_id"])
-        elif req_type == "cancel":
-            self.db.canel_request(jsonData["trip_id"], jsonData["stop_id"])
-            
-        trip_id = jsonData["trip_id"]
+    def make_request(self, json_data):
+        request_id = self.db.store_request(json_data["trip_id"], json_data["stop_id"], json_data["device_id"])
+        
+        trip_id = json_data["trip_id"]
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
+        
+        result = {"request_id": request_id}
+        return json.dump(result)
+    
+    def cancel_request(self, request_id):
+        trip_id = self.db.cancel_request(request_id)
+        data = self.get_requests(trip_id)
+        publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
+        
+        return ''
+        
+    def store_report(self, json_data):
+        self.db.store_report(str(json_data["trip_id"]), str(json_data["stop_id"]))
         
         return ''
     

@@ -37,23 +37,27 @@ class Database:
     def put_connection(self, conn):
         self.pool.putconn(conn)
     
-    def store_request(self, trip_id, stop_id):
+    def store_request(self, trip_id, stop_id, device_id):
         conn = self.get_connection()
         cur = conn.cursor()
-        values = (trip_id, stop_id)
-        sql = "INSERT INTO request (trip_id, stop_id, user_id, req_time, canceled) VALUES (%s, %s, 'user', now(), false)"
+        values = (trip_id, stop_id, device_id)
+        sql = "INSERT INTO request (trip_id, stop_id, user_id, device_id, req_time, canceled) VALUES (%s, %s, 'user', %s, now(), false) RETURNING id"
         cur.execute(sql, values)
+        request_id = cur.fetchone()[0]
         conn.commit()
         self.put_connection(conn)
+        return request_id
 
-    def cancel_request(self, trip_id, stop_id):
+    def cancel_request(self, request_id):
         conn = self.get_connection()
         cur = conn.cursor()
-        values = (trip_id, stop_id)
-        sql = "UPDATE request canceled = true, cancel_time = now() WHERE trip_id = %s AND stop_id = %s"
+        values = (request_id,)
+        sql = "UPDATE request canceled = true, cancel_time = now() WHERE request_id = %s RETURNING trip_id"
         cur.execute(sql, values)
+        trip_id = cur.fetchone()[0]
         conn.commit()
         self.put_connection(conn)
+        return trip_id
         
     def get_requests(self, trip_id):
         conn = self.get_connection()
