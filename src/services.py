@@ -128,7 +128,7 @@ class DigitransitAPIService:
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
         
         result = {"request_id": request_id}
-        return json.dump(result)
+        return result
     
     def cancel_request(self, request_id):
         trip_id = self.db.cancel_request(request_id)

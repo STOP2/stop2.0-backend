@@ -29,7 +29,7 @@ def digitransit_test():
 @app.route('/stoprequests', methods=['POST'])
 def stoprequest():
     json_data = request.json
-    resp = make_response(digitransitAPIService.make_request(json_data))
+    resp = make_response(json.dumps(digitransitAPIService.make_request(json_data)))
     resp.mimetype = 'application/json'
     return resp
 
@@ -58,8 +58,8 @@ def stops():
 @app.route('/routes', methods=['GET'])
 def routes():
     trip_id = request.args.get('trip_id')
-    stop_code = request.args.get('stop_code')
-    result = digitransitAPIService.get_stops_by_trip_id(trip_id, stop_code)
+    stop_id = request.args.get('stop_id')
+    result = digitransitAPIService.get_stops_by_trip_id(trip_id, stop_id)
     resp = make_response(json.dumps(result))
     resp.mimetype = 'application/json'
     return resp
