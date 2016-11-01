@@ -189,3 +189,5 @@ class DigitransitAPIService:
         result["stops"] = stops
 
         return result
+digiapi = DigitransitAPIService("")
+print(digiapi.get_stops_near_coordinates(60.203978, 24.9633573))
