@@ -219,3 +219,32 @@ class DigitransitAPIService:
         result["stops"] = stops
 
         return result
+
+    def get_single_stop_by_trip_id(self, trip_id, stop_id):
+        query = ("{trip(id: \"%s\") {"
+                 " stoptimesForDate(serviceDay: \"%s\") {"
+                 "      stop{"
+                 "          gtfsId"
+                 "          name"
+                 "          code"
+                 " }"
+                 "      serviceDay"
+                 "      realtimeArrival"
+                 "        }"
+                 "       }"
+                 "      }"
+                 "}") % (trip_id, datetime.datetime.now().strftime("%Y%m%d"))
+    
+        current_time = datetime.datetime.now()
+        result = {}
+        stops = []
+        data = json.loads(self.get_query(query))['data']['trip']['stoptimesForDate']
+        for stop in data:
+            if stop_id == stop['stop']['gtfsId']:
+                real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
+                arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
+                stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'],
+                                  'stop_id': stop['stop']['gtfsId'], 'arrives_in': arrival})
+        result["stops"] = stops
+    
+        return result
