@@ -131,6 +131,36 @@ class DigitransitAPIService:
         result = {"request_id": request_id}
         return result
     
+    def get_request_info(self, request_id):
+        request_data = self.db.get_request_info(request_id)
+        
+        query = ("{"
+                 "  trip(id: \"%s\"){"
+                 "      stoptimesForDate(serviceDay: \"%s\"){"
+                 "          stop{"
+                 "              gtfsId"
+                 "              code"
+                 "              name"
+                 "          }"
+                 "          serviceDay"
+                 "          realtimeArrival"
+                 "          arrivalDelay"
+                 "      }"
+                 "  }"
+                 "}") % (request_data[0], datetime.datetime.now().strftime("%Y%m%d"))
+
+        stop_data = json.loads(self.get_query(query))['data']['trip']['stoptimesForDate']
+        result = {}
+        for stop in stop_data:
+            if request_data[1] == stop['stop']['gtfsId']:
+                current_time = datetime.datetime.now()
+                real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
+                arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
+                result = {'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'],
+                          'stop_id': stop['stop']['gtfsId'], 'arrives_in': arrival, 'delay': stop['arrivalDelay']}
+        
+        return result
+        
     def cancel_request(self, request_id):
         trip_id = self.db.cancel_request(request_id)
         data = self.get_requests(trip_id)
