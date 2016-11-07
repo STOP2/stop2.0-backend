@@ -59,11 +59,11 @@ class Database:
         self.put_connection(conn)
         return trip_id
         
-    def get_requests(self, trip_id):
+    def get_requests(self, trip_id, device_id):
         conn = self.get_connection()
         cur = conn.cursor()
-        values = (trip_id,)
-        sql = "SELECT stop_id FROM request WHERE canceled = false AND trip_id = %s"
+        values = (trip_id, device_id)
+        sql = "SELECT stop_id FROM request WHERE canceled = false AND trip_id = %s AND device_id = %s"
         cur.execute(sql, values)
         result = cur.fetchall()
         self.put_connection(conn)
