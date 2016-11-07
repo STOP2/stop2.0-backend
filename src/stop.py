@@ -26,12 +26,19 @@ def digitransit_test():
     return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
 
 
-@app.route('/stoprequests', methods=['POST'])
-def stoprequest():
-    json_data = request.json
-    resp = make_response(json.dumps(digitransitAPIService.make_request(json_data)))
-    resp.mimetype = 'application/json'
-    return resp
+@app.route('/stoprequests', methods=['GET', 'POST'])
+def stoprequests():
+    if request.method == 'GET':
+        request_id = request.args.get('request_id')
+        resp = make_response(json.dumps(digitransitAPIService.get_request_info(request_id)))
+        resp.mimetype = 'application/json'
+        return resp
+    elif request.method == 'POST':
+        json_data = request.json
+        resp = make_response(json.dumps(digitransitAPIService.make_request(json_data)))
+        resp.mimetype = 'application/json'
+        return resp
+
 
 @app.route('/stoprequests/cancel', methods=['POST'])
 def stoprequests_cancel():
@@ -39,11 +46,13 @@ def stoprequests_cancel():
     result = digitransitAPIService.cancel_request(request_id)
     return result
 
+
 @app.route('/stoprequests/report', methods=['POST'])
 def report():
     json_data = request.json
     result = digitransitAPIService.store_report(json_data)
     return result
+
 
 @app.route('/stops', methods=['GET'])
 def stops():
@@ -54,6 +63,7 @@ def stops():
     resp = make_response(json.dumps(result))
     resp.mimetype = 'application/json'
     return resp
+
 
 @app.route('/routes', methods=['GET'])
 def routes():
