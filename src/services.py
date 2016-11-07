@@ -6,7 +6,6 @@ import subprocess
 import paho.mqtt.publish as publish
 from itertools import groupby
 import thread_helper
-
 import push_notifications
 
 
@@ -224,7 +223,6 @@ class DigitransitAPIService:
         result["stops"] = stops
 
         return result
-
 
     def get_single_stop_by_trip_id(self, trip_id, stop_id):
         query = ("{trip(id: \"%s\") {"
