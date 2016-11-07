@@ -5,6 +5,7 @@ push_service = FCMNotification(api_key='AIzaSyD4bExMYdOyBpFOFm-S4JqJsb4vukUy1eM'
 
 database = db.Database()
 devices = database.get_device_ids()
+#lisättävä ehto, joka rajaa notifikaation saajat
 registration_ids = [devices]
 message_title = "Bussi saapuu!"
 message_body = "Tilaamasi bussi saapuu pysäkillesi hetken kuluttua"
