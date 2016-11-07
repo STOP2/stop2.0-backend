@@ -19,14 +19,13 @@ class DigitransitAPIService:
         stop_ids = self.get_stops_near_coordinates(lat, lon, radius)
 
         for stop_id in stop_ids:
-            stops.append({"stop": self.get_busses_by_stop_id(stop_id)})
+            stops.append({"stop": self.get_busses_by_stop_id(stop_id['stop_id'], stop_id['distance'])})
 
         data["stops"] = stops
         return data
 
     def get_stops_near_coordinates(self, lat, lon, radius=160):
-        if radius > 1000:
-            radius = 1000
+        radius = min(radius, 1000)
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
                  "  edges {"
                  "      node {"
@@ -45,10 +44,11 @@ class DigitransitAPIService:
         stoplist = []
         for n in data:
             if n['node']['stop']['vehicleType'] == 0 or n['node']['stop']['vehicleType'] == 3:      #vehicle_type: 0 - tram, 1 - metro, 3 - bus, 4 - ferry
-                stoplist.append(n['node']['stop']['gtfsId'])
+                stoplist.append({'stop_id': n['node']['stop']['gtfsId'], 'distance': n['node']['distance']})
+        sorted(stoplist, key=lambda k: k['distance'])
         return stoplist[:3]
 
-    def get_busses_by_stop_id(self, stop_id):
+    def get_busses_by_stop_id(self, stop_id, distance):
         query = ("{stop(id: \"%s\") {"
                  "  name"
                  "  code"
@@ -81,7 +81,7 @@ class DigitransitAPIService:
 
         current_time = datetime.datetime.now()
 
-        stop = {'stop_name': data["name"], 'stop_code': data["code"], 'stop_id': stop_id, 'schedule': []}
+        stop = {'stop_name': data["name"], 'stop_code': data["code"], 'stop_id': stop_id, 'distance': distance, 'schedule': []}
         schedule = []
         for line in lines:
             stoptimes = line["stoptimes"]
@@ -189,5 +189,3 @@ class DigitransitAPIService:
         result["stops"] = stops
 
         return result
-digiapi = DigitransitAPIService("")
-print(digiapi.get_stops_near_coordinates(60.203978, 24.9633573))
