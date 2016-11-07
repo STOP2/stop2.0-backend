@@ -2,6 +2,7 @@ import datetime
 import requests
 import json
 import math
+import subprocess
 import paho.mqtt.publish as publish
 from itertools import groupby
 
@@ -189,3 +190,13 @@ class DigitransitAPIService:
         result["stops"] = stops
 
         return result
+
+    #Returns all data from "http://api.digitransit.fi/realtime/trip-updates/v1/HSL" as JSON
+    def get_all_realtime_json(self):
+        #Gets realtime data from API, converts it to JSON and saves it to 'json.txt'
+        subprocess.Popen("./gtfs_realtime_json \"http://api.digitransit.fi/realtime/trip-updates/v1/HSL\" > json.txt", shell=True)
+        #Reads the text file and saves it as string
+        with open('json.txt', 'r') as file:
+            data = file.read()
+
+        return data
