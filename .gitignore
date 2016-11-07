@@ -4,3 +4,4 @@ src/__pycache__/
 .coverage
 venv/
 stamps/
+json.txt
