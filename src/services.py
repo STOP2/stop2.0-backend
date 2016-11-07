@@ -5,6 +5,7 @@ import math
 import subprocess
 import paho.mqtt.publish as publish
 from itertools import groupby
+import thread_helper
 
 import push_notifications
 
@@ -15,6 +16,7 @@ class DigitransitAPIService:
         self.headers = {'Content-Type': 'application/graphql'}
         self.db = db
         self.MQTT_host = "epsilon.fixme.fi"
+        self.all_realtime_data = "{}"
 
     def get_stops(self, lat, lon, radius=160):
         data = {}
@@ -252,7 +254,7 @@ class DigitransitAPIService:
     
         return result
 
-    #Returns all data from "http://api.digitransit.fi/realtime/trip-updates/v1/HSL" as JSON
+    #Fetches all data from "http://api.digitransit.fi/realtime/trip-updates/v1/HSL" as JSON and saves it as self.all_realtime_data
     def get_all_realtime_json(self):
         #Gets realtime data from API, converts it to JSON and saves it to 'json.txt'
         subprocess.Popen("./gtfs_realtime_json \"http://api.digitransit.fi/realtime/trip-updates/v1/HSL\" > json.txt", shell=True)
@@ -260,4 +262,7 @@ class DigitransitAPIService:
         with open('json.txt', 'r') as file:
             data = file.read()
 
-        return data 
+        self.all_realtime_data = json.loads(data)
+
+    def get_all_realtime_data(self):
+        return self.all_realtime_data
