@@ -29,18 +29,20 @@ class TestDigitransitAPIService(unittest.TestCase):
 
     def test_get_stops_near_coordinates(self):
         stoplist_returns_only_three = self.digitransitAPIService.get_stops_near_coordinates(60.203978, 24.9633573, 300)
-        self.assertEqual(stoplist_returns_only_three, ['HSL:1240133', 'HSL:1240118', 'HSL:1240103'])
+        self.assertEqual(stoplist_returns_only_three, [{'distance': 158, 'stop_id': 'HSL:1240133'}, {'distance': 196, 'stop_id': 'HSL:1240118'}, {'distance': 263, 'stop_id': 'HSL:1240103'}])
 
         stoplist_return_one = self.digitransitAPIService.get_stops_near_coordinates(60.203978, 24.9633573, 160)
-        self.assertEqual(stoplist_return_one, ['HSL:1240133'])
+        self.assertEqual(stoplist_return_one, [{'stop_id': 'HSL:1240133', 'distance': 158}])
 
         stoplist_return_none = self.digitransitAPIService.get_stops_near_coordinates(60.203978, 24.9633573, 10)
         self.assertEqual(stoplist_return_none, [])
 
     def test_get_busses_by_stop_id(self):
-        stop = self.digitransitAPIService.get_busses_by_stop_id("HSL:1362141")
+        stop = self.digitransitAPIService.get_busses_by_stop_id("HSL:1362141", 100)
         self.assertTrue("stop_name" in stop)
         self.assertEqual(stop["stop_name"], 'Viikki')
+        self.assertTrue("distance" in stop)
+        self.assertEqual(stop["distance"], 100)
 
         first = stop["schedule"][0]
         self.assertTrue("line" in first)
