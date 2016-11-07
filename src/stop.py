@@ -8,12 +8,19 @@ from waitress import serve
 
 import services
 import db
+import services_stub
 
 
 app = Flask(__name__)
 
 db = db.Database()
-digitransitAPIService = services.DigitransitAPIService(db)
+
+print(__name__)
+
+if __name__ == '__main__': # Normal app
+    digitransitAPIService = services.DigitransitAPIService(db)
+elif __name__ == 'stop': # Test client
+    digitransitAPIService = services_stub.DigitransitAPIServiceStub(db)
 
 
 @app.route('/')
@@ -23,7 +30,7 @@ def hello_world():
 
 @app.route('/test')
 def digitransit_test():
-    return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
+    return json.dumps(digitransitAPIService.get_stops_by_trip_id('HSL:3001K_20161003_Ma_1_1156', 'V0811'))
 
 
 @app.route('/stoprequests', methods=['GET', 'POST'])

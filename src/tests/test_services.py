@@ -1,12 +1,12 @@
 import unittest
-import services
+import services_stub
 import db
 
 
 class TestDigitransitAPIService(unittest.TestCase):
 
     def setUp(self):
-        self.digitransitAPIService = services.DigitransitAPIService(db.Database())
+        self.digitransitAPIService = services_stub.DigitransitAPIServiceStub(db.Database())
 
     def test_get_stops(self):
         stops = self.digitransitAPIService.get_stops(60.203978, 24.9633573, 160)
