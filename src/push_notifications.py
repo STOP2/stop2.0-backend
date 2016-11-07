@@ -1,7 +1,7 @@
 from pyfcm import FCMNotification
 import db
 
-push_service = FCMNotification(api_key='AIzaSyD4bExMYdOyBpFOFm-S4JqJsb4vukUy1eM')
+push_service = FCMNotification(api_key='AIzaSyDzuwUdIs5sog6UAv1dTzx2JJuCG2yOkcA')
 
 database = db.Database()
 devices = database.get_device_ids()
