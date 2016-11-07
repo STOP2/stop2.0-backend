@@ -8,8 +8,8 @@ class PushNotifications():
 
     def get_push_notification(self):
         push_service = FCMNotification(api_key='AIzaSyDzuwUdIs5sog6UAv1dTzx2JJuCG2yOkcA')
-        devices = self.db.get_device_ids()
         #lisättävä ehto, joka rajaa notifikaation saajat
+        devices = self.db.get_device_ids(trip_id, stop_id)
         registration_ids = [devices]
         message_title = "Bussi saapuu!"
         message_body = "Tilaamasi bussi saapuu pysäkillesi hetken kuluttua"
