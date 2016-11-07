@@ -228,7 +228,6 @@ class DigitransitAPIService:
 
         return result
 
-
     def get_single_stop_by_trip_id(self, trip_id, stop_id):
         query = ("{trip(id: \"%s\") {"
                  " stoptimesForDate(serviceDay: \"%s\") {"
