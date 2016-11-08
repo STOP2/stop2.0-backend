@@ -253,4 +253,8 @@ class DigitransitAPIService:
 
     def launch_push_notification(self):
         push_notification = push_notifications.PushNotifications(self.db)
-        push_notification.send_push_notification('HSL:1008_20161017_Ti_1_0908', 'HSL:1121437')
+        data_message = {
+            "title": "Kulkuneuvo saapuu!",
+            "message": "Tilaamasi kulkuneuvo on pysäkilläsi hetken kuluttua"
+        }
+        push_notification.send_push_notification('HSL:1008_20161017_Ti_1_0908', 'HSL:1121437', data_message)
