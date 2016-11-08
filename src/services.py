@@ -14,7 +14,8 @@ class DigitransitAPIService:
         self.headers = {'Content-Type': 'application/graphql'}
         self.db = db
         self.MQTT_host = "epsilon.fixme.fi"
-        self.all_realtime_data = "{}"
+        self.all_realtime_data = None
+        self.push_notification_requests = []
 
     def get_stops(self, lat, lon, radius=160):
         data = {}
@@ -130,7 +131,10 @@ class DigitransitAPIService:
         trip_id = json_data["trip_id"]
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
-        
+
+        # Add push notification request to the list
+        self.push_notification_requests.append([json_data['device_id'], json_data['stop_id'], trip_id])
+
         result = {"request_id": request_id}
         return result
     
@@ -263,6 +267,28 @@ class DigitransitAPIService:
         return data
 
         self.all_realtime_data = json.loads(data)
+
+        self.send_push_notifications()
+
+
+    def send_push_notifications(self):
+        for entity in self.all_realtime_data['entity']:
+            trip_update = entity['trip_update']
+
+            try:
+                if len(trip_update) <= 4 and len(trip_update['stop_time_update']) == 1:
+                    for r in self.push_notification_requests:
+                        if ( r[0] == trip_update['stop_time_update'][1]['stop_id'] and
+                                trip_update['trip']['route_id'] in r[2] and
+                                trip_update['trip']['start_date'] in r[2] and
+                                trip_update['trip']['start_time'].replace(':', '')[:-2] in r[2]):
+                                    # Send push notification to device id saved in r[0]
+                                    # TODO
+                                    # Delete push notification request
+                                    self.push_notification_requests.remove(r)
+                                    pass
+            except:
+                pass
 
     def start_fetching_realtime_data(self):
         thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 10)
