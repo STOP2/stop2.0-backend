@@ -69,7 +69,10 @@ def stops():
 def routes():
     trip_id = request.args.get('trip_id')
     stop_id = request.args.get('stop_id')
-    result = digitransitAPIService.get_stops_by_trip_id(trip_id, stop_id)
+    if request.args.get('current') == "true":
+        result = digitransitAPIService.get_single_stop_by_trip_id(trip_id, stop_id)
+    else:
+        result = digitransitAPIService.get_stops_by_trip_id(trip_id, stop_id)
     resp = make_response(json.dumps(result))
     resp.mimetype = 'application/json'
     return resp
