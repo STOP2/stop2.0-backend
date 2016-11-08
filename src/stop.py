@@ -23,6 +23,7 @@ def hello_world():
 
 @app.route('/test')
 def digitransit_test():
+    digitransitAPIService.start_fetching_realtime_data()
     return digitransitAPIService.get_all_realtime_data()
     #return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
 

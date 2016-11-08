@@ -194,14 +194,17 @@ class DigitransitAPIService:
         return result
 
     #Fetches all data from "http://api.digitransit.fi/realtime/trip-updates/v1/HSL" as JSON and saves it as self.all_realtime_data
-    def get_all_realtime_json(self):
+    def fetch_all_realtime_json(self):
         #Gets realtime data from API, converts it to JSON and saves it to 'json.txt'
-        subprocess.Popen("./gtfs_realtime_json \"http://api.digitransit.fi/realtime/trip-updates/v1/HSL\" > json.txt", shell=True)
+        subprocess.call("./gtfs_realtime_json \"http://api.digitransit.fi/realtime/trip-updates/v1/HSL\" > json.txt", shell=True)
         #Reads the text file and saves it as string
         with open('json.txt', 'r') as file:
-            data = file.read()
+            data = file.read().strip()
 
         self.all_realtime_data = json.loads(data)
 
+    def start_fetching_realtime_data(self):
+        thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 10)
+
     def get_all_realtime_data(self):
-        return self.all_realtime_data
+        return json.dumps(self.all_realtime_data)
