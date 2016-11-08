@@ -5,6 +5,8 @@ import math
 import paho.mqtt.publish as publish
 from itertools import groupby
 
+import push_notifications
+
 
 class DigitransitAPIService:
     def __init__(self, db):
@@ -219,3 +221,7 @@ class DigitransitAPIService:
         result["stops"] = stops
 
         return result
+
+    def launch_push_notification(self):
+        push_notification = push_notifications.PushNotifications(self.db)
+        push_notification.send_push_notification('HSL:1008_20161017_Ti_1_0908', 'HSL:1121437')
