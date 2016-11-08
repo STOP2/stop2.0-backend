@@ -264,8 +264,6 @@ class DigitransitAPIService:
         with open('json.txt', 'r') as file:
             data = file.read().strip()
 
-        return data
-
         self.all_realtime_data = json.loads(data)
 
         self.send_push_notifications()
@@ -294,4 +292,3 @@ class DigitransitAPIService:
 
     def get_all_realtime_data(self):
         return json.dumps(self.all_realtime_data)
-
