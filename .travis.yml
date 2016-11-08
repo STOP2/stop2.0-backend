@@ -19,6 +19,7 @@ install:
   - export PYTHONPATH=$(pwd)/src/
   - docker-compose build && docker-compose up -d
   - docker build -t stop-db -f DB-Dockerfile . && docker run -p 9999:5432 -d stop-db
+  - docker build -t mock-hsl-api ./mock-hsl-api/ && docker run -p 11111:11111 -d mock-hsl-api
 script:
   - coverage run -m --branch --source=src --omit=src/tests/* unittest discover -s src/tests
   - coverage report -m

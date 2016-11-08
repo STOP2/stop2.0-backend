@@ -6,7 +6,7 @@ import db
 class TestDigitransitAPIService(unittest.TestCase):
 
     def setUp(self):
-        self.digitransitAPIService = services.DigitransitAPIService(db.Database())
+        self.digitransitAPIService = services.DigitransitAPIService(db.Database(), 'http://localhost:11111')
 
     def test_get_stops(self):
         stops = self.digitransitAPIService.get_stops(60.203978, 24.9633573, 160)
@@ -48,8 +48,7 @@ class TestDigitransitAPIService(unittest.TestCase):
         self.assertTrue("line" in first)
 
     def test_get_stops_by_trip_id(self):
-        stop_list = self.digitransitAPIService.get_stops_near_coordinates(60.35066, 25.07811)
-        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:4736_20161017_Ti_1_1241', 'V841')
+        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:1506_20161031_Ti_2_1155', 'HSL:1150107')
         self.assertTrue("stops" in stoptimes)
 
         all_stoptimes = stoptimes["stops"]
@@ -64,7 +63,7 @@ class TestDigitransitAPIService(unittest.TestCase):
 
             second_stop = all_stoptimes[1]
             self.assertEqual(second_stop["stop_name"], 'Savio')
-        empty_stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:4736_20161017_Ti_1_1241', 'V0811')
+        empty_stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:1506_20161031_Ti_2_1155', 'HSL:1362221')
         self.assertEqual(empty_stoptimes, {'stops': []})
 
 if __name__ == '__main__':
