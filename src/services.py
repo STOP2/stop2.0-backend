@@ -267,6 +267,7 @@ class DigitransitAPIService:
 
         self.all_realtime_data = json.loads(data)
 
+<<<<<<< HEAD
         self.send_push_notifications()
 
 
@@ -291,5 +292,10 @@ class DigitransitAPIService:
     def start_fetching_realtime_data(self):
         thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 10)
 
+=======
+    def start_fetching_realtime_data(self):
+        thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 10)
+
+>>>>>>> finished background task for fetching all realtime data
     def get_all_realtime_data(self):
         return json.dumps(self.all_realtime_data)
