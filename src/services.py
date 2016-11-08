@@ -286,7 +286,6 @@ class DigitransitAPIService:
                                     # TODO
                                     # Delete push notification request
                                     self.push_notification_requests.remove(r)
-                                    pass
             except:
                 pass
 
