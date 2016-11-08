@@ -19,7 +19,7 @@ def start_do_every(lockname, interval, worker_func, iterations=0):
         os.environ[lockname] = 'TRUE'
         do_every(lockname, interval, worker_func, iterations)
 
-# Calls worker_func every interval seconds for interations times (0 -> eternal loop)
+# Calls worker_func every interval seconds for interations times (0 means eternal loop)
 def do_every(lockname, interval, worker_func, iterations=0):
     if iterations != 1:
         threading.Timer(
