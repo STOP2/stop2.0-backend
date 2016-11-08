@@ -9,8 +9,8 @@ import push_notifications
 
 
 class DigitransitAPIService:
-    def __init__(self, db):
-        self.url = 'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
+    def __init__(self, db, hsl_api_url):
+        self.url = hsl_api_url
         self.headers = {'Content-Type': 'application/graphql'}
         self.db = db
         self.MQTT_host = "epsilon.fixme.fi"

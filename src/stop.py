@@ -13,7 +13,8 @@ import db
 app = Flask(__name__)
 
 db = db.Database()
-digitransitAPIService = services.DigitransitAPIService(db)
+digitransitAPIService = services.DigitransitAPIService(db,
+                                                       'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql')
 
 
 @app.route('/')

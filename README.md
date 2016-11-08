@@ -90,8 +90,13 @@ docker build -f DB-Dockerfile -t db .
 docker run -p 5432:5432 db
 ```
 
-Docker Compose is a tool for defining and running multi-container Docker apps. To run project locally using Docker Compose:
+To test the project first build and run a mock hsl api server:
 ```
-docker-compose build
-docker-compose up
+docker build -t mock-hsl-api ./mock-hsl-api/
+docker run -p 11111:11111 -d mock-hsl-api
 ```
+
+Then run all tests with:
+```
+make test
+``
