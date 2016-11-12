@@ -271,12 +271,12 @@ class DigitransitAPIService:
 
 
     def send_push_notifications(self):
-        for entity in self.all_realtime_data['entity']:
-            trip_update = entity['trip_update']
+        for r in self.push_notification_requests:
+            for entity in self.all_realtime_data['entity']:
+                trip_update = entity['trip_update']
 
-            try:
-                if len(trip_update) <= 4 and len(trip_update['stop_time_update']) == 1:
-                    for r in self.push_notification_requests:
+                try:
+                    if len(trip_update) <= 4 and len(trip_update['stop_time_update']) == 1:
                         if ( r[0] == trip_update['stop_time_update'][1]['stop_id'] and
                                 trip_update['trip']['route_id'] in r[2] and
                                 trip_update['trip']['start_date'] in r[2] and
@@ -285,8 +285,8 @@ class DigitransitAPIService:
                                     # TODO
                                     # Delete push notification request
                                     self.push_notification_requests.remove(r)
-            except:
-                pass
+                except:
+                    pass
 
     def start_fetching_realtime_data(self):
         thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 10)
