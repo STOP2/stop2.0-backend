@@ -13,6 +13,7 @@ class DigitransitAPIService:
         self.url = hsl_api_url
         self.headers = {'Content-Type': 'application/graphql'}
         self.db = db
+        self.push_notifications = push_notifications
         self.MQTT_host = "epsilon.fixme.fi"
         self.all_realtime_data = None
         self.push_notification_requests = []
