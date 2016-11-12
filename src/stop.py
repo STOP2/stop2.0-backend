@@ -8,12 +8,15 @@ from waitress import serve
 
 import services
 import db
+import push_notifications
 
 
 app = Flask(__name__)
 
 db = db.Database()
+push_notifications = push_notifications.PushNotifications()
 digitransitAPIService = services.DigitransitAPIService(db,
+                                                       push_notifications,
                                                        'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql')
 
 

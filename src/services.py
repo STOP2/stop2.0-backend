@@ -6,11 +6,10 @@ import subprocess
 import paho.mqtt.publish as publish
 from itertools import groupby
 import thread_helper
-import push_notifications
 
 
 class DigitransitAPIService:
-    def __init__(self, db, hsl_api_url):
+    def __init__(self, db, push_notifications, hsl_api_url):
         self.url = hsl_api_url
         self.headers = {'Content-Type': 'application/graphql'}
         self.db = db
@@ -271,6 +270,8 @@ class DigitransitAPIService:
 
 
     def send_push_notifications(self):
+        to_send = []
+
         for r in self.push_notification_requests:
             for entity in self.all_realtime_data['entity']:
                 trip_update = entity['trip_update']
@@ -281,12 +282,15 @@ class DigitransitAPIService:
                                 trip_update['trip']['route_id'] in r[2] and
                                 trip_update['trip']['start_date'] in r[2] and
                                 trip_update['trip']['start_time'].replace(':', '')[:-2] in r[2]):
-                                    # Send push notification to device id saved in r[0]
-                                    # TODO
+                                    # Add device id saved in r[0] to list of pussh notifications to send
+                                    to_send.append(r[0])
                                     # Delete push notification request
                                     self.push_notification_requests.remove(r)
                 except:
                     pass
+
+        if not len(to_send) == 0:
+            self.push_notifications.send_push_notification(to_send)
 
     def start_fetching_realtime_data(self):
         thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 10)
