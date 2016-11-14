@@ -5,6 +5,7 @@ import math
 import subprocess
 import paho.mqtt.publish as publish
 from itertools import groupby
+from flask import Flask
 import thread_helper
 
 
@@ -133,9 +134,10 @@ class DigitransitAPIService:
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
 
-        # Add push notification request to the list and start fetching data for push notifications
-        self.push_notification_requests.append([json_data['device_id'], json_data['stop_id'], trip_id])
-        thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json(), 0)
+        # Add push notification request if wanted to the list and start fetching data for push notifications
+        if not "push_notification" in json_data or json_data["push_notification"]:
+            self.push_notification_requests.append([json_data['device_id'], json_data['stop_id'], trip_id])
+            thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 0)
 
         result = {"request_id": request_id}
         return result
@@ -261,7 +263,7 @@ class DigitransitAPIService:
     #Fetches all data from "http://api.digitransit.fi/realtime/trip-updates/v1/HSL" as JSON and saves it as self.all_realtime_data
     def fetch_all_realtime_json(self):
         #Gets realtime data from API, converts it to JSON and saves it to 'json.txt'
-        subprocess.call("./gtfs_realtime_json \"http://api.digitransit.fi/realtime/trip-updates/v1/HSL\" > json.txt", shell=True)
+        subprocess.call(Flask(__name__).root_path + "/./gtfs_realtime_json \"http://api.digitransit.fi/realtime/trip-updates/v1/HSL\" > json.txt", shell=True)
         #Reads the text file and saves it as string
         with open('json.txt', 'r') as file:
             data = file.read().strip()
@@ -291,7 +293,7 @@ class DigitransitAPIService:
                 except:
                     pass
 
-        # Send push notifications
+        # Send push notifications if there are any
         if not len(to_send) == 0:
             self.push_notifications.send_push_notification(to_send)
         # Stop running fetch_all_realtime_json if self.push_notification_requests is empty
@@ -301,6 +303,9 @@ class DigitransitAPIService:
 
     def start_fetching_realtime_data_test(self):
         thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 10)
+
+    def force_stop_fetching_realtime_data(self):
+        thread_helper.stop_do_every('FETCHING_REALTIME_DATA')
 
     def get_all_realtime_data(self):
         return json.dumps(self.all_realtime_data)
