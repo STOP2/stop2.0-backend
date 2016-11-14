@@ -282,7 +282,7 @@ class DigitransitAPIService:
 
                 try:
                     if len(trip_update) <= 4 and len(trip_update['stop_time_update']) == 1:
-                        if ( r[0] == trip_update['stop_time_update'][1]['stop_id'] and
+                        if ( r[1] == trip_update['stop_time_update'][1]['stop_id'] and
                                 trip_update['trip']['route_id'] in r[2] and
                                 trip_update['trip']['start_date'] in r[2] and
                                 trip_update['trip']['start_time'].replace(':', '')[:-2] in r[2]):
