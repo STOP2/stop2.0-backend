@@ -124,7 +124,7 @@ class DigitransitAPIService:
         return response.text
 
     def make_request(self, json_data):
-        request_id = self.db.store_request(json_data["trip_id"], json_data["stop_id"], json_data["device_id"])
+        request_id = self.db.store_request(json_data["trip_id"], json_data["stop_id"], json_data.get("device_id", 0))
         
         trip_id = json_data["trip_id"]
         data = self.get_requests(trip_id)
