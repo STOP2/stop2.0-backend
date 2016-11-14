@@ -135,7 +135,7 @@ class DigitransitAPIService:
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
 
         # Add push notification request if wanted to the list and start fetching data for push notifications
-        if not "push_notification" in json_data or json_data["push_notification"]:
+        if not json_data.get("device_id", 0) == 0 or not "push_notification" in json_data or json_data["push_notification"]:
             self.push_notification_requests.append([json_data['device_id'], json_data['stop_id'], trip_id])
             thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 0)
 
