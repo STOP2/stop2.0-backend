@@ -133,8 +133,9 @@ class DigitransitAPIService:
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
 
-        # Add push notification request to the list
+        # Add push notification request to the list and start fetching data for push notifications
         self.push_notification_requests.append([json_data['device_id'], json_data['stop_id'], trip_id])
+        thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json(), 0)
 
         result = {"request_id": request_id}
         return result
@@ -290,10 +291,15 @@ class DigitransitAPIService:
                 except:
                     pass
 
+        # Send push notifications
         if not len(to_send) == 0:
             self.push_notifications.send_push_notification(to_send)
+        # Stop running fetch_all_realtime_json if self.push_notification_requests is empty
+        if len(self.push_notification_requests) == 0:
+            thread_helper.stop_do_every('FETCHING_REALTIME_DATA')
 
-    def start_fetching_realtime_data(self):
+
+    def start_fetching_realtime_data_test(self):
         thread_helper.start_do_every('FETCHING_REALTIME_DATA', 10, self.fetch_all_realtime_json, 10)
 
     def get_all_realtime_data(self):
