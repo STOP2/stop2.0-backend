@@ -4,7 +4,6 @@ services:
     build: .
     environment:
       - DBHOST=postgres
-      - DBPORT=5432
       - DBNAME=stop
       - DBUSER=stop
       - DBPASS=stop
@@ -13,7 +12,15 @@ services:
       - "5000:5000"
     links:
       - postgres
+      - mock
   postgres:
     build:
       context: .
       dockerfile: DB-Dockerfile
+    ports:
+      - "9999:5432"
+  mock:
+    build:
+      context: mock-hsl-api/
+    ports:
+      - "11111:11111"

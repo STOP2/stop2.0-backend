@@ -18,9 +18,5 @@ class TestStopRoutes(unittest.TestCase):
         response = self.app.post('/stoprequests', data=jsonString, content_type='application/json')
         self.assertEquals(response.status_code, 200)
 
-    def test_routes(self):
-        response = self.app.get('/routes?trip_id=HSL:1506_20161031_Ti_2_1155&stop_id=HSL:1150107')
-        self.assertEqual(response.status_code, 200)
-
 if __name__ == '__main__':
     unittest.main()

@@ -48,24 +48,23 @@ class TestDigitransitAPIService(unittest.TestCase):
         self.assertTrue("line" in first)
 
     def test_get_stops_by_trip_id(self):
-        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:1506_20161031_Ti_2_1155', 'HSL:1150107')
+        stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:1506_20161031_Ti_2_1155')
 
         self.assertTrue("stops" in stoptimes)
 
         all_stoptimes = stoptimes["stops"]
-        if all_stoptimes:
-            first_stop = all_stoptimes[0]
-            self.assertTrue("stop_name" in first_stop)
-            self.assertTrue("stop_id" in first_stop)
-            self.assertTrue("stop_code" in first_stop)
-            self.assertTrue("arrives_in" in first_stop)
+        
+        first_stop = all_stoptimes[0]
+        self.assertTrue("stop_name" in first_stop)
+        self.assertTrue("stop_id" in first_stop)
+        self.assertTrue("stop_code" in first_stop)
+        self.assertTrue("arrives_in" in first_stop)
 
-            self.assertEqual(first_stop["stop_name"], 'Korso')
+        self.assertEqual(first_stop["stop_name"], 'Naistenklinikka')
 
-            second_stop = all_stoptimes[1]
-            self.assertEqual(second_stop["stop_name"], 'Savio')
-        empty_stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:1506_20161031_Ti_2_1155', 'HSL:1362221')
-        self.assertEqual(empty_stoptimes, {'stops': []})
+        second_stop = all_stoptimes[1]
+        self.assertEqual(second_stop["stop_name"], 'Tukholmankatu')
+
 
 if __name__ == '__main__':
     unittest.main()

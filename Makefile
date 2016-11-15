@@ -19,5 +19,6 @@ test: stamps/requirements-done
 	  --omit=src/tests/* unittest discover -s src/tests && \
 	coverage report -m && . src/tests/integration_test.sh) && \
 	docker stop stop20backend_web_1 && \
-    docker stop stop20backend_postgres_1
+    docker stop stop20backend_postgres_1 && \
+    docker stop stop20backend_mock_1
 
