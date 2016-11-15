@@ -15,7 +15,7 @@ class DigitransitAPIService:
         self.db = db
         self.MQTT_host = "epsilon.fixme.fi"
 
-    def get_stops(self, lat, lon, radius=160):
+    def get_stops(self, lat, lon, radius):
         data = {}
         stops = []
         stop_ids = self.get_stops_near_coordinates(lat, lon, radius)
@@ -26,7 +26,7 @@ class DigitransitAPIService:
         data["stops"] = stops
         return data
 
-    def get_stops_near_coordinates(self, lat, lon, radius=160):
+    def get_stops_near_coordinates(self, lat, lon, radius):
         radius = min(radius, 1000)
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
                  "  edges {"
@@ -123,10 +123,9 @@ class DigitransitAPIService:
 
         return response.text
 
-    def make_request(self, json_data):
-        request_id = self.db.store_request(json_data["trip_id"], json_data["stop_id"], json_data.get("device_id", 0))
+    def make_request(self, trip_id, stop_id, device_id):
+        request_id = self.db.store_request(trip_id, stop_id, device_id)
         
-        trip_id = json_data["trip_id"]
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
         
@@ -170,8 +169,8 @@ class DigitransitAPIService:
         
         return ''
         
-    def store_report(self, json_data):
-        self.db.store_report(str(json_data["trip_id"]), str(json_data["stop_id"]))
+    def store_report(self, trip_id, stop_id):
+        self.db.store_report(trip_id, stop_id)
         
         return ''
     
