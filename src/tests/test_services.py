@@ -1,12 +1,13 @@
 import unittest
 import services
 import db
+import push_notification_service
 
 
 class TestDigitransitAPIService(unittest.TestCase):
 
     def setUp(self):
-        self.digitransitAPIService = services.DigitransitAPIService(db.Database(), 'http://localhost:11111')
+        self.digitransitAPIService = services.DigitransitAPIService(db.Database(), push_notification_service.PushNotificationService(), 'http://localhost:11111')
 
     def test_get_stops(self):
         stops = self.digitransitAPIService.get_stops(60.203978, 24.9633573, 160)
