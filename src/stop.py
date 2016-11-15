@@ -31,12 +31,23 @@ def digitransit_test():
 def stoprequests():
     if request.method == 'GET':
         request_id = request.args.get('request_id')
+        if not request_id:
+            resp = make_response(json.dumps({'error': 'no request_id query parameter given'}), 400)
+            resp.mimetype = 'application/json'
+            return resp
         resp = make_response(json.dumps(digitransitAPIService.get_request_info(request_id)))
         resp.mimetype = 'application/json'
         return resp
     elif request.method == 'POST':
         json_data = request.json
-        resp = make_response(json.dumps(digitransitAPIService.make_request(json_data)))
+        trip_id = json_data.get('trip_id')
+        stop_id = json_data.get('stop_id')
+        device_id = json_data.get('device_id', '0')
+        if not (trip_id and stop_id):
+            resp = make_response(json.dumps({'error': 'no trip_id or stop_id query parameter given'}), 400)
+            resp.mimetype = 'application/json'
+            return resp
+        resp = make_response(json.dumps(digitransitAPIService.make_request(trip_id, stop_id, device_id)))
         resp.mimetype = 'application/json'
         return resp
 
@@ -44,6 +55,10 @@ def stoprequests():
 @app.route('/stoprequests/cancel', methods=['POST'])
 def stoprequests_cancel():
     request_id = int(request.args.get('request_id'))
+    if not request_id:
+        resp = make_response(json.dumps({'error': 'no request_id query parameter given'}), 400)
+        resp.mimetype = 'application/json'
+        return resp
     result = digitransitAPIService.cancel_request(request_id)
     return result
 
@@ -51,6 +66,12 @@ def stoprequests_cancel():
 @app.route('/stoprequests/report', methods=['POST'])
 def report():
     json_data = request.json
+    trip_id = json_data.get('trip_id')
+    stop_id = json_data.get('stop_id')
+    if not (trip_id and stop_id):
+        resp = make_response(json.dumps({'error': 'no trip_id or stop_id query parameter given'}), 400)
+        resp.mimetype = 'application/json'
+        return resp
     result = digitransitAPIService.store_report(json_data)
     return result
 
@@ -59,7 +80,11 @@ def report():
 def stops():
     lat = float(request.args.get('lat'))
     lon = float(request.args.get('lon'))
-    rad = float(request.args.get('rad', default=160))
+    rad = float(request.args.get('rad', 160))
+    if not (lat and lon):
+        resp = make_response(json.dumps({'error': 'not lat or lon query parameter given'}), 400)
+        resp.mimetype = 'application/json'
+        return resp
     result = digitransitAPIService.get_stops(lat, lon, rad)
     resp = make_response(json.dumps(result))
     resp.mimetype = 'application/json'
@@ -70,6 +95,10 @@ def stops():
 def routes():
     trip_id = request.args.get('trip_id')
     stop_id = request.args.get('stop_id')
+    if not trip_id:
+        resp = make_response(json.dumps({'error': 'no trip_id query parameter given'}), 400)
+        resp.mimetype = 'application/json'
+        return resp
     if stop_id:
         result = digitransitAPIService.get_single_stop_by_trip_id(trip_id, stop_id)
     else:
@@ -80,4 +109,3 @@ def routes():
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=os.getenv('PORT', 5000))
-    # app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
