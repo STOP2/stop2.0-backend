@@ -7,14 +7,14 @@ from flask import json
 from waitress import serve
 
 import services
-import push_notifications
+import push_notification_service
 import db
 
 
 app = Flask(__name__)
 
 db = db.Database()
-push_notification_service = push_notifications.PushNotifications()
+push_notification_service = push_notification_service.PushNotificationService()
 digitransitAPIService = services.DigitransitAPIService(db,
                                                        push_notification_service,
                                                        'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql')

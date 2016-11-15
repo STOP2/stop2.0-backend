@@ -1,7 +1,7 @@
 from pyfcm import FCMNotification
 
 
-class PushNotifications():
+class PushNotificationService():
 
     def send_push_notification(self, registration_ids):
         push_service = FCMNotification(api_key='AIzaSyBbs3cP4o7hJGwbJ51Rhf6zBdAsqnw2-nM')
