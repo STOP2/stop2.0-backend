@@ -7,13 +7,16 @@ from flask import json
 from waitress import serve
 
 import services
+import push_notifications
 import db
 
 
 app = Flask(__name__)
 
 db = db.Database()
+push_notification_service = push_notifications.PushNotifications()
 digitransitAPIService = services.DigitransitAPIService(db,
+                                                       push_notification_service,
                                                        'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql')
 
 
@@ -24,7 +27,8 @@ def hello_world():
 
 @app.route('/test')
 def digitransit_test():
-    return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
+    return json.dumps(digitransitAPIService.fetch_single_trip("HSL:1055_20161107_Ti_2_1329"))
+    #return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
 
 
 @app.route('/stoprequests', methods=['GET', 'POST'])

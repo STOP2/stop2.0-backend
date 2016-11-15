@@ -5,15 +5,14 @@ import math
 import paho.mqtt.publish as publish
 from itertools import groupby
 
-import push_notifications
-
 
 class DigitransitAPIService:
-    def __init__(self, db, hsl_api_url):
+    def __init__(self, db, push_notification_service, hsl_api_url):
         self.url = hsl_api_url
         self.headers = {'Content-Type': 'application/graphql'}
         self.db = db
         self.MQTT_host = "epsilon.fixme.fi"
+        self.push_notification_service = push_notification_service
 
     def get_stops(self, lat, lon, radius):
         data = {}
@@ -249,15 +248,36 @@ class DigitransitAPIService:
         query = ('''{ trip(id:"%s"){
                         gtfsId
                         stoptimesForDate(serviceDay:"%s"){
-                          realtimeArrival
-                          stop{
-                            gtfsId
-                          }
+                            serviceDay
+                            realtimeArrival
+                            stop{
+                                gtfsId
+                            }
+                            }
                         }
-                      }
                     }
                 ''') % (trip_id, datetime.datetime.now().strftime("%Y%m%d"))
 
         data = json.loads(self.get_query(query))
 
-        return data
+        return data['data']
+
+    def fetch_trips_and_send_push_notifications(self, stoprequests):
+        current_time = datetime.datetime.now
+        to_send = [] # List of push notifications to be sent
+
+        # stoprequests is dict where:
+        # stoprequests[trip_id] = [ (1_stop_id, 1_device_id), (2_stop_id, 2_device_id), ... ]
+        for trip_id in stoprequests:
+            data = self.fetch_single_trip(trip_id)
+            for sr in stoprequests[trip_id]:
+                # sr[0] = stop_id, sr[1] = device_id
+                for stoptime in data['trip']['stoptimesForData']:
+                    if stoptime['stop']['gtfsId'] == sr[0]:
+                        arrival_time = stoptime['stop']['serviceDay'] + stoptime['stop']['realtimeArrival']
+                        arrival = math.floor((arrival_time - current_time).total_seconds())
+                        if arrival <= 120:
+                            to_send.append(sr[1])
+
+        if len(to_send) != 0:
+            self.push_notification_service.send_push_notification(to_send)
