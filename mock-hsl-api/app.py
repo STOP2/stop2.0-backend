@@ -1,5 +1,7 @@
 # coding=utf-8
 import datetime
+import re
+import time
 from flask import Flask
 from flask import request
 from waitress import serve
@@ -125,9 +127,11 @@ def mock():
   }
 }
         '''
-    
+
     elif request_body == '{stop(id: "HSL:1362141") {  name  code  vehicleType  stoptimesForServiceDate(date: "%s"){     pattern {         code         name         directionId         route {             gtfsId             longName             shortName         }     }     stoptimes {         trip{             gtfsId         }         serviceDay    	    realtimeArrival      }    }  }}' % (datetime.datetime.now().strftime("%Y%m%d")):
-        return '''
+        return re.sub(r'"serviceDay":.*,',
+                      '"serviceDay": ' + str(int(time.mktime(time.strptime(datetime.datetime.now().strftime("%Y%m%d"), "%Y%m%d")))) + ",",
+            '''
         {
   "data": {
     "stop": {
@@ -3057,11 +3061,13 @@ def mock():
     }
   }
 }
-        '''
+        ''')
 
 
     elif request_body == '{stop(id: "HSL:1240133") {  name  code  vehicleType  stoptimesForServiceDate(date: "%s"){     pattern {         code         name         directionId         route {             gtfsId             longName             shortName         }     }     stoptimes {         trip{             gtfsId         }         serviceDay    	    realtimeArrival      }    }  }}' % (datetime.datetime.now().strftime("%Y%m%d")):
-        return '''
+        return re.sub(r'"serviceDay":.*,',
+                      '"serviceDay": ' + str(int(time.mktime(time.strptime(datetime.datetime.now().strftime("%Y%m%d"), "%Y%m%d")))) + ",",
+                      '''
 {
   "data": {
     "stop": {
@@ -3975,10 +3981,12 @@ def mock():
     }
   }
 }
-        '''
+        ''')
     
     elif request_body == '{trip(id: "HSL:1506_20161031_Ti_2_1155") { stoptimesForDate(serviceDay: "%s") {      stop{          gtfsId          name          code }      serviceDay      realtimeArrival        }       }      }}' % (datetime.datetime.now().strftime("%Y%m%d")):
-        return '''
+        return re.sub(r'"serviceDay":.*,',
+                      '"serviceDay": ' + str(int(time.mktime(time.strptime(datetime.datetime.now().strftime("%Y%m%d"), "%Y%m%d")))) + ",",
+                      '''
 {
   "data": {
     "trip": {
@@ -4248,7 +4256,7 @@ def mock():
     }
   }
 }
-        '''
+        ''')
     
     else:
         return 'your mock call didn\'t match any request body'
