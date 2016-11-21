@@ -97,7 +97,7 @@ class DigitransitAPIService:
             for time in stoptimes:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
                 arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
-                if current_time < arrival_time and arrival < 31:
+                if current_time < arrival_time and arrival < 61:
                     schedule.append({'trip_id': time["trip"]["gtfsId"],
                                      'line': line["pattern"]["route"]["shortName"],
                                      'destination': destination,
@@ -111,7 +111,10 @@ class DigitransitAPIService:
         for key, group in groupby(sorted_by_route, lambda k: k['route_id']):
             group = list(group)
             group = sorted(group, key=lambda k: k['arrival'])
-            for g in group[:2]:
+            group = group[:2]
+            if len(group) == 2 and group[1]['arrival'] > 30:
+                group.pop()
+            for g in group:
                 bus_list.append(g)
 
         bus_list = sorted(bus_list, key=lambda k: k['arrival'])
