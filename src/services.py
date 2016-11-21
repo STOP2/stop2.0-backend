@@ -263,7 +263,7 @@ class DigitransitAPIService:
         return data['data']
 
     def fetch_trips_and_send_push_notifications(self, stoprequests):
-        current_time = datetime.datetime.now
+        current_time = datetime.datetime.now()
         to_send = [] # List of push notifications to be sent
 
         # stoprequests is dict where:
@@ -272,9 +272,9 @@ class DigitransitAPIService:
             data = self.fetch_single_trip(trip_id)
             for sr in stoprequests[trip_id]:
                 # sr[0] = stop_id, sr[1] = device_id
-                for stoptime in data['trip']['stoptimesForData']:
+                for stoptime in data['trip']['stoptimesForDate']:
                     if stoptime['stop']['gtfsId'] == sr[0]:
-                        arrival_time = stoptime['stop']['serviceDay'] + stoptime['stop']['realtimeArrival']
+                        arrival_time = datetime.datetime.fromtimestamp(stoptime['serviceDay'] + stoptime['realtimeArrival'])
                         arrival = math.floor((arrival_time - current_time).total_seconds())
                         if arrival <= 120:
                             to_send.append(sr[1])
