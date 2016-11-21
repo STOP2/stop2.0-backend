@@ -94,7 +94,7 @@ class Database:
     def get_unpushed_requests(self):
         conn = self.get_connection()
         cur = conn.cursor()
-        sql = "SELECT id,trip_id,stop_id,device_id FROM request WHERE canceled = false AND pushed = false"
+        sql = "SELECT trip_id,id,stop_id,device_id FROM request WHERE canceled = false AND pushed = false"
         cur.execute(sql)
         result = cur.fetchall()
         self.put_connection(conn)

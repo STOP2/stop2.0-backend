@@ -261,23 +261,46 @@ class DigitransitAPIService:
         data = json.loads(self.get_query(query))
 
         return data['data']
+    
+    def notify(self):
+        pushable_requests = self.fetch_pushable_requests()
+        pushed_requests = self.fetch_trips_and_send_push_notifications(pushable_requests)
+        # still need some kind of evaluation wether the notifications were sent
+        # self.db.set_pushed(pushed_requests)
+        
 
     def fetch_trips_and_send_push_notifications(self, stoprequests):
         current_time = datetime.datetime.now()
         to_send = [] # List of push notifications to be sent
+        pushed_requests = [] # List of ids of pushed requests
 
         # stoprequests is dict where:
         # stoprequests[trip_id] = [ (1_stop_id, 1_device_id), (2_stop_id, 2_device_id), ... ]
-        for trip_id in stoprequests:
+        for trip_id in stoprequests.keys():
             data = self.fetch_single_trip(trip_id)
             for sr in stoprequests[trip_id]:
-                # sr[0] = stop_id, sr[1] = device_id
+                # sr[0] = request_id, sr[1] = stop_id, sr[2] = device_id
                 for stoptime in data['trip']['stoptimesForDate']:
-                    if stoptime['stop']['gtfsId'] == sr[0]:
+                    if stoptime['stop']['gtfsId'] == sr[1]:
                         arrival_time = datetime.datetime.fromtimestamp(stoptime['serviceDay'] + stoptime['realtimeArrival'])
                         arrival = math.floor((arrival_time - current_time).total_seconds())
                         if arrival <= 120:
-                            to_send.append(sr[1])
+                            to_send.append(sr[2])
+                            pushed_requests.append(sr[0])
 
         if len(to_send) != 0:
             self.push_notification_service.send_push_notification(to_send)
+            
+        return pushed_requests
+
+    def fetch_pushable_requests(self):
+        pushable_requests = self.db.get_unpushed_requests()
+        requests_by_trip_id = {}
+        
+        for request in pushable_requests:
+            if requests_by_trip_id.get(request[0]):
+                requests_by_trip_id.get(request[0]).append((request[1], request[2], request[3]))
+            else:
+                requests_by_trip_id[request[0]] = [(request[1], request[2], request[3])]
+
+        return requests_by_trip_id
