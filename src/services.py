@@ -5,6 +5,8 @@ import math
 import paho.mqtt.publish as publish
 from itertools import groupby
 
+import thread_helper
+
 
 class DigitransitAPIService:
     def __init__(self, db, push_notification_service, hsl_api_url):
@@ -129,6 +131,7 @@ class DigitransitAPIService:
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
         
         result = {"request_id": request_id}
+        thread_helper.start_do_every("PUSH", 30, self.notify)
         return result
     
     def get_request_info(self, request_id):
@@ -264,6 +267,8 @@ class DigitransitAPIService:
     
     def notify(self):
         pushable_requests = self.fetch_pushable_requests()
+        if not pushable_requests:
+            thread_helper.stop_do_every("PUSH")
         pushed_requests = self.fetch_trips_and_send_push_notifications(pushable_requests)
         # still need some kind of evaluation wether the notifications were sent
         # self.db.set_pushed(pushed_requests)
