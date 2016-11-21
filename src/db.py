@@ -97,3 +97,20 @@ class Database:
         result = cur.fetchall()
         self.put_connection(conn)
         return result
+    
+    def get_unpushed_requests(self):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        sql = "SELECT id,trip_id,stop_id,device_id FROM request WHERE canceled = false AND pushed = false"
+        cur.execute(sql)
+        result = cur.fetchall()
+        self.put_connection(conn)
+        return result
+    
+    def set_pushed(self, ids):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        values = (tuple(ids),)
+        sql = "UPDATE request SET pushed = true WHERE id IN %s"
+        cur.execute(sql, values)
+        self.put_connection(conn)
