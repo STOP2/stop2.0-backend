@@ -269,6 +269,7 @@ class DigitransitAPIService:
         pushable_requests = self.fetch_pushable_requests()
         if not pushable_requests:
             thread_helper.stop_do_every("PUSH")
+            return
         pushed_requests = self.fetch_trips_and_send_push_notifications(pushable_requests)
         # still need some kind of evaluation wether the notifications were sent
         # self.db.set_pushed(pushed_requests)
