@@ -87,16 +87,6 @@ class Database:
         cur.execute(sql, values)
         conn.commit()
         self.put_connection(conn)
-
-    def get_device_ids(self, trip_id, stop_id):
-        conn = self.get_connection()
-        cur = conn.cursor()
-        values = (trip_id, stop_id)
-        sql = "SELECT device_id FROM request WHERE trip_id = %s AND stop_id = %s"
-        cur.execute(sql, values)
-        result = cur.fetchall()
-        self.put_connection(conn)
-        return result
     
     def get_unpushed_requests(self):
         conn = self.get_connection()
