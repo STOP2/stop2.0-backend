@@ -106,4 +106,5 @@ class Database:
         values = (tuple(ids),)
         sql = "UPDATE request SET pushed = true WHERE id IN %s"
         cur.execute(sql, values)
+        conn.commit()
         self.put_connection(conn)

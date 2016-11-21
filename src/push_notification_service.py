@@ -10,5 +10,6 @@ class PushNotificationService():
             "title": "Kulkuneuvo saapuu!",
             "message": "Tilaamasi kulkuneuvo on pysäkilläsi hetken kuluttua"
         }
-        result = push_service.notify_multiple_devices(registration_ids=registration_ids,
+        return push_service.notify_multiple_devices(registration_ids=registration_ids,
                                                       data_message=data_message)
+    
