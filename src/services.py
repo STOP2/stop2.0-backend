@@ -131,7 +131,8 @@ class DigitransitAPIService:
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
         
         result = {"request_id": request_id}
-        thread_helper.start_do_every("PUSH", 30, self.notify)
+        if push_notification:
+            thread_helper.start_do_every("PUSH", 30, self.notify)
         return result
     
     def get_request_info(self, request_id):
