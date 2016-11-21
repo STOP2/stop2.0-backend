@@ -37,11 +37,14 @@ class Database:
     def put_connection(self, conn):
         self.pool.putconn(conn)
     
-    def store_request(self, trip_id, stop_id, device_id):
+    def store_request(self, trip_id, stop_id, device_id, push_notification):
         conn = self.get_connection()
         cur = conn.cursor()
-        values = (trip_id, stop_id, device_id)
-        sql = "INSERT INTO request (trip_id, stop_id, user_id, device_id, req_time, canceled) VALUES (%s, %s, 'user', %s, now(), false) RETURNING id"
+        if device_id == '0':
+            values = (trip_id, stop_id, device_id, True)
+        else:
+            values = (trip_id, stop_id, device_id, not push_notification)
+        sql = "INSERT INTO request (trip_id, stop_id, user_id, device_id, pushed, req_time, canceled) VALUES (%s, %s, 'user', %s, %s, now(), false) RETURNING id"
         cur.execute(sql, values)
         request_id = cur.fetchone()[0]
         conn.commit()

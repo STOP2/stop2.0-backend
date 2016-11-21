@@ -122,8 +122,8 @@ class DigitransitAPIService:
 
         return response.text
 
-    def make_request(self, trip_id, stop_id, device_id):
-        request_id = self.db.store_request(trip_id, stop_id, device_id)
+    def make_request(self, trip_id, stop_id, device_id, push_notification):
+        request_id = self.db.store_request(trip_id, stop_id, device_id, push_notification)
         
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)

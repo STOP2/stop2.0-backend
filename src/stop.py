@@ -47,11 +47,12 @@ def stoprequests():
         trip_id = json_data.get('trip_id')
         stop_id = json_data.get('stop_id')
         device_id = json_data.get('device_id', '0')
+        push_notification = json_data.get('push_notification', True)
         if not (trip_id and stop_id):
             resp = make_response(json.dumps({'error': 'no trip_id or stop_id query parameter given'}), 400)
             resp.mimetype = 'application/json'
             return resp
-        resp = make_response(json.dumps(digitransitAPIService.make_request(trip_id, stop_id, device_id)))
+        resp = make_response(json.dumps(digitransitAPIService.make_request(trip_id, stop_id, device_id, push_notification)))
         resp.mimetype = 'application/json'
         return resp
 
