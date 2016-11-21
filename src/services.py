@@ -273,7 +273,8 @@ class DigitransitAPIService:
             return
         pushed_requests = self.fetch_trips_and_send_push_notifications(pushable_requests)
         # still need some kind of evaluation wether the notifications were sent
-        # self.db.set_pushed(pushed_requests)
+        if pushed_requests:
+            self.db.set_pushed(pushed_requests)
         
 
     def fetch_trips_and_send_push_notifications(self, stoprequests):
