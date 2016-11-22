@@ -4257,7 +4257,75 @@ def mock():
   }
 }
         ''')
-    
+
+    elif request_body == '{ trip(id:\"trip_id_1\"){\n                        gtfsId\n                        stoptimesForDate(serviceDay:"%s"){\n                            serviceDay\n                            realtimeArrival\n                            stop{\n                                gtfsId\n                            }\n                            }\n                        }\n                    }'  % (datetime.datetime.now().strftime("%Y%m%d")):
+        return re.sub(r'"serviceDay":.*,',
+               '"serviceDay": ' + str(int(time.mktime(time.strptime(datetime.datetime.now().strftime("%Y%m%d"), "%Y%m%d")))) + ",",
+               '''
+{
+    "data": {
+        "trip": {
+            "gtfsId": "trip_id_1",
+            "stoptimesForDate": [
+                {
+                    "serviceDay": 1479765600,
+                    "realtimeArrival": 0,
+                    "stop": {
+                        "gtfsId": "stop_id"
+                    }
+                }
+            ]
+        }
+    }
+}
+        ''')
+
+    elif request_body == '{ trip(id:\"trip_id_2\"){\n                        gtfsId\n                        stoptimesForDate(serviceDay:"%s"){\n                            serviceDay\n                            realtimeArrival\n                            stop{\n                                gtfsId\n                            }\n                            }\n                        }\n                    }' % (datetime.datetime.now().strftime("%Y%m%d")):
+        return re.sub(r'"serviceDay":.*,',
+               '"serviceDay": ' + str(
+                   int(time.mktime(time.strptime(datetime.datetime.now().strftime("%Y%m%d"), "%Y%m%d")))) + ",",
+               '''
+{
+    "data": {
+        "trip": {
+            "gtfsId": "trip_id_2",
+            "stoptimesForDate": [
+                {
+                    "serviceDay": 1479765600,
+                    "realtimeArrival": 0,
+                    "stop": {
+                        "gtfsId": "stop_id"
+                    }
+                }
+            ]
+        }
+    }
+}
+        ''')
+
+    elif request_body == '{ trip(id:"trip_id_3"){\n                        gtfsId\n                        stoptimesForDate(serviceDay:"%s"){\n                            serviceDay\n                            realtimeArrival\n                            stop{\n                                gtfsId\n                            }\n                            }\n                        }\n                    }' % (datetime.datetime.now().strftime("%Y%m%d")):
+        return re.sub(r'"serviceDay":.*,',
+               '"serviceDay": ' + str(
+                   int(time.mktime(time.strptime(datetime.datetime.now().strftime("%Y%m%d"), "%Y%m%d")))) + ",",
+               '''
+{
+    "data": {
+        "trip": {
+            "gtfsId": "trip_id_3",
+            "stoptimesForDate": [
+                {
+                    "serviceDay": 1479765600,
+                    "realtimeArrival": 99999,
+                    "stop": {
+                        "gtfsId": "stop_id"
+                    }
+                }
+            ]
+        }
+    }
+}
+        ''')
+
     else:
         return 'your mock call didn\'t match any request body'
 

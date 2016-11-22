@@ -7,13 +7,16 @@ from flask import json
 from waitress import serve
 
 import services
+import push_notification_service
 import db
 
 
 app = Flask(__name__)
 
 db = db.Database()
+push_notification_service = push_notification_service.PushNotificationService()
 digitransitAPIService = services.DigitransitAPIService(db,
+                                                       push_notification_service,
                                                        'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql')
 
 
@@ -24,7 +27,8 @@ def hello_world():
 
 @app.route('/test')
 def digitransit_test():
-    return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
+    return json.dumps(digitransitAPIService.fetch_single_trip("HSL:1055_20161107_Ti_2_1329"))
+    #return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
 
 
 @app.route('/stoprequests', methods=['GET', 'POST'])
@@ -43,11 +47,12 @@ def stoprequests():
         trip_id = json_data.get('trip_id')
         stop_id = json_data.get('stop_id')
         device_id = json_data.get('device_id', '0')
+        push_notification = json_data.get('push_notification', True)
         if not (trip_id and stop_id):
             resp = make_response(json.dumps({'error': 'no trip_id or stop_id query parameter given'}), 400)
             resp.mimetype = 'application/json'
             return resp
-        resp = make_response(json.dumps(digitransitAPIService.make_request(trip_id, stop_id, device_id)))
+        resp = make_response(json.dumps(digitransitAPIService.make_request(trip_id, stop_id, device_id, push_notification)))
         resp.mimetype = 'application/json'
         return resp
 

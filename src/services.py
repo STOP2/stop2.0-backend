@@ -5,15 +5,16 @@ import math
 import paho.mqtt.publish as publish
 from itertools import groupby
 
-import push_notifications
+import thread_helper
 
 
 class DigitransitAPIService:
-    def __init__(self, db, hsl_api_url):
+    def __init__(self, db, push_notification_service, hsl_api_url):
         self.url = hsl_api_url
         self.headers = {'Content-Type': 'application/graphql'}
         self.db = db
         self.MQTT_host = "epsilon.fixme.fi"
+        self.push_notification_service = push_notification_service
 
     def get_stops(self, lat, lon, radius):
         data = {}
@@ -123,13 +124,15 @@ class DigitransitAPIService:
 
         return response.text
 
-    def make_request(self, trip_id, stop_id, device_id):
-        request_id = self.db.store_request(trip_id, stop_id, device_id)
+    def make_request(self, trip_id, stop_id, device_id, push_notification):
+        request_id = self.db.store_request(trip_id, stop_id, device_id, push_notification)
         
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
         
         result = {"request_id": request_id}
+        if push_notification:
+            thread_helper.start_do_every("PUSH", 30, self.notify)
         return result
     
     def get_request_info(self, request_id):
@@ -244,3 +247,69 @@ class DigitransitAPIService:
         result["stops"] = stops
     
         return result
+
+    def fetch_single_trip(self, trip_id):
+        query = ('''{ trip(id:"%s"){
+                        gtfsId
+                        stoptimesForDate(serviceDay:"%s"){
+                            serviceDay
+                            realtimeArrival
+                            stop{
+                                gtfsId
+                            }
+                            }
+                        }
+                    }''') % (trip_id, datetime.datetime.now().strftime("%Y%m%d"))
+
+        data = json.loads(self.get_query(query))
+
+        return data['data']
+    
+    def notify(self):
+        pushable_requests = self.fetch_pushable_requests()
+        if not pushable_requests:
+            thread_helper.stop_do_every("PUSH")
+            return
+        pushed_requests = self.fetch_trips_and_send_push_notifications(pushable_requests)
+        # still need some kind of evaluation wether the notifications were sent
+        if pushed_requests:
+            self.db.set_pushed(pushed_requests)
+        
+
+    def fetch_trips_and_send_push_notifications(self, stoprequests):
+        current_time = datetime.datetime.now()
+        to_send = [] # List of push notifications to be sent
+        pushed_requests = [] # List of ids of pushed requests
+
+        # stoprequests is dict where:
+        # stoprequests[trip_id] = [ (1_stop_id, 1_device_id), (2_stop_id, 2_device_id), ... ]
+        for trip_id in stoprequests.keys():
+            data = self.fetch_single_trip(trip_id)
+            for sr in stoprequests[trip_id]:
+                # sr[0] = request_id, sr[1] = stop_id, sr[2] = device_id
+                for stoptime in data['trip']['stoptimesForDate']:
+                    if stoptime['stop']['gtfsId'] == sr[1]:
+                        arrival_time = datetime.datetime.fromtimestamp(stoptime['serviceDay'] + stoptime['realtimeArrival'])
+                        arrival = math.floor((arrival_time - current_time).total_seconds())
+                        if arrival <= 120:
+                            to_send.append(sr[2])
+                            pushed_requests.append(sr[0])
+
+        if len(to_send) != 0:
+            result = self.push_notification_service.send_push_notification(to_send)
+            if result[0].get('success') == 0:
+                pushed_requests = []
+            
+        return pushed_requests
+
+    def fetch_pushable_requests(self):
+        pushable_requests = self.db.get_unpushed_requests()
+        requests_by_trip_id = {}
+        
+        for request in pushable_requests:
+            if requests_by_trip_id.get(request[0]):
+                requests_by_trip_id.get(request[0]).append((request[1], request[2], request[3]))
+            else:
+                requests_by_trip_id[request[0]] = [(request[1], request[2], request[3])]
+
+        return requests_by_trip_id

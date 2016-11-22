@@ -6,7 +6,8 @@ CREATE TABLE request (
 	device_id text,
 	req_time timestamp with time zone,
 	canceled boolean,
-	cancel_time timestamp with time zone
+	cancel_time timestamp with time zone,
+	pushed boolean
 );
 
 CREATE TABLE report (

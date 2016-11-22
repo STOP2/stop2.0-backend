@@ -14,7 +14,7 @@ class TestStopRoutes(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_stopsrequests_post(self):
-        jsonString = '{"trip_id": "1234", "stop_id": "HSL:1282106", "device_id": "123"}'
+        jsonString = '{"trip_id": "1234", "stop_id": "HSL:1282106", "device_id": "123", "push_notification": false}'
         response = self.app.post('/stoprequests', data=jsonString, content_type='application/json')
         self.assertEquals(response.status_code, 200)
 
