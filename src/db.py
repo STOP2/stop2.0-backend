@@ -18,7 +18,7 @@ class Database:
         loop_end = time.time() + 10
         while time.time() < loop_end:
             try:
-                self.pool = psycopg2.pool.ThreadedConnectionPool(1, 5, host=os.getenv('DBHOST', 'localhost'),
+                self.pool = psycopg2.pool.ThreadedConnectionPool(1, 20, host=os.getenv('DBHOST', 'localhost'),
                                                                  port=os.getenv('DBPORT', '5432'),
                                                                  user=os.getenv('DBUSER', 'stop'),
                                                                  database=os.getenv('DBNAME', 'stop'),
