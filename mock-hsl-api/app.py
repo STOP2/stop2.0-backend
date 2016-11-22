@@ -3982,6 +3982,1142 @@ def mock():
   }
 }
         ''')
+
+    elif request_body == '{stop(id: "HSL:6070226") {  name  code  vehicleType  stoptimesForServiceDate(date: "%s"){     pattern {         code         name         directionId         route {             gtfsId             longName             shortName         }     }     stoptimes {         trip{             gtfsId         }         serviceDay    	    realtimeArrival      }    }  }}' % (
+        datetime.datetime.now().strftime("%Y%m%d")):
+        return re.sub(r'"serviceDay":.*,',
+                      '"serviceDay": ' + str(
+                          int(time.mktime(time.strptime(datetime.datetime.now().strftime("%Y%m%d"), "%Y%m%d")))) + ",",
+                      '''
+ {
+  "data": {
+    "stop": {
+      "name": "Aamuruskonkuja",
+      "code": "Ki0726",
+      "vehicleType": 3,
+      "stoptimesForServiceDate": [
+        {
+          "pattern": {
+            "code": "HSL:6173:1:01",
+            "name": "173 to Kamppi, tulo (HSL:1040289)",
+            "directionId": 1,
+            "route": {
+              "gtfsId": "HSL:6173",
+              "longName": "Kamppi - Masala - Kirkkonummi - Upinniemi",
+              "shortName": "173"
+            }
+          },
+          "stoptimes": [
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_1800"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 66060
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_1900"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 69600
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_1300"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 48060
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_1400"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 51660
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_1100"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 40860
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_1200"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 44460
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_1000"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 37260
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_2255"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 83700
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_2355"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 87300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_2000"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 73200
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_2155"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 80100
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_2100"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 76800
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_0455"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 18900
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 22860
+            }
+          ]
+        },
+        {
+          "pattern": {
+            "code": "HSL:6903K:1:01",
+            "name": "903K to Kirkkonummi mk (HSL:6040288)",
+            "directionId": 1,
+            "route": {
+              "gtfsId": "HSL:6903K",
+              "longName": "Kirkkonummi - Kantvik - Hila",
+              "shortName": "903K"
+            }
+          },
+          "stoptimes": [
+            {
+              "trip": {
+                "gtfsId": "HSL:6903K_20161107_Ma_2_0915"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 34560
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6903K_20161107_Ma_2_0811"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 30900
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6903K_20161107_Ma_2_0710"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 27180
+            }
+          ]
+        },
+        {
+          "pattern": {
+            "code": "HSL:6172:1:01",
+            "name": "172 to Kamppi, tulo (HSL:1040289)",
+            "directionId": 1,
+            "route": {
+              "gtfsId": "HSL:6172",
+              "longName": "Kamppi - Masala - Kirkkonummi - Kantvik",
+              "shortName": "172"
+            }
+          },
+          "stoptimes": [
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_1540"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 56640
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_1625"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 59340
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_1655"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 61140
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_1725"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 62940
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_1755"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 64740
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_0640"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 24240
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_0740"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 27840
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_0710"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 26040
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_0810"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 29640
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_0840"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 31440
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_0910"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 33240
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6172_20161107_Ma_2_0930"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 34440
+            }
+          ]
+        },
+        {
+          "pattern": {
+            "code": "HSL:6173Z:1:01",
+            "name": "173Z to Kamppi, tulo (HSL:1040289)",
+            "directionId": 1,
+            "route": {
+              "gtfsId": "HSL:6173Z",
+              "longName": "Kamppi - Kirkkonummi - Upinniemi",
+              "shortName": "173Z"
+            }
+          },
+          "stoptimes": [
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_0635"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 25020
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_0535"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 21360
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_0930"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 35460
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_0900"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 33660
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_0830"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 31860
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_0730"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 28320
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_0705"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 26820
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_0755"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 29820
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_1530"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 57060
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_1455"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 54960
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_1715"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 63420
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_1625"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 60360
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_1600"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 58860
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173Z_20161107_Ma_2_1655"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 62220
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+        ''')
+
+    elif request_body == '{stop(id: "HSL:1171403") {  name  code  vehicleType  stoptimesForServiceDate(date: "%s"){     pattern {         code         name         directionId         route {             gtfsId             longName             shortName         }     }     stoptimes {         trip{             gtfsId         }         serviceDay    	    realtimeArrival      }    }  }}' % (
+    datetime.datetime.now().strftime("%Y%m%d")):
+        return re.sub(r'"serviceDay":.*,',
+                      '"serviceDay": ' + str(
+                          int(time.mktime(time.strptime(datetime.datetime.now().strftime("%Y%m%d"), "%Y%m%d")))) + ",",
+                      '''
+        {
+  "data": {
+    "stop": {
+      "name": "Palkkatilanportti",
+      "code": "0604",
+      "vehicleType": 0,
+      "stoptimesForServiceDate": [
+        {
+          "pattern": {
+            "code": "HSL:1007B:1:04",
+            "name": "7B to Töölön halli (HSL:1140439)",
+            "directionId": 1,
+            "route": {
+              "gtfsId": "HSL:1007B",
+              "longName": "Senaatintori-Pasila-Töölö-Senaatintori",
+              "shortName": "7B"
+            }
+          },
+          "stoptimes": [
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B5_20161114_Ma_2_2308"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 83640
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B5_20161114_Ma_2_2323"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 84540
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B5_20161114_Ma_2_2347"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 85980
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B5_20161114_Ma_2_2335"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 85260
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B5_20161114_Ma_2_0938"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 35040
+            }
+          ]
+        },
+        {
+          "pattern": {
+            "code": "HSL:1007B:1:02",
+            "name": "7B to Hallituskatu (HSL:1010420) from Pasilan asema (HSL:1174401)",
+            "directionId": 1,
+            "route": {
+              "gtfsId": "HSL:1007B",
+              "longName": "Senaatintori-Pasila-Töölö-Senaatintori",
+              "shortName": "7B"
+            }
+          },
+          "stoptimes": [
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2052"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 75480
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2040"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 74760
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2028"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 74040
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2016"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 73320
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2004"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 72600
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2300"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 83160
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2248"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 82440
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2235"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 81660
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2221"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 80820
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2206"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 79920
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2150"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 78960
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2139"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 78300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2127"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 77580
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2115"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 76860
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_2103"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 76140
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1656"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 61320
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1645"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 60660
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1635"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 60060
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1625"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 59520
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1615"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 58920
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1606"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 58380
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1450"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 53760
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1558"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 57900
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1546"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 57180
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1536"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 56580
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1527"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 56040
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1517"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 55440
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1501"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 54420
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1507"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 54780
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1354"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 50400
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1343"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 49740
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1331"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 49020
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1439"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 53100
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1427"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 52380
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1416"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 51720
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1405"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 51060
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1258"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 47040
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1247"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 46380
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1235"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 45660
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1224"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 45000
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1213"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 44340
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1320"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 48360
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1309"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 47700
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1952"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 71880
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1940"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 71160
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1928"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 70440
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1916"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 69720
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1904"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 69000
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1852"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 68280
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1840"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 67560
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1828"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 66840
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1815"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 66060
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1804"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 65400
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1754"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 64800
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1743"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 64140
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1733"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 63540
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1724"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 63000
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1714"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 62400
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1705"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 61860
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1151"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 43020
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1139"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 42300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1128"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 41640
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1117"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 40980
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1106"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 40320
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1202"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 43680
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1055"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 39660
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1043"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 38940
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1032"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 38280
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1021"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 37620
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_1010"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 36960
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0914"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 33600
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0901"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 32880
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0959"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 36300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0947"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 35580
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0936"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 34920
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0925"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 34260
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0840"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 31620
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0849"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 32160
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0820"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 30420
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0829"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 30960
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0811"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 29880
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0802"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 29340
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0752"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 28740
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0743"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 28200
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0732"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 27540
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0723"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 27000
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0715"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 26520
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0706"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 25980
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0657"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 25440
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0641"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 24420
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0648"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 24900
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0632"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 23880
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0620"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 23160
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0606"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 22320
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1007B_20161114_Ma_2_0554"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 21600
+            }
+          ]
+        },
+        {
+          "pattern": {
+            "code": "HSL:1007B:1:03",
+            "name": "7B to Rautatieasema (HSL:1020453)",
+            "directionId": 1,
+            "route": {
+              "gtfsId": "HSL:1007B",
+              "longName": "Senaatintori-Pasila-Töölö-Senaatintori",
+              "shortName": "7B"
+            }
+          },
+          "stoptimes": []
+        }
+      ]
+    }
+  }
+}
+        ''')
     
     elif request_body == '{trip(id: "HSL:1506_20161031_Ti_2_1155") { stoptimesForDate(serviceDay: "%s") {      stop{          gtfsId          name          code }      serviceDay      realtimeArrival        }       }      }}' % (datetime.datetime.now().strftime("%Y%m%d")):
         return re.sub(r'"serviceDay":.*,',
