@@ -297,7 +297,9 @@ class DigitransitAPIService:
                             pushed_requests.append(sr[0])
 
         if len(to_send) != 0:
-            self.push_notification_service.send_push_notification(to_send)
+            result = self.push_notification_service.send_push_notification(to_send)
+            if result[0].get('success') == 0:
+                pushed_requests = []
             
         return pushed_requests
 
