@@ -1,13 +1,13 @@
 import unittest
 import services
 import db
-import push_notification_service
+import tests.mock.mock_push_service as mock_push_service
 
 
 class TestDigitransitAPIService(unittest.TestCase):
 
     def setUp(self):
-        self.digitransitAPIService = services.DigitransitAPIService(db.Database(), push_notification_service.PushNotificationService(), 'http://localhost:11111')
+        self.digitransitAPIService = services.DigitransitAPIService(db.Database(), mock_push_service.MockPushService(), 'http://localhost:11111')
 
     def test_get_stops(self):
         stops = self.digitransitAPIService.get_stops(60.203978, 24.9633573, 160)
@@ -65,6 +65,15 @@ class TestDigitransitAPIService(unittest.TestCase):
 
         second_stop = all_stoptimes[1]
         self.assertEqual(second_stop["stop_name"], 'Tukholmankatu')
+
+    def test_sending_notifications(self):
+        requests = {"trip_id_1": [(1,"stop_id","device_id")], "trip_id_2": [(2,"stop_id","device_id")], "trip_id_3": [(3,"stop_id","device_id")]}
+        # set arrival times in mock hsl api
+        result = self.digitransitAPIService.fetch_trips_and_send_push_notifications(requests)
+
+        self.assertEqual(2, len(result))
+        self.assertTrue(1 in result)
+        self.assertTrue(2 in result)
 
 
 if __name__ == '__main__':

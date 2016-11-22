@@ -259,8 +259,7 @@ class DigitransitAPIService:
                             }
                             }
                         }
-                    }
-                ''') % (trip_id, datetime.datetime.now().strftime("%Y%m%d"))
+                    }''') % (trip_id, datetime.datetime.now().strftime("%Y%m%d"))
 
         data = json.loads(self.get_query(query))
 
