@@ -91,12 +91,14 @@ class DigitransitAPIService:
             stoptimes = line["stoptimes"]
 
             for time in stoptimes:
+                if not "serviceDay" in time: continue
+
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
                 arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
                 if current_time < arrival_time and arrival < 61:
                     schedule.append({'trip_id': time["trip"]["gtfsId"],
                                      'line': line["pattern"]["route"]["shortName"],
-                                     'destination': time["stopHeadsign"],
+                                     'destination': time.get("stopHeadsign", ""),
                                      'arrival': arrival,
                                      'route_id': line["pattern"]["route"]["gtfsId"],
                                      'vehicle_type': data["vehicleType"]
