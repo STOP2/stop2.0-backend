@@ -125,6 +125,9 @@ class DigitransitAPIService:
     def get_query(self, query):
         response = requests.post(self.url, data=query, headers=self.headers)
 
+        # Force encoding as auto-detection sometimes fails
+        response.encoding = 'utf-8'
+
         return response.text
 
     def make_request(self, trip_id, stop_id, device_id, push_notification):
