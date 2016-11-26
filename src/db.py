@@ -65,7 +65,7 @@ class Database:
         conn = self.get_connection()
         cur = conn.cursor()
         values = (request_id,)
-        sql = "UPDATE request canceled = true, cancel_time = now() WHERE request_id = %s RETURNING trip_id"
+        sql = "UPDATE request SET canceled = true, cancel_time = now() WHERE id = %s RETURNING trip_id"
         cur.execute(sql, values)
         trip_id = cur.fetchone()[0]
         conn.commit()
