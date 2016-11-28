@@ -60,6 +60,10 @@ class TestDigitransitAPIService(unittest.TestCase):
         stop3_schedule = stop3["schedule"]
         self.assertTrue(len(stop3_schedule) <= 2)
 
+    def test_get_busses_by_stop_id_with_invalid_id(self):
+        stop = self.digitransitAPIService.get_busses_by_stop_id("INVALID", 100)
+        self.assertEqual(stop['error'], 'Invalid stop_id')
+
     def test_get_stops_by_trip_id(self):
         stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:1506_20161031_Ti_2_1155')
 
@@ -78,8 +82,21 @@ class TestDigitransitAPIService(unittest.TestCase):
         second_stop = all_stoptimes[1]
         self.assertEqual(second_stop["stop_name"], 'Tukholmankatu')
 
+    def test_get_stops_by_trip_id_with_invalid_id(self):
+        stop = self.digitransitAPIService.get_stops_by_trip_id("INVALID")
+        self.assertEqual(stop['error'], 'Invalid trip_id')
+
     def test_sending_notifications(self):
         requests = {"trip_id_1": [(1,"stop_id","device_id")], "trip_id_2": [(2,"stop_id","device_id")], "trip_id_3": [(3,"stop_id","device_id")]}
+        # set arrival times in mock hsl api
+        result = self.digitransitAPIService.fetch_trips_and_send_push_notifications(requests)
+
+        self.assertEqual(2, len(result))
+        self.assertTrue(1 in result)
+        self.assertTrue(2 in result)
+
+    def test_sending_error_notifications(self):
+        requests = {"trip_id_1": [(1, "stop_id", "device_id")], "trip_id_2": [(2, "stop_id", "device_id")], "trip_id_3": [(3, "stop_id", "device_id")]}
         # set arrival times in mock hsl api
         result = self.digitransitAPIService.fetch_trips_and_send_push_notifications(requests)
 
