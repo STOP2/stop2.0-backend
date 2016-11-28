@@ -306,18 +306,35 @@ class DigitransitAPIService:
         # stoprequests[trip_id] = [ (1_stop_id, 1_device_id), (2_stop_id, 2_device_id), ... ]
         for trip_id in stoprequests.keys():
             data = self.fetch_single_trip(trip_id)
+
+            # In case trip_id is invalid (cancels invalid requests and send push_notifications of error)
+            if data['trip'] is None:
+                error_notifications = []
+                for sr in stoprequests[trip_id]:
+                    self.cancel_request(sr[0])
+                    error_notifications.append(sr[2])
+                self.push_notification_service.send_error_push_notifications(error_notifications, 'Invalid trip_id!')
+                continue
+
             for sr in stoprequests[trip_id]:
+                found = False # Whether wanted stop_id is on the route of the trip
                 # sr[0] = request_id, sr[1] = stop_id, sr[2] = device_id
                 for stoptime in data['trip']['stoptimesForDate']:
                     if stoptime['stop']['gtfsId'] == sr[1]:
+                        found = True
                         arrival_time = datetime.datetime.fromtimestamp(stoptime['serviceDay'] + stoptime['realtimeArrival'])
                         arrival = math.floor((arrival_time - current_time).total_seconds())
                         if arrival <= 120:
                             to_send.append(sr[2])
                             pushed_requests.append(sr[0])
 
+                # In case stop_id was invalid (cancels invalid request and send push_notification of error)
+                if not found:
+                    self.cancel_request(sr[0])
+                    self.push_notification_service.send_error_push_notifications([sr[2]], 'Invalid stop_id!')
+
         if len(to_send) != 0:
-            result = self.push_notification_service.send_push_notification(to_send)
+            result = self.push_notification_service.send_push_notifications(to_send)
             if result[0].get('success') == 0:
                 pushed_requests = []
 
