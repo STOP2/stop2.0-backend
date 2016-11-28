@@ -27,6 +27,10 @@ class DigitransitAPIService:
         data["stops"] = stops
         return data
 
+    def get_stops_with_beacon(self, major, minor):
+        beacon_coords = {'lat': 60.19350, 'lon': 24.90646}
+        return self.get_stops(beacon_coords.get('lat'), beacon_coords.get('lon'), 160)
+
     def get_stops_near_coordinates(self, lat, lon, radius):
         radius = min(radius, 1000)
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
