@@ -14,14 +14,8 @@ env:
 services:
   - docker
   - docker-compose
-install:
-  - pip install -r requirements.txt
-  - export PYTHONPATH=$(pwd)/src/
-  - docker-compose build && docker-compose up -d
 script:
-  - coverage run -m --branch --source=src --omit=src/tests/* unittest discover -s src/tests
-  - coverage report -m
-  - bash src/tests/integration_test.sh
+  - make test
 after_success:
   - coveralls
   - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
