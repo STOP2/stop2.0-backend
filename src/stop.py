@@ -87,10 +87,24 @@ def stops():
     lon = float(request.args.get('lon'))
     rad = float(request.args.get('rad', 160))
     if not (lat and lon):
-        resp = make_response(json.dumps({'error': 'not lat or lon query parameter given'}), 400)
+        resp = make_response(json.dumps({'error': 'no lat or lon query parameter given'}), 400)
         resp.mimetype = 'application/json'
         return resp
     result = digitransitAPIService.get_stops(lat, lon, rad)
+    resp = make_response(json.dumps(result))
+    resp.mimetype = 'application/json'
+    return resp
+
+
+@app.route('/stops/beacons', methods=['GET'])
+def stops_beacons():
+    major = int(request.args.get('major'))
+    minor = int(request.args.get('minor'))
+    if not (major and minor):
+        resp = make_response(json.dumps({'error': 'no major or minor query parameter given'}), 400)
+        resp.mimetype = 'application/json'
+        return resp
+    result = digitransitAPIService.get_stops_with_beacon(major, minor)
     resp = make_response(json.dumps(result))
     resp.mimetype = 'application/json'
     return resp
