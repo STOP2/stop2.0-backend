@@ -62,7 +62,7 @@ class TestDigitransitAPIService(unittest.TestCase):
 
     def test_get_busses_by_stop_id_with_invalid_id(self):
         stop = self.digitransitAPIService.get_busses_by_stop_id("INVALID", 100)
-        self.assertEqual(stop['error'], 'Invalid stop_id')
+        self.assertEqual(stop['error'], 'Invalid stop id')
 
     def test_get_stops_by_trip_id(self):
         stoptimes = self.digitransitAPIService.get_stops_by_trip_id('HSL:1506_20161031_Ti_2_1155')
@@ -84,7 +84,7 @@ class TestDigitransitAPIService(unittest.TestCase):
 
     def test_get_stops_by_trip_id_with_invalid_id(self):
         stop = self.digitransitAPIService.get_stops_by_trip_id("INVALID")
-        self.assertEqual(stop['error'], 'Invalid trip_id')
+        self.assertEqual(stop['error'], 'Invalid trip id')
 
     def test_sending_notifications(self):
         requests = {"trip_id_1": [(1,"stop_id","device_id")], "trip_id_2": [(2,"stop_id","device_id")], "trip_id_3": [(3,"stop_id","device_id")]}

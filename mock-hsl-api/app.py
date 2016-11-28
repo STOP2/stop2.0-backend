@@ -5463,10 +5463,10 @@ def mock():
         ''')
 
     elif request_body == '{stop(id: "INVALID") {  name  code  vehicleType  stoptimesForServiceDate(date: "%s"){     pattern {         code         name         directionId         route {             gtfsId             longName             shortName         }     }     stoptimes {         trip{             gtfsId         }         serviceDay    	    realtimeArrival      }    }  }}' % (datetime.datetime.now().strftime("%Y%m%d")):
-        return '{"error":"Invalid stop_id"}'
+        return '{"data": { "stop": null } }'
 
-    elif request_body == '{ trip(id:\"INVALID\"){\n                        gtfsId\n                        stoptimesForDate(serviceDay:"%s"){\n                            serviceDay\n                            realtimeArrival\n                            stop{\n                                gtfsId\n                            }\n                            }\n                        }\n                    }' % (datetime.datetime.now().strftime("%Y%m%d")):
-        return '{"error":"Invalid trip_id"}'
+    elif request_body == '{trip(id: "INVALID") { stoptimesForDate(serviceDay: "%s") {      stop{          gtfsId          name          code }      serviceDay      realtimeArrival        }       }      }}' % (datetime.datetime.now().strftime("%Y%m%d")):
+        return '{"data": { "trip": null } }'
 
     else:
         return 'your mock call didn\'t match any request body'
