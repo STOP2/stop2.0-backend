@@ -2,6 +2,8 @@ import datetime
 import requests
 import json
 import math
+import urllib
+import csv
 import paho.mqtt.publish as publish
 from itertools import groupby
 
@@ -30,6 +32,39 @@ class DigitransitAPIService:
     def get_stops_with_beacon(self, major, minor):
         beacon_coords = {'lat': 60.19350, 'lon': 24.90646}
         return self.get_stops(beacon_coords.get('lat'), beacon_coords.get('lon'), 160)
+
+
+    def get_busses_with_beacon(self, major_minor):
+        # Loads the file from http://dev.hsl.fi/tmp/bus_beacons.csv and saves it as bus_beacons.csv
+        file = urllib.URLopen()
+        file.retrieve('http://dev.hsl.fi/tmp/bus_beacons.csv', 'bus_beacons.csv')
+
+        # https://dev.hsl.fi/hfp/journey/bus/<vehicle>/
+
+        with open('bus_beacon.csv', 'rb') as csvfile:
+            for mm in major_minor:
+                reader = csv.DictReader(csvfile, delimeter=',')
+                for row in reader:
+                    if row['major'] == mm['major'] and row['minor'] == mm['minor']:
+                        json_data = json.loads(requests.get(('https://dev.hsl.fi/hfp/journey/bus/%s/') % (row['vehicle'])).content)
+
+                        data = self.fetch_single_fuzzy_trip()
+
+                        break
+
+
+    def fetch_single_fuzzy_trip(self, route, direction, date, time):
+        query = ('''{fuzzyTrip(route:"%s", date:"%s", time:%d, direction:%d){
+                        gtfsId
+                        route
+                        directionId
+                    }
+                }''') % (route, date, time, direction)
+
+        data = json.loads(self.get_query(query))
+
+        return data
+
 
     def get_stops_near_coordinates(self, lat, lon, radius):
         radius = min(radius, 1000)

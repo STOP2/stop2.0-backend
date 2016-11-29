@@ -111,6 +111,16 @@ def stops_beacons():
     return resp
 
 
+@app.route('/busses/beacons', methods=['POST'])
+def busses_beacons():
+    json_data = request.json
+    result = digitransitAPIService.get_busses_with_beacon(json_data)
+
+    resp = make_response(json.dumps(result))
+    resp.mimetype = 'application/json'
+    return resp
+
+
 @app.route('/routes', methods=['GET'])
 def routes():
     trip_id = request.args.get('trip_id')
