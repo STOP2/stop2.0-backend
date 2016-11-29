@@ -13,12 +13,18 @@ run:
 venv:
 	virtualenv -p python3 venv
 
+test: export DBPORT=9999
 test: stamps/requirements-done
 	(docker-compose build && docker-compose up -d && . ./venv/bin/activate && \
 	 PYTHONPATH=src/ coverage run -m --branch --source=src \
 	  --omit=src/tests/* unittest discover -s src/tests && \
 	coverage report -m && . src/tests/integration_test.sh) && \
-	docker stop stop20backend_web_1 && \
-    docker stop stop20backend_postgres_1 && \
-    docker stop stop20backend_mock_1
+	make docker-stop
 
+docker-stop:
+	docker stop stop20backend_web_1 && \
+	docker stop stop20backend_postgres_1 && \
+	docker stop stop20backend_mock_1 && \
+	docker rm stop20backend_web_1 && \
+	docker rm stop20backend_postgres_1 && \
+	docker rm stop20backend_mock_1

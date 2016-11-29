@@ -27,6 +27,10 @@ class DigitransitAPIService:
         data["stops"] = stops
         return data
 
+    def get_stops_with_beacon(self, major, minor):
+        beacon_coords = {'lat': 60.19350, 'lon': 24.90646}
+        return self.get_stops(beacon_coords.get('lat'), beacon_coords.get('lon'), 160)
+
     def get_stops_near_coordinates(self, lat, lon, radius):
         radius = min(radius, 1000)
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
@@ -81,6 +85,9 @@ class DigitransitAPIService:
 
         data = json.loads(self.get_query(query))["data"]["stop"]
 
+        if data is None:
+            return json.loads('{ "error":"Invalid stop id" }')
+
         lines = data["stoptimesForServiceDate"]
 
         current_time = datetime.datetime.now()
@@ -130,18 +137,18 @@ class DigitransitAPIService:
 
     def make_request(self, trip_id, stop_id, device_id, push_notification):
         request_id = self.db.store_request(trip_id, stop_id, device_id, push_notification)
-        
+
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
-        
+
         result = {"request_id": request_id}
         if push_notification:
             thread_helper.start_do_every("PUSH", 30, self.notify)
         return result
-    
+
     def get_request_info(self, request_id):
         request_data = self.db.get_request_info(request_id)
-        
+
         query = ("{"
                  "  trip(id: \"%s\"){"
                  "      stoptimesForDate(serviceDay: \"%s\"){"
@@ -166,35 +173,35 @@ class DigitransitAPIService:
                 arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
                 result = {'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'],
                           'stop_id': stop['stop']['gtfsId'], 'arrives_in': arrival, 'delay': stop['arrivalDelay']}
-        
+
         return result
-        
+
     def cancel_request(self, request_id):
         trip_id = self.db.cancel_request(request_id)
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
-        
+
         return ''
-        
+
     def store_report(self, trip_id, stop_id):
         self.db.store_report(trip_id, stop_id)
-        
+
         return ''
-    
+
     def get_requests(self, trip_id):
         requests = self.db.get_requests(trip_id)
         stop_dict = {}
-        
+
         for stop_id in requests:
             i = stop_dict.get(stop_id[0], 0)
             stop_dict[stop_id[0]] = i + 1
         stop_list = []
-        
+
         for key in stop_dict.keys():
             stop_list.append({"id": key, "passengers": stop_dict[key]})
-            
+
         return {"stop_ids": stop_list}
-    
+
     def get_stops_by_trip_id(self, trip_id):
         query = ("{trip(id: \"%s\") {"
                  " stoptimesForDate(serviceDay: \"%s\") {"
@@ -213,8 +220,12 @@ class DigitransitAPIService:
         current_time = datetime.datetime.now()
         result = {}
         stops = []
-        data = json.loads(self.get_query(query))['data']['trip']['stoptimesForDate']
-        for stop in data:
+        data = json.loads(self.get_query(query))['data']['trip']
+
+        if data is None:
+            return json.loads('{ "error":"Invalid trip id" }')
+
+        for stop in data['stoptimesForDate']:
             real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
             arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
             stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'],
@@ -237,19 +248,23 @@ class DigitransitAPIService:
                  "       }"
                  "      }"
                  "}") % (trip_id, datetime.datetime.now().strftime("%Y%m%d"))
-    
+
         current_time = datetime.datetime.now()
         result = {}
         stops = []
-        data = json.loads(self.get_query(query))['data']['trip']['stoptimesForDate']
-        for stop in data:
+        data = json.loads(self.get_query(query))['data']['trip']
+
+        if data is None:
+            return json.loads('{ "error":"Invalid trip id" }')
+
+        for stop in data['stoptimesForDate']:
             if stop_id == stop['stop']['gtfsId']:
                 real_time = datetime.datetime.fromtimestamp(stop["serviceDay"] + stop["realtimeArrival"])
                 arrival = math.floor((real_time - current_time).total_seconds() / 60.0)
                 stops.append({'stop_name': stop['stop']['name'], 'stop_code': stop['stop']['code'],
                                   'stop_id': stop['stop']['gtfsId'], 'arrives_in': arrival})
         result["stops"] = stops
-    
+
         return result
 
     def fetch_single_trip(self, trip_id):
@@ -268,7 +283,7 @@ class DigitransitAPIService:
         data = json.loads(self.get_query(query))
 
         return data['data']
-    
+
     def notify(self):
         pushable_requests = self.fetch_pushable_requests()
         if not pushable_requests:
@@ -278,7 +293,7 @@ class DigitransitAPIService:
         # still need some kind of evaluation wether the notifications were sent
         if pushed_requests:
             self.db.set_pushed(pushed_requests)
-        
+
 
     def fetch_trips_and_send_push_notifications(self, stoprequests):
         current_time = datetime.datetime.now()
@@ -289,27 +304,44 @@ class DigitransitAPIService:
         # stoprequests[trip_id] = [ (1_stop_id, 1_device_id), (2_stop_id, 2_device_id), ... ]
         for trip_id in stoprequests.keys():
             data = self.fetch_single_trip(trip_id)
+
+            # In case trip_id is invalid (cancels invalid requests and send push_notifications of error)
+            if data['trip'] is None:
+                error_notifications = []
+                for sr in stoprequests[trip_id]:
+                    self.cancel_request(sr[0])
+                    error_notifications.append(sr[2])
+                self.push_notification_service.send_error_push_notifications(error_notifications, 'Invalid trip_id!')
+                continue
+
             for sr in stoprequests[trip_id]:
+                found = False # Whether wanted stop_id is on the route of the trip
                 # sr[0] = request_id, sr[1] = stop_id, sr[2] = device_id
                 for stoptime in data['trip']['stoptimesForDate']:
                     if stoptime['stop']['gtfsId'] == sr[1]:
+                        found = True
                         arrival_time = datetime.datetime.fromtimestamp(stoptime['serviceDay'] + stoptime['realtimeArrival'])
                         arrival = math.floor((arrival_time - current_time).total_seconds())
                         if arrival <= 120:
                             to_send.append(sr[2])
                             pushed_requests.append(sr[0])
 
+                # In case stop_id was invalid (cancels invalid request and send push_notification of error)
+                if not found:
+                    self.cancel_request(sr[0])
+                    self.push_notification_service.send_error_push_notifications([sr[2]], 'Invalid stop_id!')
+
         if len(to_send) != 0:
-            result = self.push_notification_service.send_push_notification(to_send)
+            result = self.push_notification_service.send_push_notifications(to_send)
             if result[0].get('success') == 0:
                 pushed_requests = []
-            
+
         return pushed_requests
 
     def fetch_pushable_requests(self):
         pushable_requests = self.db.get_unpushed_requests()
         requests_by_trip_id = {}
-        
+
         for request in pushable_requests:
             if requests_by_trip_id.get(request[0]):
                 requests_by_trip_id.get(request[0]).append((request[1], request[2], request[3]))
