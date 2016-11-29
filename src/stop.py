@@ -17,7 +17,8 @@ db = db.Database()
 push_notification_service = push_notification_service.PushNotificationService()
 digitransitAPIService = services.DigitransitAPIService(db,
                                                        push_notification_service,
-                                                       'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql')
+                                                       'http://api.digitransit.space/routing/v1/routers/hsl/index/graphql')
+                                                       #'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql')
 
 
 @app.route('/')
