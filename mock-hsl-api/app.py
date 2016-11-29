@@ -293,10 +293,66 @@ def mock():
           "stoptimes": [
             {
               "trip": {
+                "gtfsId": "HSL:4722_20161024_Ti_1_0550"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 700
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:4722_20161024_Ti_1_0620"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 4300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:4722_20161024_Ti_1_0649"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 7900
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:4722_20161024_Ti_1_0738"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 11500
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:4722_20161024_Ti_1_0715"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 15100
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:4722_20161024_Ti_1_0850"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 18700
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:4722_20161024_Ti_1_0800"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 22300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:4722_20161024_Ti_1_0820"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 25900
+            },
+            {
+              "trip": {
                 "gtfsId": "HSL:4722_20161024_Ti_1_0520"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 20100
+              "realtimeArrival": 29500
             },
             {
               "trip": {
@@ -3092,469 +3148,693 @@ def mock():
                 "gtfsId": "HSL:1055_20161017_Ti_2_1832"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 67200
+              "realtimeArrival": 900
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1812"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 66000
+              "realtimeArrival": 1800
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1852"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 68400
+              "realtimeArrival": 2700
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1952"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 71940
+              "realtimeArrival": 3600
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1932"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 70740
+              "realtimeArrival": 4500
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1912"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 69540
+              "realtimeArrival": 5400
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1641"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 60540
+              "realtimeArrival": 6300
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1626"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 59640
+              "realtimeArrival": 7200
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1611"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 58800
+              "realtimeArrival": 8100
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1556"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 57900
+              "realtimeArrival": 9000
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1541"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 57000
+              "realtimeArrival": 9900
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1726"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 63240
+              "realtimeArrival": 10800
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1711"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 62340
+              "realtimeArrival": 11700
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1757"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 65100
+              "realtimeArrival": 12600
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1742"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 64200
+              "realtimeArrival": 13500
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1656"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 61440
+              "realtimeArrival": 14400
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1329"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 49020
+              "realtimeArrival": 15300
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1314"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 48120
+              "realtimeArrival": 16200
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1359"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 50820
+              "realtimeArrival": 17100
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1344"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 49920
+              "realtimeArrival": 18000
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1526"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 56100
+              "realtimeArrival": 18900
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1511"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 55200
+              "realtimeArrival": 19800
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1443"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 53520
+              "realtimeArrival": 20700
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1429"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 52680
+              "realtimeArrival": 21600
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1414"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 51780
+              "realtimeArrival": 22500
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1457"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 54360
+              "realtimeArrival": 23400
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1158"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 43560
+              "realtimeArrival": 24300
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1143"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 42676
+              "realtimeArrival": 25200
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1128"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": -1
+              "realtimeArrival": 26100
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1113"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 40860
+              "realtimeArrival": 27000
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1258"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 47160
+              "realtimeArrival": 27900
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1243"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 46260
+              "realtimeArrival": 28800
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1228"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 45360
+              "realtimeArrival": 29700
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1213"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 44460
+              "realtimeArrival": 30600
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1043"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 39060
+              "realtimeArrival": 31500
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1028"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 38160
+              "realtimeArrival": 32400
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1013"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 37260
+              "realtimeArrival": 33300
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_1058"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 39960
+              "realtimeArrival": 34200
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2256"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 82920
+              "realtimeArrival": 35100
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2226"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 81120
+              "realtimeArrival": 36000
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2356"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 86520
+              "realtimeArrival": 36900
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2326"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 84720
+              "realtimeArrival": 37800
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2012"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 73140
+              "realtimeArrival": 38700
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2052"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 75540
+              "realtimeArrival": 39600
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2032"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 74340
+              "realtimeArrival": 40500
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2132"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 77940
+              "realtimeArrival": 41400
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2112"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 76740
+              "realtimeArrival": 42300
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_2154"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 79260
+              "realtimeArrival": 43200
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0914"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 33780
+              "realtimeArrival": 44100
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0958"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 36360
+              "realtimeArrival": 45000
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0943"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 35460
+              "realtimeArrival": 45900
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0928"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 34560
+              "realtimeArrival": 46800
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0759"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 29280
+              "realtimeArrival": 47700
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0746"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 28500
+              "realtimeArrival": 48600
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0736"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 27900
+              "realtimeArrival": 49500
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0725"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 27240
+              "realtimeArrival": 50400
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0713"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 26520
+              "realtimeArrival": 51300
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0859"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 32880
+              "realtimeArrival": 52200
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0844"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 31980
+              "realtimeArrival": 53100
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0829"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 31080
+              "realtimeArrival": 54000
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0814"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 30180
+              "realtimeArrival": 54900
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0550"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 21420
+              "realtimeArrival": 55800
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0520"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 19620
+              "realtimeArrival": 56700
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0628"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 23700
+              "realtimeArrival": 57600
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0610"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 22620
+              "realtimeArrival": 58500
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0659"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 25620
+              "realtimeArrival": 59400
             },
             {
               "trip": {
                 "gtfsId": "HSL:1055_20161017_Ti_2_0644"
               },
               "serviceDay": 1478556000,
-              "realtimeArrival": 24720
+              "realtimeArrival": 60300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0814"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 61200
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0550"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 62100
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0520"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 63000
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0628"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 63900
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0610"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 64800
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0659"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 65700
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0644"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 66600
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0814"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 67500
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0550"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 68400
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0520"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 69300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0628"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 70200
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0610"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 71100
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0659"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 72000
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0644"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 72900
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0814"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 73800
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0550"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 74700
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0520"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 75600
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0628"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 76500
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0610"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 77400
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0659"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 78300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0644"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 79200
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0659"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 80100
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0644"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 81000
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0659"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 81900
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0644"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 82800
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0659"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 83700
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0644"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 84600
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0644"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 85500
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0659"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 86400
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0644"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 87300
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0644"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 88200
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:1055_20161017_Ti_2_0659"
+              },
+              "serviceDay": 1478556000,
+              "realtimeArrival": 89100
             }
           ]
         },
