@@ -104,6 +104,25 @@ class TestDigitransitAPIService(unittest.TestCase):
         self.assertTrue(1 in result)
         self.assertTrue(2 in result)
 
+    def test_fetch_single_fuzzy_trip(self):
+        result = self.digitransitAPIService.fetch_single_fuzzy_trip("1", 1, "20161204", 1000)
+
+        self.assertEqual(result['trip_id'], '1234')
+        self.assertEqual(result['direction'], '1')
+        self.assertEqual(result['line'], '10')
+
+    def test_get_busses_with_beacon(self):
+        major_minor = [ {"major":"33137", "minor":"64315"}, {"major":"43118", "minor":"56850"}]
+        result = self.digitransitAPIService.get_busses_with_beacon(major_minor)
+
+        self.assertEqual(len(result['busses']), 2)
+
+    def test_get_busses_with_beacon_invalid(self):
+        major_minor = [{"major": "X", "minor": "X"}]
+        result = self.digitransitAPIService.get_busses_with_beacon(major_minor)
+        self.assertEqual(len(result['busses']), 1)
+        self.assertEqual(result['busses'][0]['error'], 'Invalid major and/or minor')
+
 
 if __name__ == '__main__':
     unittest.main()
