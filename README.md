@@ -90,6 +90,10 @@ docker build -f DB-Dockerfile -t db .
 docker run -p 5432:5432 db
 ```
 
+### Database
+
+There are currently no automatic database migrations so whenever you make changes to database schema you have to update the production databases manually.
+
 ### Testing
 
 To run tests locally (requires Docker):
