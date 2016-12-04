@@ -38,7 +38,7 @@ class DigitransitAPIService:
         # Loads the file from http://dev.hsl.fi/tmp/bus_beacons.csv and saves it as bus_beacons.csv
         urllib.request.urlretrieve('http://dev.hsl.fi/tmp/bus_beacons.csv', 'bus_beacons.csv')
         result = dict()
-        result['busses'] = []
+        result['vehicles'] = []
 
         beacons = dict()
 
@@ -51,7 +51,7 @@ class DigitransitAPIService:
             row = beacons.get((mm['major'], mm['minor']))
 
             if not row:
-                result['busses'].append(json.loads(('{"error":"Invalid major and/or minor",'
+                result['vehicles'].append(json.loads(('{"error":"Invalid major and/or minor",'
                                                     '"major":"%s",'
                                                     '"minor":"%s"}') % (mm['major'], mm['minor'])))
             else:
@@ -61,7 +61,7 @@ class DigitransitAPIService:
 
                 # The above API returns empty json object if there is not available realtime data of the bus
                 if json_data == json.loads("{}"):
-                    result['busses'].append(json.loads(('{"error":"No realtime data from the bus",'
+                    result['vehicles'].append(json.loads(('{"error":"No realtime data from the bus",'
                                                        '"major":"%s",'
                                                        '"minor":"%s"}') % (mm['major'], mm['minor'])))
                     continue
@@ -76,13 +76,13 @@ class DigitransitAPIService:
                 data = self.fetch_single_fuzzy_trip(route, direction, date, time)
 
                 if data is None:
-                    result['busses'].append(json.loads(('{"error":"Invalid major and/or minor",'
+                    result['vehicles'].append(json.loads(('{"error":"Invalid major and/or minor",'
                                                        '"major":"%s",'
                                                        '"minor":"%s"}') % (mm['major'], mm['minor'])))
 
                 data['major'] = mm['major']
                 data['minor'] = mm['minor']
-                result['busses'].append(data['fuzzyTrip'])
+                result['vehicles'].append(data['fuzzyTrip'])
 
         return result
 
