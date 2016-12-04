@@ -48,12 +48,10 @@ class DigitransitAPIService:
                 beacons.append(row)
 
         for mm in major_minor:
-            print(mm)
             for row in beacons:
                 if row['Major'] == mm['major'] and row['Minor'] == mm['minor']:
                     if not row['Vehicle']:
                         continue
-                    print(row['Vehicle'])
                     json_data = json.loads(requests.get(('https://dev.hsl.fi/hfp/journey/bus/%s/') % (row['Vehicle'])).text)
 
                     # Sometimes above API returns empty json object for unknown reason
