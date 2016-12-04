@@ -9435,8 +9435,10 @@ def mock():
 }'''
 
     else:
-        return 'your mock call didn\'t match any request body'
+        print("Unhandled query:", request_body)
+        return '{"errors": [{"message":"your mock call didn\'t match any request body"}]}'
 
 
 if __name__ == '__main__':
+    print("Starting...")
     serve(app, host='0.0.0.0', port=11111)

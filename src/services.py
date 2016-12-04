@@ -146,7 +146,8 @@ class DigitransitAPIService:
 
         # Force encoding as auto-detection sometimes fails
         response.encoding = 'utf-8'
-
+        if response.text.find('"errors"') != -1:
+            print("ERROR:", response.text)
         return response.text
 
     def make_request(self, trip_id, stop_id, device_id, push_notification):
