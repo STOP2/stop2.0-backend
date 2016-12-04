@@ -113,7 +113,7 @@ def stops_beacons():
     return resp
 
 
-@app.route('/busses/beacons', methods=['POST'])
+@app.route('/vehicles/beacons', methods=['POST'])
 def busses_beacons():
     json_data = request.json
     result = digitransitAPIService.get_busses_with_beacon(json_data['bus_beacons'])
