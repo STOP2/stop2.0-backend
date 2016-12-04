@@ -108,7 +108,8 @@ class DigitransitAPIService:
                                      'destination': time.get("stopHeadsign", ""),
                                      'arrival': arrival,
                                      'route_id': line["pattern"]["route"]["gtfsId"],
-                                     'vehicle_type': data["vehicleType"]
+                                     'vehicle_type': data["vehicleType"],
+                                     'supportsStopRequests': False
                                      })
 
         sorted_by_route = sorted(schedule, key=lambda k: k['route_id'])
