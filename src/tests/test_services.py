@@ -28,8 +28,14 @@ class TestDigitransitAPIService(unittest.TestCase):
         schedule = stop_data["schedule"]
         self.assertNotEqual(len(schedule), 0)
 
-    def test_get_stops_with_beacon(self):
+    def test_get_stops_with_beacon_fake(self):
         stops = self.digitransitAPIService.get_stops_with_beacon(1234, 5678)
+        self.assertTrue("stops" in stops)
+        self.assertTrue(stops["stops"])
+        self.assertTrue(stops["stops"][0]["stop"])
+
+    def test_get_stops_with_beacon(self):
+        stops = self.digitransitAPIService.get_stops_with_beacon(3911, 61612)
         self.assertTrue("stops" in stops)
         self.assertTrue(stops["stops"])
         self.assertTrue(stops["stops"][0]["stop"])
