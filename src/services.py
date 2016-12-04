@@ -34,19 +34,34 @@ class DigitransitAPIService:
         return self.get_stops(beacon_coords.get('lat'), beacon_coords.get('lon'), 160)
 
 
-    def get_busses_with_beacon(self, major, minor):
+    def get_busses_with_beacon(self, major_minor):
         # Loads the file from http://dev.hsl.fi/tmp/bus_beacons.csv and saves it as bus_beacons.csv
         urllib.request.urlretrieve('http://dev.hsl.fi/tmp/bus_beacons.csv', 'bus_beacons.csv')
+        result = dict()
+        result['busses'] = []
+
+        beacons = []
 
         with open('bus_beacons.csv', 'rt') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                if row['Major'] == major and row['Minor'] == minor:
+                beacons.append(row)
+
+        for mm in major_minor:
+            print(mm)
+            for row in beacons:
+                if row['Major'] == mm['major'] and row['Minor'] == mm['minor']:
+                    if not row['Vehicle']:
+                        continue
+                    print(row['Vehicle'])
                     json_data = json.loads(requests.get(('https://dev.hsl.fi/hfp/journey/bus/%s/') % (row['Vehicle'])).text)
 
-                    # Sometimes above call returns empty json object for unknown reason
+                    # Sometimes above API returns empty json object for unknown reason
                     if json_data == json.loads("{}"):
-                        return json.loads('{"error":"???"}')
+                        result['busses'].append(json.loads(('{"error":"No realtime data from the bus",'
+                                                           '"major":"%s",'
+                                                           '"minor":"%s"}') % (mm['major'], mm['minor'])))
+                        continue
 
                     bus = json_data[list(json_data)[0]]['VP']
 
@@ -58,11 +73,14 @@ class DigitransitAPIService:
                     data = self.fetch_single_fuzzy_trip(route, direction, date, time)['data']
 
                     if data is None:
-                        return json.loads('{"error":"Invalid major and/or minor"}')
+                        result['busses'].append(json.loads(('{"error":"Invalid major and/or minor",'
+                                                           '"major":"%s",'
+                                                           '"minor":"%s"}') % (mm['major'], mm['minor'])))
+                        continue
 
-                    return data['fuzzyTrip']
+                    result['busses'].append(data['fuzzyTrip'])
 
-            return json.loads('{"error":"Invalid major and/or minor"}')
+        return result
 
 
     def fetch_single_fuzzy_trip(self, route, direction, date, time):
