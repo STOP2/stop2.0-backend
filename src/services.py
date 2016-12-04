@@ -2,7 +2,7 @@ import datetime
 import requests
 import json
 import math
-import urllib.request
+import io
 import csv
 import paho.mqtt.publish as publish
 from itertools import groupby
@@ -35,17 +35,16 @@ class DigitransitAPIService:
 
 
     def get_busses_with_beacon(self, major_minor):
-        # Loads the file from http://dev.hsl.fi/tmp/bus_beacons.csv and saves it as bus_beacons.csv
-        urllib.request.urlretrieve('http://dev.hsl.fi/tmp/bus_beacons.csv', 'bus_beacons.csv')
         result = dict()
         result['vehicles'] = []
 
         beacons = dict()
 
-        with open('bus_beacons.csv', 'rt') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                beacons[(row['Major'], row['Minor'])] = row
+        csvdata = requests.get('http://dev.hsl.fi/tmp/bus_beacons.csv').text
+        reader = csv.DictReader(io.StringIO(csvdata))
+
+        for row in reader:
+            beacons[(row['Major'], row['Minor'])] = row
 
         for mm in major_minor:
             row = beacons.get((mm['major'], mm['minor']))
