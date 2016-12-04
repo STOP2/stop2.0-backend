@@ -1,5 +1,6 @@
 # stop2.0
-Digital stop button for your mobile phone.
+
+Backend server for stop 2.0 mobile application.
 
 [![Build Status](https://travis-ci.org/STOP2/stop2.0-backend.svg?branch=master)](https://travis-ci.org/STOP2/stop2.0-backend) [![Coverage Status](https://coveralls.io/repos/github/STOP2/stop2.0-backend/badge.svg?branch=master)](https://coveralls.io/github/STOP2/stop2.0-backend?branch=master)
 
@@ -62,7 +63,6 @@ or you can use Makefile with these commands:
 
 ```
 make
-make test
 make run
 ```
 
@@ -90,13 +90,17 @@ docker build -f DB-Dockerfile -t db .
 docker run -p 5432:5432 db
 ```
 
-To test the project first build and run a mock hsl api server:
-```
-docker build -t mock-hsl-api ./mock-hsl-api/
-docker run -p 11111:11111 -d mock-hsl-api
-```
+### Testing
 
-Then run all tests with:
+To run tests locally (requires Docker):
 ```
 make test
+```
+
+This will open three docker containers that will automatically stop only if all the tests pass (sorry). If the tests fail you have to stop the containers manually.
+
+Some tests require a mock HSL api, so if you want to run tests without using `make test` you will have to run the mock api in a docker container:
+
+```
+docker build -t mock-hsl . && docker run -p 11111:11111 mock-hsl
 ```
