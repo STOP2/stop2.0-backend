@@ -9,6 +9,7 @@ from waitress import serve
 import services
 import push_notification_service
 import db
+import mqtt
 
 
 app = Flask(__name__)
@@ -19,6 +20,7 @@ digitransitAPIService = services.DigitransitAPIService(db,
                                                        push_notification_service,
                                                        'http://api.digitransit.space/routing/v1/routers/hsl/index/graphql')
                                                        #'http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql')
+mqtt = mqtt.MQTT(db)
 
 
 @app.route('/')

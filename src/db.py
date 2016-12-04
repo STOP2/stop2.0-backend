@@ -108,3 +108,30 @@ class Database:
         cur.execute(sql, values)
         conn.commit()
         self.put_connection(conn)
+
+    def add_vehicle(self, vehicle_id, trip_id):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        values = (vehicle_id, trip_id)
+        sql = "INSERT INTO vehicle (vehicle_id, trip_id) VALUES (%s, %s)"
+        cur.execute(sql, values)
+        conn.commit()
+        self.put_connection(conn)
+
+    def remove_vehicle(self, vehicle_id, trip_id):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        values = (vehicle_id, trip_id)
+        sql = "DELETE FROM vehicle WHERE vehicle_id = %s AND trip_id = %s"
+        cur.execute(sql, values)
+        conn.commit()
+        self.put_connection(conn)
+
+    def get_vehicles(self):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        sql = "SELECT trip_id FROM vehicle"
+        cur.execute(sql)
+        result = cur.fetchall()
+        self.put_connection(conn)
+        return result
