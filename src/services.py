@@ -48,18 +48,20 @@ class DigitransitAPIService:
                 beacons.append(row)
 
         for mm in major_minor:
+            added = False  # If entry related to mm was already added to result
             for row in beacons:
                 if row['Major'] == mm['major'] and row['Minor'] == mm['minor']:
                     if not row['Vehicle']:
                         continue
                     json_data = json.loads(requests.get(('https://dev.hsl.fi/hfp/journey/bus/%s/') % (row['Vehicle'])).text)
 
-                    # Sometimes above API returns empty json object for unknown reason
+                    # The above API returns empty json object if
                     if json_data == json.loads("{}"):
                         result['busses'].append(json.loads(('{"error":"No realtime data from the bus",'
                                                            '"major":"%s",'
                                                            '"minor":"%s"}') % (mm['major'], mm['minor'])))
-                        continue
+                        added = True
+                        break
 
                     bus = json_data[list(json_data)[0]]['VP']
 
@@ -68,15 +70,24 @@ class DigitransitAPIService:
                     date = datetime.datetime.fromtimestamp(float(bus['tsi'])).strftime("%Y%m%d")
                     time = math.floor( (int(bus['start'])/100) * 60) + (int(bus['start']) % 60) * 60
 
-                    data = self.fetch_single_fuzzy_trip(route, direction, date, time)['data']
+                    data = self.fetch_single_fuzzy_trip(route, direction, date, time)
 
                     if data is None:
                         result['busses'].append(json.loads(('{"error":"Invalid major and/or minor",'
                                                            '"major":"%s",'
                                                            '"minor":"%s"}') % (mm['major'], mm['minor'])))
-                        continue
+                        added = True
+                        break
 
+                    data['major'] = mm['major']
+                    data['minor'] = mm['minor']
                     result['busses'].append(data['fuzzyTrip'])
+                    added = True
+
+            if not added:
+                result['busses'].append(json.loads(('{"error":"Invalid major and/or minor",'
+                                                    '"major":"%s",'
+                                                    '"minor":"%s"}') % (mm['major'], mm['minor'])))
 
         return result
 
@@ -86,14 +97,17 @@ class DigitransitAPIService:
                         gtfsId
                         directionId
                         route{
-                            gtfsId
+                            shortName
                         }
                     }
                 }''') % (route, date, time, direction)
 
-        data = json.loads(self.get_query(query))
+        data = json.loads(self.get_query(query))['data']['fuzzyTrip']
 
-        return data
+        if data is None:
+            return json.loads('{"error":"No trip found matching route, direction, date and time"}')
+
+        return json.loads( ('{"trip_id":"%s", "direction":"%s", "line":"%s"}') % (data['gtfsId'], data['directionId'], data['route']['shortName']) )
 
 
     def get_stops_near_coordinates(self, lat, lon, radius):
