@@ -40,54 +40,49 @@ class DigitransitAPIService:
         result = dict()
         result['busses'] = []
 
-        beacons = []
+        beacons = dict()
 
         with open('bus_beacons.csv', 'rt') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                beacons.append(row)
+                beacons[(row['Major'], row['Minor'])] = row
 
         for mm in major_minor:
-            added = False  # If entry related to mm was already added to result
-            for row in beacons:
-                if row['Major'] == mm['major'] and row['Minor'] == mm['minor']:
-                    if not row['Vehicle']:
-                        continue
-                    json_data = json.loads(requests.get(('https://dev.hsl.fi/hfp/journey/bus/%s/') % (row['Vehicle'])).text)
+            row = beacons.get((mm['major'], mm['minor']))
 
-                    # The above API returns empty json object if
-                    if json_data == json.loads("{}"):
-                        result['busses'].append(json.loads(('{"error":"No realtime data from the bus",'
-                                                           '"major":"%s",'
-                                                           '"minor":"%s"}') % (mm['major'], mm['minor'])))
-                        added = True
-                        break
-
-                    bus = json_data[list(json_data)[0]]['VP']
-
-                    route = "HSL:" + bus['line']
-                    direction = int(bus['dir'])
-                    date = datetime.datetime.fromtimestamp(float(bus['tsi'])).strftime("%Y%m%d")
-                    time = math.floor( (int(bus['start'])/100) * 60) + (int(bus['start']) % 60) * 60
-
-                    data = self.fetch_single_fuzzy_trip(route, direction, date, time)
-
-                    if data is None:
-                        result['busses'].append(json.loads(('{"error":"Invalid major and/or minor",'
-                                                           '"major":"%s",'
-                                                           '"minor":"%s"}') % (mm['major'], mm['minor'])))
-                        added = True
-                        break
-
-                    data['major'] = mm['major']
-                    data['minor'] = mm['minor']
-                    result['busses'].append(data['fuzzyTrip'])
-                    added = True
-
-            if not added:
+            if not row:
                 result['busses'].append(json.loads(('{"error":"Invalid major and/or minor",'
                                                     '"major":"%s",'
                                                     '"minor":"%s"}') % (mm['major'], mm['minor'])))
+            else:
+                if not row['Vehicle']:
+                    continue
+                json_data = json.loads(requests.get(('https://dev.hsl.fi/hfp/journey/bus/%s/') % (row['Vehicle'])).text)
+
+                # The above API returns empty json object if there is not available realtime data of the bus
+                if json_data == json.loads("{}"):
+                    result['busses'].append(json.loads(('{"error":"No realtime data from the bus",'
+                                                       '"major":"%s",'
+                                                       '"minor":"%s"}') % (mm['major'], mm['minor'])))
+                    continue
+
+                bus = json_data[list(json_data)[0]]['VP']
+
+                route = "HSL:" + bus['line']
+                direction = int(bus['dir'])
+                date = datetime.datetime.fromtimestamp(float(bus['tsi'])).strftime("%Y%m%d")
+                time = math.floor( (int(bus['start'])/100) * 60) + (int(bus['start']) % 60) * 60
+
+                data = self.fetch_single_fuzzy_trip(route, direction, date, time)
+
+                if data is None:
+                    result['busses'].append(json.loads(('{"error":"Invalid major and/or minor",'
+                                                       '"major":"%s",'
+                                                       '"minor":"%s"}') % (mm['major'], mm['minor'])))
+
+                data['major'] = mm['major']
+                data['minor'] = mm['minor']
+                result['busses'].append(data['fuzzyTrip'])
 
         return result
 
