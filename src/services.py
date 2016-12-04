@@ -2,7 +2,7 @@ import datetime
 import requests
 import json
 import math
-import urllib
+import urllib.request
 import csv
 import paho.mqtt.publish as publish
 from itertools import groupby
@@ -34,30 +34,44 @@ class DigitransitAPIService:
         return self.get_stops(beacon_coords.get('lat'), beacon_coords.get('lon'), 160)
 
 
-    def get_busses_with_beacon(self, major_minor):
+    def get_busses_with_beacon(self, major, minor):
         # Loads the file from http://dev.hsl.fi/tmp/bus_beacons.csv and saves it as bus_beacons.csv
-        file = urllib.URLopen()
-        file.retrieve('http://dev.hsl.fi/tmp/bus_beacons.csv', 'bus_beacons.csv')
+        urllib.request.urlretrieve('http://dev.hsl.fi/tmp/bus_beacons.csv', 'bus_beacons.csv')
 
-        # https://dev.hsl.fi/hfp/journey/bus/<vehicle>/
+        with open('bus_beacons.csv', 'rt') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row['Major'] == major and row['Minor'] == minor:
+                    json_data = json.loads(requests.get(('https://dev.hsl.fi/hfp/journey/bus/%s/') % (row['Vehicle'])).text)
 
-        with open('bus_beacon.csv', 'rb') as csvfile:
-            for mm in major_minor:
-                reader = csv.DictReader(csvfile, delimeter=',')
-                for row in reader:
-                    if row['major'] == mm['major'] and row['minor'] == mm['minor']:
-                        json_data = json.loads(requests.get(('https://dev.hsl.fi/hfp/journey/bus/%s/') % (row['vehicle'])).content)
+                    # Sometimes above call returns empty json object for unknown reason
+                    if json_data == json.loads("{}"):
+                        return json.loads('{"error":"???"}')
 
-                        data = self.fetch_single_fuzzy_trip()
+                    bus = json_data[list(json_data)[0]]['VP']
 
-                        break
+                    route = "HSL:" + bus['line']
+                    direction = int(bus['dir'])
+                    date = datetime.datetime.fromtimestamp(float(bus['tsi'])).strftime("%Y%m%d")
+                    time = math.floor( (int(bus['start'])/100) * 60) + (int(bus['start']) % 60) * 60
+
+                    data = self.fetch_single_fuzzy_trip(route, direction, date, time)['data']
+
+                    if data is None:
+                        return json.loads('{"error":"Invalid major and/or minor"}')
+
+                    return data['fuzzyTrip']
+
+            return json.loads('{"error":"Invalid major and/or minor"}')
 
 
     def fetch_single_fuzzy_trip(self, route, direction, date, time):
         query = ('''{fuzzyTrip(route:"%s", date:"%s", time:%d, direction:%d){
                         gtfsId
-                        route
                         directionId
+                        route{
+                            gtfsId
+                        }
                     }
                 }''') % (route, date, time, direction)
 
