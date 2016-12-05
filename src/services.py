@@ -2,6 +2,8 @@ import datetime
 import requests
 import json
 import math
+import io
+import csv
 import paho.mqtt.publish as publish
 from itertools import groupby
 
@@ -30,6 +32,77 @@ class DigitransitAPIService:
     def get_stops_with_beacon(self, major, minor):
         beacon_coords = {'lat': 60.19350, 'lon': 24.90646}
         return self.get_stops(beacon_coords.get('lat'), beacon_coords.get('lon'), 160)
+
+
+    def get_busses_with_beacon(self, major_minor):
+        result = dict()
+        result['vehicles'] = []
+
+        beacons = dict()
+
+        csvdata = requests.get('http://dev.hsl.fi/tmp/bus_beacons.csv').text
+        reader = csv.DictReader(io.StringIO(csvdata))
+
+        for row in reader:
+            beacons[(row['Major'], row['Minor'])] = row
+
+        for mm in major_minor:
+            row = beacons.get((mm['major'], mm['minor']))
+
+            if not row:
+                result['vehicles'].append(json.loads(('{"error":"Invalid major and/or minor",'
+                                                    '"major":"%s",'
+                                                    '"minor":"%s"}') % (mm['major'], mm['minor'])))
+            else:
+                if not row['Vehicle']:
+                    continue
+                json_data = json.loads(requests.get(('https://dev.hsl.fi/hfp/journey/bus/%s/') % (row['Vehicle'])).text)
+
+                # The above API returns empty json object if there is not available realtime data of the bus
+                if json_data == json.loads("{}"):
+                    result['vehicles'].append(json.loads(('{"error":"No realtime data from the bus",'
+                                                       '"major":"%s",'
+                                                       '"minor":"%s"}') % (mm['major'], mm['minor'])))
+                    continue
+
+                bus = json_data[list(json_data)[0]]['VP']
+
+                route = "HSL:" + bus['line']
+                direction = int(bus['dir'])
+                date = datetime.datetime.fromtimestamp(float(bus['tsi'])).strftime("%Y%m%d")
+                time = math.floor( (int(bus['start'])/100) * 60) + (int(bus['start']) % 60) * 60
+
+                data = self.fetch_single_fuzzy_trip(route, direction, date, time)
+
+                if data is None:
+                    result['vehicles'].append(json.loads(('{"error":"Invalid major and/or minor",'
+                                                       '"major":"%s",'
+                                                       '"minor":"%s"}') % (mm['major'], mm['minor'])))
+
+                data['major'] = mm['major']
+                data['minor'] = mm['minor']
+                result['vehicles'].append(data['fuzzyTrip'])
+
+        return result
+
+
+    def fetch_single_fuzzy_trip(self, route, direction, date, time):
+        query = ('''{fuzzyTrip(route:"%s", date:"%s", time:%d, direction:%d){
+                        gtfsId
+                        directionId
+                        route{
+                            shortName
+                        }
+                    }
+                }''') % (route, date, time, direction)
+
+        data = json.loads(self.get_query(query))['data']['fuzzyTrip']
+
+        if data is None:
+            return json.loads('{"error":"No trip found matching route, direction, date and time"}')
+
+        return json.loads( ('{"trip_id":"%s", "direction":"%s", "line":"%s"}') % (data['gtfsId'], data['directionId'], data['route']['shortName']) )
+
 
     def get_stops_near_coordinates(self, lat, lon, radius):
         radius = min(radius, 1000)

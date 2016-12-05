@@ -28,7 +28,9 @@ def hello_world():
 
 @app.route('/test')
 def digitransit_test():
-    return json.dumps(digitransitAPIService.fetch_single_trip("HSL:1055_20161107_Ti_2_1329"))
+    major_minor = [{"major":"43118", "minor":"56850"}, {"major": "18105" , "minor":"59204"}]
+    return json.dumps(digitransitAPIService.get_busses_with_beacon(major_minor))
+    #return json.dumps(digitransitAPIService.fetch_single_trip("HSL:1055_20161107_Ti_2_1329"))
     #return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
 
 
@@ -106,6 +108,15 @@ def stops_beacons():
         resp.mimetype = 'application/json'
         return resp
     result = digitransitAPIService.get_stops_with_beacon(major, minor)
+    resp = make_response(json.dumps(result))
+    resp.mimetype = 'application/json'
+    return resp
+
+
+@app.route('/vehicles/beacons', methods=['POST'])
+def busses_beacons():
+    json_data = request.json
+    result = digitransitAPIService.get_busses_with_beacon(json_data['beacons'])
     resp = make_response(json.dumps(result))
     resp.mimetype = 'application/json'
     return resp

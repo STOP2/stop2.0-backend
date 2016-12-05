@@ -5818,6 +5818,16 @@ def mock():
     elif request_body == '{trip(id: "INVALID") { stoptimesForDate(serviceDay: "%s") {      stop{          gtfsId          name          code }      serviceDay      realtimeArrival        }       }      }}' % (datetime.datetime.now().strftime("%Y%m%d")):
         return '{"data": { "trip": null } }'
 
+    elif request_body == '''{fuzzyTrip(route:"1", date:"20161204", time:1000, direction:1){
+                        gtfsId
+                        directionId
+                        route{
+                            shortName
+                        }
+                    }
+                }''':
+        return '{"data":{"fuzzyTrip":{"gtfsId":"1234", "directionId":"1", "route":{"shortName":"10"} }}}'
+
     else:
         return 'your mock call didn\'t match any request body'
 
