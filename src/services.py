@@ -81,7 +81,7 @@ class DigitransitAPIService:
 
                 data['major'] = mm['major']
                 data['minor'] = mm['minor']
-                result['vehicles'].append(data['fuzzyTrip'])
+                result['vehicles'].append(data)
 
         return result
 

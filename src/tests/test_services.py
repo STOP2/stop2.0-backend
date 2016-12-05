@@ -111,12 +111,6 @@ class TestDigitransitAPIService(unittest.TestCase):
         self.assertEqual(result['direction'], '1')
         self.assertEqual(result['line'], '10')
 
-    def test_get_busses_with_beacon(self):
-        major_minor = [ {"major":"33137", "minor":"64315"}, {"major":"43118", "minor":"56850"}]
-        result = self.digitransitAPIService.get_busses_with_beacon(major_minor)
-
-        self.assertEqual(len(result['vehicles']), 2)
-
     def test_get_busses_with_beacon_invalid(self):
         major_minor = [{"major": "X", "minor": "X"}]
         result = self.digitransitAPIService.get_busses_with_beacon(major_minor)
