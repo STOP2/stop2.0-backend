@@ -5834,8 +5834,10 @@ def mock():
 }
         ''')
 
-    elif request_body == '{stop(id: "HSL:4610207") {  name  code  vehicleType  stoptimesForServiceDate(date: "20161204"){     pattern {         code         name         directionId         route {             gtfsId             longName             shortName         }     }     stoptimes {         trip{             gtfsId         }         stopHeadsign         serviceDay    	    realtimeArrival      }    }  }}':
-        return '''
+    elif request_body == '{stop(id: "HSL:4610207") {  name  code  vehicleType  stoptimesForServiceDate(date: "%s"){     pattern {         code         name         directionId         route {             gtfsId             longName             shortName         }     }     stoptimes {         trip{             gtfsId         }         stopHeadsign         serviceDay    	    realtimeArrival      }    }  }}' % (datetime.datetime.now().strftime("%Y%m%d")):
+        return re.sub(r'"serviceDay":.*,',
+                      '"serviceDay": ' + str(int(time.mktime(time.strptime(datetime.datetime.now().strftime("%Y%m%d"), "%Y%m%d")))) + ",",
+            '''
 {
     "data": {
         "stop": {
@@ -9409,7 +9411,7 @@ def mock():
         }
     }
 }
-'''
+        ''')
 
     elif request_body == '{stop(id: "INVALID") {  name  code  vehicleType  stoptimesForServiceDate(date: "%s"){     pattern {         code         name         directionId         route {             gtfsId             longName             shortName         }     }     stoptimes {         trip{             gtfsId         }         stopHeadsign         serviceDay    	    realtimeArrival      }    }  }}' % (datetime.datetime.now().strftime("%Y%m%d")):
         return '{"data": { "stop": null } }'
