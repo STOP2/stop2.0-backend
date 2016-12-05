@@ -8,6 +8,6 @@ RUN pip install -r /requirements.txt
 
 EXPOSE 11111
 
-CMD python app.py
+CMD python -u app.py
 
 ADD . /
