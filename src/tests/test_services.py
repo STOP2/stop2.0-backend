@@ -28,18 +28,6 @@ class TestDigitransitAPIService(unittest.TestCase):
         schedule = stop_data["schedule"]
         self.assertNotEqual(len(schedule), 0)
 
-    def test_get_stops_with_beacon_fake(self):
-        stops = self.digitransitAPIService.get_stops_with_beacon(1234, 5678)
-        self.assertTrue("stops" in stops)
-        self.assertTrue(stops["stops"])
-        self.assertTrue(stops["stops"][0]["stop"])
-
-    def test_get_stops_with_beacon(self):
-        stops = self.digitransitAPIService.get_stops_with_beacon(3911, 61612)
-        self.assertTrue("stops" in stops)
-        self.assertTrue(stops["stops"])
-        self.assertTrue(stops["stops"][0]["stop"])
-
     def test_get_stops_near_coordinates(self):
         stoplist_returns_only_three = self.digitransitAPIService.get_stops_near_coordinates(60.203978, 24.9633573, 300)
         self.assertEqual(stoplist_returns_only_three, [{'distance': 158, 'stop_id': 'HSL:1240133'}, {'distance': 196, 'stop_id': 'HSL:1240118'}, {'distance': 263, 'stop_id': 'HSL:1240103'}])

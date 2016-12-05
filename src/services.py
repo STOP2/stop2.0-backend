@@ -7,8 +7,6 @@ from itertools import groupby
 
 import thread_helper
 
-import csv
-import io
 
 class DigitransitAPIService:
     def __init__(self, db, push_notification_service, hsl_api_url):
@@ -30,20 +28,8 @@ class DigitransitAPIService:
         return data
 
     def get_stops_with_beacon(self, major, minor):
-        beacons = {}
-        beacon_csv = requests.get("https://dev.hsl.fi/tmp/stop_beacons.csv").text
-        reader = csv.DictReader(io.StringIO(beacon_csv))
-        for beacon in reader:
-            beacons[(int(beacon['Major']), int(beacon['Minor']))] = beacon
-
-        beacon = beacons.get((major, minor))
-        if not beacon: # XXX unknown beacon, fake a location for now
-            beacon_coords = {'lat': 60.203978, 'lon': 24.9633573}
-            return self.get_stops(beacon_coords.get('lat'), beacon_coords.get('lon'), 160)
-        else:
-            stops = self.get_stops_by_code(beacon['Stop'])
-            stop = stops['stops'][0] # XXX calculate average if multiple stops?
-            return self.get_stops(stop['lat'], stop['lon'], 1)
+        beacon_coords = {'lat': 60.19350, 'lon': 24.90646}
+        return self.get_stops(beacon_coords.get('lat'), beacon_coords.get('lon'), 160)
 
     def get_stops_near_coordinates(self, lat, lon, radius):
         radius = min(radius, 1000)
@@ -146,8 +132,7 @@ class DigitransitAPIService:
 
         # Force encoding as auto-detection sometimes fails
         response.encoding = 'utf-8'
-        if response.text.find('"errors"') != -1:
-            print("ERROR:", response.text)
+
         return response.text
 
     def make_request(self, trip_id, stop_id, device_id, push_notification):
@@ -281,11 +266,6 @@ class DigitransitAPIService:
         result["stops"] = stops
 
         return result
-
-    def get_stops_by_code(self, stop_code):
-        query = '''{ stops(name:"%s") { gtfsId code name platformCode lat lon } }''' % stop_code
-        data = json.loads(self.get_query(query))
-        return data['data']
 
     def fetch_single_trip(self, trip_id):
         query = ('''{ trip(id:"%s"){
