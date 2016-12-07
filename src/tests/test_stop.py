@@ -1,5 +1,8 @@
 import unittest
 import stop
+import datetime
+from datetime import date
+from freezegun import freeze_time
 
 
 class TestStopRoutes(unittest.TestCase):
@@ -12,6 +15,7 @@ class TestStopRoutes(unittest.TestCase):
         response = self.app.get('/stops?lat=1.0&lon=2.0')
         self.assertEqual(response.status_code, 200)
 
+    @freeze_time(str(datetime.datetime(date.today().year, date.today().month, date.today().day, 8, 0)))
     def test_unicode_destination_name(self):
         response = self.app.get('/stops?lat=60.19255&lon=24.94461')
         self.assertTrue(response.data.find(b"L\\u00e4nsiterminaali") != -1)
