@@ -119,7 +119,7 @@ class DigitransitAPIService:
         if data is None:
             return json.loads('{"error":"No trip found matching route, direction, date and time"}')
 
-        return json.loads( ('{"trip_id":"%s", "destination":"%s", "line":"%s"}') % (data['gtfsId'], data['directionId'], data['route']['shortName']) )
+        return json.loads( ('{"trip_id":"%s", "destination":"%s", "line":"%s"}') % (data['gtfsId'], data['tripHeadsign'], data['route']['shortName']) )
 
 
     def get_stops_near_coordinates(self, lat, lon, radius):
