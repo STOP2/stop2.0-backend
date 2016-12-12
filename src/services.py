@@ -68,6 +68,7 @@ class DigitransitAPIService:
                                   ' "destination":"Rautatientori via Kalasatama(M)",'
                                   ' "line":"55",'
                                   ' "vehicle_type":3}'))
+                continue
 
             row = beacons.get((mm['major'], mm['minor']))
 
