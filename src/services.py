@@ -2,8 +2,6 @@ import datetime
 import requests
 import json
 import math
-import io
-import csv
 import paho.mqtt.publish as publish
 from itertools import groupby
 
