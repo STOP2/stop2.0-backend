@@ -17,3 +17,9 @@ CREATE TABLE report (
   user_id text,
   report_time timestamp with time zone
 );
+
+CREATE TABLE vehicle (
+  id serial,
+  vehicle_id text,
+  trip_id text
+);

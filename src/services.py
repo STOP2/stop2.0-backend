@@ -181,6 +181,8 @@ class DigitransitAPIService:
 
         stop = {'stop_name': data["name"], 'stop_code': data["code"], 'stop_id': stop_id, 'distance': distance, 'schedule': []}
         schedule = []
+        active_vehicles = self.db.get_vehicles()
+
         for line in lines:
             stoptimes = line["stoptimes"]
 
@@ -190,12 +192,17 @@ class DigitransitAPIService:
                 arrival_time = datetime.datetime.fromtimestamp(time["serviceDay"] + time["realtimeArrival"])
                 arrival = math.floor((arrival_time - current_time).total_seconds() / 60.0)  # Arrival in minutes
                 if current_time < arrival_time and arrival < 61:
+                    if time.get("trip").get("gtfsId") in active_vehicles:
+                        supports_stop_requests = True
+                    else:
+                        supports_stop_requests = False
                     schedule.append({'trip_id': time["trip"]["gtfsId"],
                                      'line': line["pattern"]["route"]["shortName"],
                                      'destination': time.get("stopHeadsign", ""),
                                      'arrival': arrival,
                                      'route_id': line["pattern"]["route"]["gtfsId"],
-                                     'vehicle_type': data["vehicleType"]
+                                     'vehicle_type': data["vehicleType"],
+                                     'supportsStopRequests': supports_stop_requests
                                      })
 
         sorted_by_route = sorted(schedule, key=lambda k: k['route_id'])
