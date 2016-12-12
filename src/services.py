@@ -61,12 +61,13 @@ class DigitransitAPIService:
             beacons[(row['Major'], row['Minor'])] = row
 
         for mm in major_minor:
-            if mm.get('major') == 'test_major' and mm.get('minor') == 'test_minor':
-                result['vehicles'].append(json.loads('{"major":"test_major",'
-                                  ' "minor":"test_minor",'
-                                  ' "trip_id":"1070T_20161201_Ma_2_1311",'
-                                  ' "direction":"1",'
-                                  ' "line":"70T" }'))
+            if mm.get('major') == '00000' and mm.get('minor') == '00000':
+                result['vehicles'].append(json.loads('{"major":"00000",'
+                                  ' "minor":"00000",'
+                                  ' "trip_id":"1055_20161031_Ma_2_1359",'
+                                  ' "destination":"Rautatientori via Kalasatama(M)",'
+                                  ' "line":"55",'
+                                  ' "vehicle_type":3}'))
 
             row = beacons.get((mm['major'], mm['minor']))
 
@@ -97,6 +98,7 @@ class DigitransitAPIService:
 
                 data['major'] = mm['major']
                 data['minor'] = mm['minor']
+                data['vehicle_type'] = 3            # For now always assumes vehicle is a bus
                 result['vehicles'].append(data)
 
         return result
@@ -105,7 +107,7 @@ class DigitransitAPIService:
     def fetch_single_fuzzy_trip(self, route, direction, date, time):
         query = ('''{fuzzyTrip(route:"%s", date:"%s", time:%d, direction:%d){
                         gtfsId
-                        directionId
+                        tripHeadsign
                         route{
                             shortName
                         }
@@ -117,7 +119,7 @@ class DigitransitAPIService:
         if data is None:
             return json.loads('{"error":"No trip found matching route, direction, date and time"}')
 
-        return json.loads( ('{"trip_id":"%s", "direction":"%s", "line":"%s"}') % (data['gtfsId'], data['directionId'], data['route']['shortName']) )
+        return json.loads( ('{"trip_id":"%s", "destination":"%s", "line":"%s"}') % (data['gtfsId'], data['tripHeadsign'], data['route']['shortName']) )
 
 
     def get_stops_near_coordinates(self, lat, lon, radius):
