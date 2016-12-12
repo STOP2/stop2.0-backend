@@ -19,6 +19,17 @@ class DigitransitAPIService:
         self.push_notification_service = push_notification_service
 
     def get_stops(self, lat, lon, radius):
+        """
+        Gets info from all stops within given radius of the point specified by lat and lon, including all the busses
+        scheduled to pass those stops.
+
+        See: get_stops_near_coordinates, get_busses_by_stop_id
+
+        :param lat: latitude
+        :param lon: longitude
+        :param radius: radius
+        :return: dict containing info of all the stops within radius and busses scheduled to pass those stops
+        """
         data = {}
         stops = []
         stop_ids = self.get_stops_near_coordinates(lat, lon, radius)
@@ -30,6 +41,16 @@ class DigitransitAPIService:
         return data
 
     def get_stops_with_beacon(self, major, minor):
+        """
+        Gets stop info with iBeacons identifying major and minor values, including busses that are going to pass given
+        stop. Uses csv file provided in 'https://dev.hsl.fi/tmp/stop_beacons.csv' to match major and minor to stop code.
+
+        See: get_stops_by_code
+
+        :param major: identifies iBeacon together with minor
+        :param minor: identifies iBeacon together with major
+        :return: dict containing info of the stop including busses that are scheduled to pass it
+        """
         beacons = {}
         beacon_csv = requests.get("https://dev.hsl.fi/tmp/stop_beacons.csv").text
         reader = csv.DictReader(io.StringIO(beacon_csv))
@@ -47,6 +68,17 @@ class DigitransitAPIService:
 
 
     def get_busses_with_beacon(self, major_minor):
+        """
+        Gets info of all the busses related to given list of majors and minors. Uses csv file provided in
+        'https://dev.hsl.fi/tmp/bus_beacons.csv' to match major and minors to bus code. Then gets that busses route,
+        direction and time data from 'https://dev.hsl.fi/hfp/journey/bus/{bus_code}/'. Finally fetches trip info with
+        fetch_single_fuzzy_trip using that data.
+
+        See: fetch_single_fuzzy_trip
+
+        :param major_minor: List of the following form: [ { "major":"X", "minor":"Y"},... ]
+        :return: dict containing bus info including major, minor and EITHER trip_id, direction, line OR error
+        """
         result = dict()
         result['vehicles'] = []
 
@@ -99,6 +131,15 @@ class DigitransitAPIService:
 
 
     def fetch_single_fuzzy_trip(self, route, direction, date, time):
+        """
+        Gets trip info from digitransit API.
+
+        :param route: route number
+        :param direction: direction
+        :param date: date
+        :param time: time bus has started
+        :return: dict containing EITHER trip_id, direction, line OR error
+        """
         query = ('''{fuzzyTrip(route:"%s", date:"%s", time:%d, direction:%d){
                         gtfsId
                         directionId
@@ -117,6 +158,14 @@ class DigitransitAPIService:
 
 
     def get_stops_near_coordinates(self, lat, lon, radius):
+        """
+        Gets stops within specified radius of a point defined by lat and lon
+
+        :param lat: latitude
+        :param lon: longitude
+        :param radius: radius
+        :return: list of stops including their distance to point defined by lat, lon and
+        """
         radius = min(radius, 1000)
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
                  "  edges {"
