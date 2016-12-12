@@ -61,6 +61,13 @@ class DigitransitAPIService:
             beacons[(row['Major'], row['Minor'])] = row
 
         for mm in major_minor:
+            if mm.get('major') == 'test_major' and mm.get('minor') == 'test_minor':
+                result['vehicles'].append(json.loads('{"major":"test_major",'
+                                  ' "minor":"test_minor",'
+                                  ' "trip_id":"1070T_20161201_Ma_2_1311",'
+                                  ' "direction":"1",'
+                                  ' "line":"70T" }'))
+
             row = beacons.get((mm['major'], mm['minor']))
 
             if not row:
@@ -87,11 +94,6 @@ class DigitransitAPIService:
                 time = math.floor( (int(bus['start'])/100) * 60) + (int(bus['start']) % 60) * 60
 
                 data = self.fetch_single_fuzzy_trip(route, direction, date, time)
-
-                if data is None:
-                    result['vehicles'].append(json.loads(('{"error":"Invalid major and/or minor",'
-                                                       '"major":"%s",'
-                                                       '"minor":"%s"}') % (mm['major'], mm['minor'])))
 
                 data['major'] = mm['major']
                 data['minor'] = mm['minor']
