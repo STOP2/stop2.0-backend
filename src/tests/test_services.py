@@ -60,14 +60,12 @@ class TestDigitransitAPIService(unittest.TestCase):
         first = stop["schedule"][0]
         self.assertTrue("line" in first)
 
-        #stop2 = Aamuruskonkuja(HSL:6070226)
-        #testing that 60 minutes time limit works
+        #Aamuruskonkuja(HSL:6070226): 60 minutes time limit works
         stop2 = self.digitransitAPIService.get_busses_by_stop_id("HSL:6070226", 100)
         stop2_schedule = stop2["schedule"]
         self.assertTrue(len(stop2_schedule) > 0)
 
-        #stop3 = Palkkatilanportti(HSL:1171403)
-        # testing that no more than two vehicles from the same route appears on schedule
+        #Palkkatilanportti(HSL:1171403): no more than two vehicles from the same route appears on schedule
         stop3 = self.digitransitAPIService.get_busses_by_stop_id("HSL:1171403", 100)
         stop3_schedule = stop3["schedule"]
         self.assertTrue(len(stop3_schedule) <= 2)

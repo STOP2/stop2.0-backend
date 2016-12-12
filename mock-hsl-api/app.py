@@ -4417,66 +4417,73 @@ def mock():
             },
             {
               "trip": {
-                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+                "gtfsId": "HSL:6173_20161107_Ma_2_0601"
               },
               "serviceDay": 1479679200,
               "realtimeArrival": 54900
             },
             {
               "trip": {
-                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+                "gtfsId": "HSL:6173_20161107_Ma_2_0602"
               },
               "serviceDay": 1479679200,
               "realtimeArrival": 58500
             },
             {
               "trip": {
-                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+                "gtfsId": "HSL:6173_20161107_Ma_2_0603"
               },
               "serviceDay": 1479679200,
               "realtimeArrival": 62100
             },
             {
               "trip": {
-                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+                "gtfsId": "HSL:6173_20161107_Ma_2_0604"
               },
               "serviceDay": 1479679200,
               "realtimeArrival": 65700
             },
             {
               "trip": {
-                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+                "gtfsId": "HSL:6173_20161107_Ma_2_0605"
               },
               "serviceDay": 1479679200,
               "realtimeArrival": 69300
             },
             {
               "trip": {
-                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+                "gtfsId": "HSL:6173_20161107_Ma_2_0606"
               },
               "serviceDay": 1479679200,
               "realtimeArrival": 72900
             },
             {
               "trip": {
-                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+                "gtfsId": "HSL:6173_20161107_Ma_2_0607"
               },
               "serviceDay": 1479679200,
               "realtimeArrival": 76500
             },
             {
               "trip": {
-                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+                "gtfsId": "HSL:6173_20161107_Ma_2_0608"
               },
               "serviceDay": 1479679200,
               "realtimeArrival": 80100
             },
             {
               "trip": {
-                "gtfsId": "HSL:6173_20161107_Ma_2_0600"
+                "gtfsId": "HSL:6173_20161107_Ma_2_0609"
               },
               "serviceDay": 1479679200,
               "realtimeArrival": 83700
+            },
+            {
+              "trip": {
+                "gtfsId": "HSL:6173_20161107_Ma_2_0610"
+              },
+              "serviceDay": 1479679200,
+              "realtimeArrival": 87300
             }
           ]
         },

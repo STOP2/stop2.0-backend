@@ -23,10 +23,11 @@ if ! [ `curl -X GET http://localhost:5000/stops?lat=60.1701305\&lon=24.9380825 |
 fi
 
 # returns at least one bus_id
-if ! curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -q '"trip_id":'; then
-  echo 'Integration test "returns at least one vehicle_id" failed'
-  FAILED=$((FAILED+1))
-fi
+#commented out for now because the test is time sensitive => test will fail at nighttime. some mocking or a stop with 24h traffic needed to make this usable)
+#if ! curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -q '"trip_id":'; then
+#  echo 'Integration test "returns at least one vehicle_id" failed'
+#  FAILED=$((FAILED+1))
+#fi
 
 # returns correct numbers of bus_ids
 if ! [ `curl -X GET http://localhost:5000/stops?lat=60.203978\&lon=24.9633573 | grep -o '"trip_id":' | wc -l` -le 10 ]; then
