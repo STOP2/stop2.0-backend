@@ -9428,13 +9428,13 @@ def mock():
 
     elif request_body == '''{fuzzyTrip(route:"1", date:"20161204", time:1000, direction:1){
                         gtfsId
-                        directionId
+                        tripHeadsign
                         route{
                             shortName
                         }
                     }
                 }''':
-        return '{"data":{"fuzzyTrip":{"gtfsId":"1234", "directionId":"1", "route":{"shortName":"10"} }}}'
+        return '{"data":{"fuzzyTrip":{"gtfsId":"1234", "tripHeadsign":"test", "route":{"shortName":"10"} }}}'
 
     elif request_body == '{ stops(name:"V6147") { gtfsId code name platformCode lat lon } }':
         return '''

@@ -118,7 +118,7 @@ class TestDigitransitAPIService(unittest.TestCase):
         result = self.digitransitAPIService.fetch_single_fuzzy_trip("1", 1, "20161204", 1000)
 
         self.assertEqual(result['trip_id'], '1234')
-        self.assertEqual(result['direction'], '1')
+        self.assertEqual(result['destination'], 'test')
         self.assertEqual(result['line'], '10')
 
     def test_get_busses_with_beacon_invalid(self):
