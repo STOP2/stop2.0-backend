@@ -61,20 +61,19 @@ class DigitransitAPIService:
             beacons[(row['Major'], row['Minor'])] = row
 
         for mm in major_minor:
-            if mm.get('major') == '00000' and mm.get('minor') == '00000':
-                result['vehicles'].append(json.loads('{"major":"00000",'
-                                  ' "minor":"00000",'
-                                  ' "trip_id":"1055_20161031_Ma_2_1359",'
-                                  ' "destination":"Rautatientori via Kalasatama(M)",'
-                                  ' "line":"55",'
-                                  ' "vehicle_type":3}'))
+            if mm.get('major') == 12345 and mm.get('minor') == 12345:
+                result['vehicles'].append(json.loads('''{"major":12345,
+                                   "minor":12345,
+                                   "trip_id":"1055_20161031_Ma_2_1359",
+                                   "destination":"Rautatientori via Kalasatama(M)",
+                                   "line":"55",
+                                   "vehicle_type":3}'''))
+                continue
 
             row = beacons.get((mm['major'], mm['minor']))
 
             if not row:
-                result['vehicles'].append(json.loads(('{"error":"Invalid major and/or minor",'
-                                                    '"major":"%s",'
-                                                    '"minor":"%s"}') % (mm['major'], mm['minor'])))
+                result['vehicles'].append(json.loads(('''{"error":"Invalid major and/or minor", "major":%d, "minor":%d}''') % (mm['major'], mm['minor'])))
             else:
                 if not row['Vehicle']:
                     continue
@@ -82,9 +81,7 @@ class DigitransitAPIService:
 
                 # The above API returns empty json object if there is not available realtime data of the bus
                 if json_data == json.loads("{}"):
-                    result['vehicles'].append(json.loads(('{"error":"No realtime data from the bus",'
-                                                       '"major":"%s",'
-                                                       '"minor":"%s"}') % (mm['major'], mm['minor'])))
+                    result['vehicles'].append(json.loads(('''{"error":"No realtime data from the bus", "major":%d, "minor":%d}''') % (mm['major'], mm['minor'])))
                     continue
 
                 bus = json_data[list(json_data)[0]]['VP']

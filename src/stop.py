@@ -30,7 +30,7 @@ def hello_world():
 
 @app.route('/test')
 def digitransit_test():
-    major_minor = [{"major":"43118", "minor":"56850"}, {"major": "18105" , "minor":"59204"}]
+    major_minor = [{"major":43118, "minor":56850}, {"major": 18105 , "minor":59204}]
     return json.dumps(digitransitAPIService.get_busses_with_beacon(major_minor))
     #return json.dumps(digitransitAPIService.fetch_single_trip("HSL:1055_20161107_Ti_2_1329"))
     #return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
