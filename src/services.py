@@ -21,7 +21,7 @@ class DigitransitAPIService:
     def get_stops(self, lat, lon, radius):
         """
         Gets info from all stops within given radius of the point specified by lat and lon, including all the busses
-        scheduled to pass those stops.
+        going to pass those stops.
 
         See: get_stops_near_coordinates, get_busses_by_stop_id
 
@@ -136,7 +136,7 @@ class DigitransitAPIService:
 
     def fetch_single_fuzzy_trip(self, route, direction, date, time):
         """
-        Gets trip info from digitransit API.
+        Gets trip info from Digitransit API. See: get_query
 
         :param route: route number
         :param direction: direction
@@ -163,12 +163,12 @@ class DigitransitAPIService:
 
     def get_stops_near_coordinates(self, lat, lon, radius):
         """
-        Gets stops within specified radius of a point defined by lat and lon
+        Gets stops within specified radius of a point defined by lat and lon from Digitransit API. See: get_query
 
         :param lat: latitude
         :param lon: longitude
         :param radius: radius
-        :return: list of stops including their distance to point defined by lat, lon and
+        :return: list of stops including ids and their distance to point defined by lat and lon
         """
         radius = min(radius, 1000)
         query = ("{stopsByRadius(lat:%f, lon:%f, radius:%d) {"
@@ -194,6 +194,13 @@ class DigitransitAPIService:
         return stoplist[:3]
 
     def get_busses_by_stop_id(self, stop_id, distance):
+        """
+        Gets info from busses passing stop identified by stop_id from Digitransit API. See: get_query
+
+        :param stop_id: stop id
+        :param distance: distance appended to the result
+        :return: dict containing info from both the stop and the busses passing it
+        """
         query = ("{stop(id: \"%s\") {"
                  "  name"
                  "  code"
@@ -273,6 +280,12 @@ class DigitransitAPIService:
         return stop
 
     def get_query(self, query):
+        """
+        Gets given graphQL-query from Digitransit API.
+
+        :param query: graphQL-query
+        :return: JSON string response from API
+        """
         response = requests.post(self.url, data=query, headers=self.headers)
 
         # Force encoding as auto-detection sometimes fails
@@ -282,6 +295,18 @@ class DigitransitAPIService:
         return response.text
 
     def make_request(self, trip_id, stop_id, device_id, push_notification):
+        """
+        Saves stop request to database. If push notification is wanted tries to start running notify-method in 30 second
+        intervals. (Does not start if it's already running.)
+
+        See: notify
+
+        :param trip_id: trip id
+        :param stop_id: stop id
+        :param device_id: device id, used to send push notifications via FCM (Firebase Cloud Messaging)
+        :param push_notification:
+        :return: returns dict containing request_id
+        """
         request_id = self.db.store_request(trip_id, stop_id, device_id, push_notification)
 
         data = self.get_requests(trip_id)
@@ -293,6 +318,12 @@ class DigitransitAPIService:
         return result
 
     def get_request_info(self, request_id):
+        """
+        Gets info of the trip related to given request id from Digitransit API. See: get_query
+
+        :param request_id: id of the stoprequest
+        :return: dict containing stop_name, stop_code, stop_id, arrives_in, delay
+        """
         request_data = self.db.get_request_info(request_id)
 
         query = ("{"
@@ -323,6 +354,12 @@ class DigitransitAPIService:
         return result
 
     def cancel_request(self, request_id):
+        """
+        Cancels stoprequest with the given id. See: get_requests
+
+        :param request_id:
+        :return: empty string
+        """
         trip_id = self.db.cancel_request(request_id)
         data = self.get_requests(trip_id)
         publish.single(topic="stoprequests/" + trip_id, payload=json.dumps(data), hostname=self.MQTT_host, port=1883)
@@ -330,11 +367,24 @@ class DigitransitAPIService:
         return ''
 
     def store_report(self, trip_id, stop_id):
+        """
+        Saves report (notification that no one got one at the stop where stoprequest was made) to database.
+
+        :param trip_id:
+        :param stop_id:
+        :return: empty string
+        """
         self.db.store_report(trip_id, stop_id)
 
         return ''
 
     def get_requests(self, trip_id):
+        """
+        Gets all requests related to trip id from the database.
+
+        :param trip_id:
+        :return: dict containing stop_ids of all stoprequests related to trip_id
+        """
         requests = self.db.get_requests(trip_id)
         stop_dict = {}
 
@@ -349,6 +399,12 @@ class DigitransitAPIService:
         return {"stop_ids": stop_list}
 
     def get_stops_by_trip_id(self, trip_id):
+        """
+        Gets stops on the route of trip identified by trip_id from Digitransit API. See: get_query
+
+        :param trip_id:
+        :return: dict containing list of stops which include stop_name, stop_code, stop_id, arrives_in
+        """
         query = ("{trip(id: \"%s\") {"
                  " stoptimesForDate(serviceDay: \"%s\") {"
                  "      stop{"
@@ -381,6 +437,13 @@ class DigitransitAPIService:
         return result
 
     def get_single_stop_by_trip_id(self, trip_id, stop_id):
+        """
+        Gets info of a single stop on route of trip identified by trip_id from Digitransit API. See: get_query
+
+        :param trip_id:
+        :param stop_id:
+        :return: dict containing list with single stop with stop_name, stop_code, stop_id, arrives_in
+        """
         query = ("{trip(id: \"%s\") {"
                  " stoptimesForDate(serviceDay: \"%s\") {"
                  "      stop{"
@@ -414,11 +477,23 @@ class DigitransitAPIService:
         return result
 
     def get_stops_by_code(self, stop_code):
+        """
+        Gets stops with given stop_code from Digitransit API. See: get_query
+
+        :param stop_code:
+        :return: dict containing list containing stop info
+        """
         query = '''{ stops(name:"%s") { gtfsId code name platformCode lat lon } }''' % stop_code
         data = json.loads(self.get_query(query))
         return data['data']
 
     def fetch_single_trip(self, trip_id):
+        """
+        Get info of single trip identified by trip_id from Digitransit API. See: get_query
+
+        :param trip_id:
+        :return:
+        """
         query = ('''{ trip(id:"%s"){
                         gtfsId
                         stoptimesForDate(serviceDay:"%s"){
@@ -436,6 +511,14 @@ class DigitransitAPIService:
         return data['data']
 
     def notify(self):
+        """
+        (Called from make_request, after which will run every 30 seconds until environment variable PUSH is set to STOP.)
+        Fetches all stoprequests, where push notification is not yet sent and calls
+        fetch_trips_and_send_push_notifications. If all stoprequests have been served, sets environment variable
+        PUSH to STOP which stops running this function.
+
+        See: fetch_pushable_requests, fetch_trips_and_send_push_notifications, thread_helper.py
+        """
         pushable_requests = self.fetch_pushable_requests()
         if not pushable_requests:
             thread_helper.stop_do_every("PUSH")
@@ -447,12 +530,23 @@ class DigitransitAPIService:
 
 
     def fetch_trips_and_send_push_notifications(self, stoprequests):
+        """
+        Fetches trips related to stoprequests given to it as a list as parameter, gets trip info related to those
+        stoprequests from Digitransit API and sends push notifications to users whose bus is estimated to arrive in
+        under two minutes. In case of invalid requests (due to invalid trip_id or stop_id), sends push notification
+        notifying about it.
+
+        See: fetch_single_trip, PushNotificationService (in push_notification_service.py)
+
+        :param stoprequests: dict where stoprequests[trip_id] = [ (request_id_1, stop_id_1, device_id_1), ... ]
+        :return: dict containing info on the sent notifications
+        """
         current_time = datetime.datetime.now()
         to_send = [] # List of push notifications to be sent
         pushed_requests = [] # List of ids of pushed requests
 
         # stoprequests is dict where:
-        # stoprequests[trip_id] = [ (1_stop_id, 1_device_id), (2_stop_id, 2_device_id), ... ]
+        # stoprequests[trip_id] = [ (request_id_1, stop_id_1, device_id_1), ... ]
         for trip_id in stoprequests.keys():
             data = self.fetch_single_trip(trip_id)
 
@@ -490,6 +584,11 @@ class DigitransitAPIService:
         return pushed_requests
 
     def fetch_pushable_requests(self):
+        """
+        Fetches uncancelled and unpushed stoprequests from the database.
+
+        :return: dict where dict where stoprequests[trip_id] = [ (request_id_1, stop_id_1, device_id_1), ... ]
+        """
         pushable_requests = self.db.get_unpushed_requests()
         requests_by_trip_id = {}
 
