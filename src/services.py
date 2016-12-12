@@ -61,9 +61,9 @@ class DigitransitAPIService:
             beacons[(row['Major'], row['Minor'])] = row
 
         for mm in major_minor:
-            if mm.get('major') == '00000' and mm.get('minor') == '00000':
-                result['vehicles'].append(json.loads('{"major":"00000",'
-                                  ' "minor":"00000",'
+            if mm.get('major') == '12345' and mm.get('minor') == '12345':
+                result['vehicles'].append(json.loads('{"major":"12345",'
+                                  ' "minor":"12345",'
                                   ' "trip_id":"1055_20161031_Ma_2_1359",'
                                   ' "destination":"Rautatientori via Kalasatama(M)",'
                                   ' "line":"55",'
