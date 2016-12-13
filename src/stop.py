@@ -36,6 +36,11 @@ def digitransit_test():
     #return json.dumps(digitransitAPIService.get_stops(60.203978, 24.9633573))
 
 
+"""
+Main routes. API can be found at:
+https://github.com/STOP2/stop2.0-documentation/wiki/Back%20end%20REST%20API%20dokumentaatio
+"""
+
 @app.route('/stoprequests', methods=['GET', 'POST'])
 def stoprequests():
     if request.method == 'GET':
